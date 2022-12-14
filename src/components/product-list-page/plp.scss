@@ -38,7 +38,37 @@
         display: flex;
         justify-content: space-around;
         padding-bottom: 10px;
-        .btn {
-        }
+    }
+}
+.aside {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    &__filter-list-category,
+    &__filter-list-brand {
+        max-height: 250px;
+        overflow: auto;
+    }
+    &__btn-row {
+        display: flex;
+        padding-top: 10px;
+        justify-content: space-around;
+    }
+    &__title {
+        padding: 10px 0;
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    &__price-row,
+    &__stock-row {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    &__range-stock,
+    &__range-price {
+        display: block;
+        margin: 0 auto;
+        width: 90%;
     }
 }

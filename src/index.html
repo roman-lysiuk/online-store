@@ -4,11 +4,49 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Online-store</title>
   </head>
   <body>
     <header class="header"></header>
-    <main class="main"></main>
+    <main class="main">
+      <aside class="aside">
+        <div class="aside__btn-row">
+          <button class="btn-reset btn">Reset Filters</button>
+          <button class="btn-copy-link btn">Copy link</button>
+        </div>
+        <div class="aside__category">
+          <div class="aside__title">Category</div>
+          <div class="aside__filter-list-category"></div>
+        </div>
+        <div class="aside__title">Brand</div>
+        <div class="aside__brand">
+          <div class="aside__filter-list-brand"></div>
+        </div>
+        <div class="aside__price">
+          <div class="aside__title">Price</div>
+          <div class="aside__price-row">
+            <span class="aside__min-price"></span>
+            <span class="">⟷</span>
+            <span class="aside__max-price"></span>
+          </div>
+          <input type="range" class="aside__range-price" value="0">
+        </div>
+        <div class="aside__stock">
+          <div class="aside__title">Stock</div>
+          <div class="aside__stock-row">
+            <span class="aside__min-stock"></span>
+            <span class="">⟷</span>
+            <span class="aside__max-stock"></span>
+          </div>
+          <input type="range" class="aside__range-stock" value="0">
+        </div>
+      </aside>
+      <section class="section">
+        <div class="sort"></div>
+        <div class="products"></div>
+      </section>
+    </main>
+
     <footer class="footer"></footer>
 
     <template id="productItemTemp">
@@ -28,12 +66,4 @@
       </div>
     </template>
 
-    <template id="markupPlpTemp">
-      <aside class="aside"></aside>
-      <section class="section">
-        <div class="sort"></div>
-        <div class="products"></div>
-      </section>
-    </template>
-  </body>
 </html>
