@@ -3,32 +3,29 @@ import Cart from '../cart/cart';
 import type { IProduct } from '../../interfaces';
 
 class Plp {
-  drawAside(data: IProduct[]) {
-    const asideMaxPrice: HTMLElement | null = document.querySelector('.aside__max-price');
-    const asideMinPrice: HTMLElement | null = document.querySelector('.aside__min-price');
-    const asideRangePriceLower: HTMLInputElement | null = document.querySelector('.aside__range-price_lower');
-    const asideRangePriceUpper: HTMLInputElement | null = document.querySelector('.aside__range-price_upper');
+  drawAside(data: IProduct[]): void {
+    const btnReset: HTMLElement | null = document.querySelector('.btn-reset ');
+    const btnCopy: HTMLElement | null = document.querySelector('.btn-copy-link');
 
+    this.drawFilterCategory(data);
+    this.drawFilterBrand(data);
+    this.drawFilterPrice(data);
+    this.drawFilterStock(data);
+
+    if (btnReset) btnReset.addEventListener('click', () => console.log('сброс'));
+    if (btnCopy) btnCopy.addEventListener('click', () => console.log('копировать'));
+  }
+  drawFilterStock(data: IProduct[]): void {
     const asideMaxStock: HTMLElement | null = document.querySelector('.aside__max-stock');
     const asideMinStock: HTMLElement | null = document.querySelector('.aside__min-stock');
     const asideRangeStockLower: HTMLInputElement | null = document.querySelector('.aside__range-stock_lower');
     const asideRangeStockUpper: HTMLInputElement | null = document.querySelector('.aside__range-stock_upper');
 
-    const allPrice = <Array<number>>[...data.reduce((acc, cur) => acc.add(cur.price), new Set())];
-    const allPriceSort: number[] = allPrice.sort((a, b) => a - b);
     const allStock = <Array<number>>[...data.reduce((acc, cur) => acc.add(cur.stock), new Set())];
     const allStockSort: number[] = allStock.sort((a, b) => a - b);
 
-    const btnReset: HTMLElement | null = document.querySelector('.btn-reset ');
-    const btnCopy: HTMLElement | null = document.querySelector('.btn-copy-link');
-    this.drawFilterCategory(data);
-    this.drawFilterBrand(data);
-
-    /////////////////////////input range price and stock////////////////
     if (asideMinStock) asideMinStock.textContent = `${allStockSort[0].toString()} pcs`;
     if (asideMaxStock) asideMaxStock.textContent = `${allStockSort[allStockSort.length - 1].toString()} pcs`;
-    if (asideMinPrice) asideMinPrice.textContent = `${allPriceSort[0].toString()} $`;
-    if (asideMaxPrice) asideMaxPrice.textContent = `${allPriceSort[allPriceSort.length - 1].toString()} $`;
 
     const minGapRange = 1;
 
@@ -54,6 +51,18 @@ class Plp {
         }
       });
     }
+  }
+  drawFilterPrice(data: IProduct[]): void {
+    const asideMaxPrice: HTMLElement | null = document.querySelector('.aside__max-price');
+    const asideMinPrice: HTMLElement | null = document.querySelector('.aside__min-price');
+    const asideRangePriceLower: HTMLInputElement | null = document.querySelector('.aside__range-price_lower');
+    const asideRangePriceUpper: HTMLInputElement | null = document.querySelector('.aside__range-price_upper');
+
+    const allPrice = <Array<number>>[...data.reduce((acc, cur) => acc.add(cur.price), new Set())];
+    const allPriceSort: number[] = allPrice.sort((a, b) => a - b);
+
+    if (asideMinPrice) asideMinPrice.textContent = `${allPriceSort[0].toString()} $`;
+    if (asideMaxPrice) asideMaxPrice.textContent = `${allPriceSort[allPriceSort.length - 1].toString()} $`;
 
     if (asideRangePriceLower && asideMinPrice && asideMaxPrice && asideRangePriceUpper) {
       asideRangePriceLower.min = '0';
@@ -78,11 +87,8 @@ class Plp {
         }
       });
     }
-    ////////////////////////////////////////////////
-    if (btnReset) btnReset.addEventListener('click', () => console.log('сброс'));
-    if (btnCopy) btnCopy.addEventListener('click', () => console.log('копировать'));
   }
-  drawFilterCategory(data: IProduct[]) {
+  drawFilterCategory(data: IProduct[]): void {
     const fragmentCategory: DocumentFragment = document.createDocumentFragment();
     const asideFilterListCategory: HTMLElement | null = document.querySelector('.aside__filter-list-category');
     const allCategory = <Array<string>>[...data.reduce((acc, cur) => acc.add(cur.category), new Set())];
@@ -112,7 +118,7 @@ class Plp {
     if (asideFilterListCategory) asideFilterListCategory.append(fragmentCategory);
   }
 
-  drawFilterBrand(data: IProduct[]) {
+  drawFilterBrand(data: IProduct[]): void {
     const asideFilterListBrand: HTMLElement | null = document.querySelector('.aside__filter-list-brand');
     const fragmentBrand: DocumentFragment = document.createDocumentFragment();
     const allBrand = <Array<string>>[...data.reduce((acc, cur) => acc.add(cur.brand), new Set())];
@@ -147,7 +153,7 @@ class Plp {
 
   drawSort() {}
 
-  drawProducts(data: IProduct[]) {
+  drawProducts(data: IProduct[]): void {
     const copyCart: Cart = Cart.getInstance();
     const fragment = document.createDocumentFragment();
     const productItemTemp = <HTMLTemplateElement>document.querySelector('#productItemTemp');
