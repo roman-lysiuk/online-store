@@ -7,28 +7,33 @@
     <title>Document</title>
   </head>
   <body>
-    <header class="header">
-    </header>
-    <main class="main">
-    </main>
-    <footer class="footer">
-    </footer>
+    <header class="header"></header>
+    <main class="main"></main>
+    <footer class="footer"></footer>
 
     <template id="productItemTemp">
-      <div class="product__item">
-          <div class="product__image">
-          </div>
+      <div class="product product__item">
+        <div class="product__title"></div>
+        <div class="product__info">
+          <div class="product__category"></div>
+          <div class="product__brand"></div>
+          <div class="product__price"></div>
+          <div class="product__rating"></div>
+          <div class="product__stock"></div>
+        </div>
+        <div class="product__btn-row">
+          <button class="btn-add-cart btn"></button>
+          <button class="btn-show-details btn"></button>
+        </div>
       </div>
     </template>
 
     <template id="markupPlpTemp">
-      <aside class="aside">
-      </aside>
+      <aside class="aside"></aside>
       <section class="section">
         <div class="sort"></div>
         <div class="products"></div>
       </section>
     </template>
-
   </body>
 </html>
