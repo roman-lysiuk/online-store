@@ -65,10 +65,39 @@
         justify-content: space-around;
     }
 
-    &__range-stock,
-    &__range-price {
-        display: block;
+    .multi-range {
         margin: 0 auto;
-        width: 90%;
+        position: relative;
+        input {
+            appearance: none;
+            position: absolute;
+            outline: none;
+            background: linear-gradient(grey, grey) no-repeat center;
+            background-size: 100% 2px;
+            border-radius: 10%;
+            width: 90%;
+            pointer-events: none;
+            &::-webkit-slider-thumb {
+                z-index: 2;
+                height: 15px;
+                width: 15px;
+                border-radius: 15px;
+                background-color: rgb(21, 20, 20);
+                position: relative;
+                margin: 5px 0;
+                pointer-events: all;
+                cursor: pointer;
+                appearance: none;
+                &::before {
+                    content: " ";
+                    display: block;
+                    position: absolute;
+                    top: 13px;
+                    left: 100%;
+                    width: 2000px;
+                    height: 2px;
+                }
+            }
+        }
     }
 }

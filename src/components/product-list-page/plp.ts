@@ -12,11 +12,13 @@ class Plp {
 
     const asideMaxPrice: HTMLElement | null = document.querySelector('.aside__max-price');
     const asideMinPrice: HTMLElement | null = document.querySelector('.aside__min-price');
-    const asideRangePrice: HTMLInputElement | null = document.querySelector('.aside__range-price');
+    const asideRangePriceLower: HTMLInputElement | null = document.querySelector('.aside__range-price_lower');
+    const asideRangePriceUpper: HTMLInputElement | null = document.querySelector('.aside__range-price_upper');
 
     const asideMaxStock: HTMLElement | null = document.querySelector('.aside__max-stock');
     const asideMinStock: HTMLElement | null = document.querySelector('.aside__min-stock');
-    const asideRangeStock: HTMLInputElement | null = document.querySelector('.aside__range-stock');
+    const asideRangeStockLower: HTMLInputElement | null = document.querySelector('.aside__range-stock_lower');
+    const asideRangeStockUpper: HTMLInputElement | null = document.querySelector('.aside__range-stock_upper');
 
     const allCategory = <Array<string>>[...data.reduce((acc, cur) => acc.add(cur.category), new Set())];
     const allBrand = <Array<string>>[...data.reduce((acc, cur) => acc.add(cur.brand), new Set())];
@@ -28,32 +30,61 @@ class Plp {
     const btnReset: HTMLElement | null = document.querySelector('.btn-reset ');
     const btnCopy: HTMLElement | null = document.querySelector('.btn-copy-link');
 
-    if (asideRangeStock && asideMinStock) {
-      asideRangeStock.min = '0';
-      asideRangeStock.max = allStock.length.toString();
-      asideRangeStock.value = '0';
-      asideRangeStock.addEventListener(
-        'input',
-        () => (asideMinStock.textContent = `${allStockSort[+asideRangeStock.value].toString()} pcs`)
-      );
-    }
-
+    /////////////////////////input range price and stock////////////////
     if (asideMinStock) asideMinStock.textContent = `${allStockSort[0].toString()} pcs`;
     if (asideMaxStock) asideMaxStock.textContent = `${allStockSort[allStockSort.length - 1].toString()} pcs`;
-
-    if (asideRangePrice && asideMinPrice) {
-      asideRangePrice.min = '0';
-      asideRangePrice.max = allPrice.length.toString();
-      asideRangePrice.value = '0';
-      asideRangePrice.addEventListener(
-        'input',
-        () => (asideMinPrice.textContent = `${allPriceSort[+asideRangePrice.value].toString()} $`)
-      );
-    }
-
     if (asideMinPrice) asideMinPrice.textContent = `${allPriceSort[0].toString()} $`;
     if (asideMaxPrice) asideMaxPrice.textContent = `${allPriceSort[allPriceSort.length - 1].toString()} $`;
 
+    const minGapRange = 1;
+
+    if (asideRangeStockLower && asideMinStock && asideMaxStock && asideRangeStockUpper) {
+      asideRangeStockLower.min = '0';
+      asideRangeStockUpper.max = allStock.length.toString();
+      asideRangeStockLower.max = allStock.length.toString();
+      asideRangeStockLower.value = '0';
+      asideRangeStockUpper.value = allStock.length.toString();
+      asideRangeStockLower.addEventListener('input', () => {
+        if (parseInt(asideRangeStockUpper.value) - parseInt(asideRangeStockLower.value) <= minGapRange) {
+          asideRangeStockLower.value = `${parseInt(asideRangeStockUpper.value) - minGapRange}`;
+        } else {
+          asideMinStock.textContent = `${allStockSort[+asideRangeStockLower.value].toString()} pcs`;
+        }
+      });
+
+      asideRangeStockUpper.addEventListener('input', () => {
+        if (parseInt(asideRangeStockUpper.value) - parseInt(asideRangeStockLower.value) <= minGapRange) {
+          asideRangeStockUpper.value = `${parseInt(asideRangeStockLower.value) + minGapRange}`;
+        } else {
+          asideMaxStock.textContent = `${allStockSort[+asideRangeStockUpper.value].toString()} pcs`;
+        }
+      });
+    }
+
+    if (asideRangePriceLower && asideMinPrice && asideMaxPrice && asideRangePriceUpper) {
+      asideRangePriceLower.min = '0';
+      asideRangePriceUpper.max = allPrice.length.toString();
+      asideRangePriceLower.max = allPrice.length.toString();
+      asideRangePriceLower.value = '0';
+      asideRangePriceUpper.value = allPrice.length.toString();
+      const minGap = 1;
+      asideRangePriceLower.addEventListener('input', () => {
+        if (parseInt(asideRangePriceUpper.value) - parseInt(asideRangePriceLower.value) <= minGap) {
+          asideRangePriceLower.value = `${parseInt(asideRangePriceUpper.value) - minGap}`;
+        } else {
+          asideMinPrice.textContent = `${allPriceSort[+asideRangePriceLower.value].toString()} $`;
+        }
+      });
+
+      asideRangePriceUpper.addEventListener('input', () => {
+        if (parseInt(asideRangePriceUpper.value) - parseInt(asideRangePriceLower.value) <= minGap) {
+          asideRangePriceUpper.value = `${parseInt(asideRangePriceLower.value) + minGap}`;
+        } else {
+          asideMaxPrice.textContent = `${allPriceSort[+asideRangePriceUpper.value].toString()} $`;
+        }
+      });
+    }
+    ////////////////////////////////////////////////
     if (btnReset) btnReset.addEventListener('click', () => console.log('сброс'));
     if (btnCopy) btnCopy.addEventListener('click', () => console.log('копировать'));
 
