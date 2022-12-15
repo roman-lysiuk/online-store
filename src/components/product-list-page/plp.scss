@@ -1,0 +1,103 @@
+.products {
+    border: 1px solid orange;
+    display: flex;
+    flex-wrap: wrap;
+    // grid-template: 1fr / repeat(3, 1fr);
+    // grid-auto-flow: row;
+    padding: 10px;
+    width: calc(100vw - 300px);
+    justify-items: center;
+    gap: 20px;
+}
+
+.product {
+    border: 1px solid black;
+    margin: 1rem 0;
+    width: calc(25% - 20px);
+    height: 100%;
+    min-height: 200px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    &__title {
+        font-size: 1.5rem;
+        text-align: center;
+        flex: 0 0 auto;
+    }
+    &__info {
+        flex: 1 0 auto;
+    }
+    &__btn-row {
+        flex: 0 0 auto;
+        display: flex;
+        justify-content: space-around;
+        padding-bottom: 10px;
+    }
+}
+.aside {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    &__filter-list-category,
+    &__filter-list-brand {
+        max-height: 250px;
+        overflow: auto;
+    }
+    &__btn-row {
+        display: flex;
+        padding-top: 10px;
+        justify-content: space-around;
+    }
+    &__title {
+        padding: 10px 0;
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    &__price-row,
+    &__stock-row {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .multi-range {
+        margin: 0 auto;
+        position: relative;
+        input {
+            appearance: none;
+            position: absolute;
+            outline: none;
+            background: linear-gradient(grey, grey) no-repeat center;
+            background-size: 100% 2px;
+            border-radius: 10%;
+            width: 90%;
+            pointer-events: none;
+            &::-webkit-slider-thumb {
+                z-index: 2;
+                height: 15px;
+                width: 15px;
+                border-radius: 15px;
+                background-color: rgb(21, 20, 20);
+                position: relative;
+                margin: 5px 0;
+                pointer-events: all;
+                cursor: pointer;
+                appearance: none;
+                &::before {
+                    content: " ";
+                    display: block;
+                    position: absolute;
+                    top: 13px;
+                    left: 100%;
+                    width: 2000px;
+                    height: 2px;
+                }
+            }
+        }
+    }
+}
