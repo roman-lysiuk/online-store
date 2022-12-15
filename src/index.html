@@ -97,25 +97,6 @@
       </div>
       <div class="year">2022</div>
     </footer>
-<!-- 
-    <template id="productItemTemp">
-      <div class="product product__item">
-        <div class="product__title"></div>
-        <div class="product__info">
-          <div class="product__category"></div>
-          <div class="product__brand"></div>
-          <div class="product__price"></div>
-          <div class="product__rating"></div>
-          <div class="product__stock"></div>
-        </div>
-        <div class="product__btn-row">
-          <button class="btn-add-cart btn"></button>
-          <button class="btn-show-details btn"></button>
-        </div>
-      </div>
-    </template> -->
-
-
     <template id="productItemTemp">
       <div class="product product__item">
         <div class="product__title"></div>
@@ -125,6 +106,36 @@
         <button class="btn-add-cart btn"></button>
         <button class="btn-show-details btn"></button>
       </div>
+      </div>
+    </template>
+
+    <template id="template-product-detail-page">
+      <div class="container">
+        <div class="breadcrumbs"></div>
+        <div class="product-card">
+          <div class="two-column-wraper">
+            <div class="product-card__gallery gallery">
+              <img class="gallery__main-photo"></img>
+              <div class="gallery__all-photo"></div>
+            </div>
+            <div class="product-card__info">
+              <h2 class="product-card__title"></h2>
+              <div class="product-card__price"></div>
+              <div class="product-card__row-button">
+                <button class="btn btn-add-cart">Add to Cart</button>
+                <button class="btn btn-buy-now"> Buy Now</button>
+              </div>
+              <div class="product-card__category"></div>
+              <div class="product-card__brand"></div>
+              <div class="product-card__rating"></div>
+              <div class="product-card__stock"></div>
+            </div>
+          </div>
+          <div class="product-card__description">
+            <h2>Description:</h2>
+            <p class="product-card__body-description"></p>
+          </div>
+        </div>
       </div>
     </template>
 
