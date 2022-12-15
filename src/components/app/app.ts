@@ -12,6 +12,7 @@ class App {
   start() {
     this.plp.drawAside(products.products);
     this.plp.drawSort();
+    this.plp.showAsideMobile();
     this.plp.drawProducts(products.products);
   }
 }
