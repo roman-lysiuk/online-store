@@ -4,56 +4,66 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./assets//icons/online-store-website-favicon-white.png" type="image/x-icon">
     <title>Online-store</title>
   </head>
   <body>
     <header class="header">
-      <div class="header__logo">Здесь был лого</div>
+      <a class="header__logo" href=""><img src="./assets/img/online-store-high-resolution-logo-black-on-transparent-background.png" alt="logo"></a>
       <div class="header__total-cart">Cart Total: <span id="total-cart">0</span> $</div>
       <div class ="header__cart">
-        картинка корзины
+        <img id="header-icon-cart" src="./assets/icons/icons8-корзина-100.png" alt="cart">
         <span id="number-products-cart">0</span>psc
       </div>
     </header>
     <main class="main">
-      <aside class="aside">
-        <div class="aside__btn-row">
-          <button class="btn-reset btn">Reset Filters</button>
-          <button class="btn-copy-link btn">Copy link</button>
-        </div>
-        <div class="aside__category">
-          <div class="aside__title">Category</div>
-          <div class="aside__filter-list-category"></div>
-        </div>
-        <div class="aside__title">Brand</div>
-        <div class="aside__brand">
-          <div class="aside__filter-list-brand"></div>
-        </div>
-        <div class="aside__price">
-          <div class="aside__title">Price</div>
-          <div class="aside__price-row">
-            <span class="aside__min-price"></span>
-            <span class="">⟷</span>
-            <span class="aside__max-price"></span>
+      <svg class="aside__arrow-right" viewBox="0 0 5 9">
+        <path d="M0.419,9.000 L0.003,8.606 L4.164,4.500 L0.003,0.394 L0.419,0.000 L4.997,4.500 L0.419,9.000 Z" ></path>
+    </svg>
+
+      <div class="aside-sticky-box">
+        <aside class="aside">
+          <div class="aside__close">
+            <img src="https://img.icons8.com/ios/50/null/close-window--v1.png"/>
           </div>
-          <div  class="multi-range" >
-            <input type="range" class="aside__range-price_lower" value="0">
-            <input type="range" class="aside__range-price_upper" >
+          <div class="aside__btn-row">
+            <button class="btn-reset btn">Reset Filters</button>
+            <button class="btn-copy-link btn">Copy link</button>
           </div>
-        </div>
-        <div class="aside__stock">
-          <div class="aside__title">Stock</div>
-          <div class="aside__stock-row">
-            <span class="aside__min-stock"></span>
-            <span class="">⟷</span>
-            <span class="aside__max-stock"></span>
+          <div class="aside__category">
+            <div class="aside__title">Category</div>
+            <div class="aside__filter-list-category"></div>
           </div>
-          <div  class="multi-range" >
-            <input type="range" class="aside__range-stock_lower" value="0">
-            <input type="range" class="aside__range-stock_upper" value="0">
+          <div class="aside__brand">
+            <div class="aside__title">Brand</div>
+            <div class="aside__filter-list-brand"></div>
           </div>
-        </div>
-      </aside>
+          <div class="aside__price">
+            <div class="aside__title">Price</div>
+            <div class="aside__price-row">
+              <span class="aside__min-price"></span>
+              <span class="">⟷</span>
+              <span class="aside__max-price"></span>
+            </div>
+            <div  class="multi-range" >
+              <input type="range" class="aside__range-price_lower" value="0">
+              <input type="range" class="aside__range-price_upper" >
+            </div>
+          </div>
+          <div class="aside__stock">
+            <div class="aside__title">Stock</div>
+            <div class="aside__stock-row">
+              <span class="aside__min-stock"></span>
+              <span class="">⟷</span>
+              <span class="aside__max-stock"></span>
+            </div>
+            <div  class="multi-range" >
+              <input type="range" class="aside__range-stock_lower" value="0">
+              <input type="range" class="aside__range-stock_upper" value="0">
+            </div>
+          </div>
+        </aside>
+      </div>
       <section class="section">
         <div class="sort-bar">
           <select class="sort__options">
@@ -68,8 +78,8 @@
             <input type="search" placeholder="Search product"  id="search">
           </div>
           <div class="sort-bar__view-options">
-            <button class="">4колонки</button>
-            <button class="">3колонки</button>
+            <button class="">2 columns</button>
+            <button class="">3 columns</button>
           </div>
           </div>
        
@@ -87,7 +97,7 @@
       </div>
       <div class="year">2022</div>
     </footer>
-
+<!-- 
     <template id="productItemTemp">
       <div class="product product__item">
         <div class="product__title"></div>
@@ -102,6 +112,19 @@
           <button class="btn-add-cart btn"></button>
           <button class="btn-show-details btn"></button>
         </div>
+      </div>
+    </template> -->
+
+
+    <template id="productItemTemp">
+      <div class="product product__item">
+        <div class="product__title"></div>
+       <div class="product__image"></div>
+       <div class="product__price"></div>
+       <div class="product__btn-row">
+        <button class="btn-add-cart btn"></button>
+        <button class="btn-show-details btn"></button>
+      </div>
       </div>
     </template>
 
