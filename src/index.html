@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online-store</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header__logo">Здесь был лого</div>
+      <div class="header__total-cart">Cart Total: <span id="total-cart">0</span> $</div>
+      <div class ="header__cart">
+        картинка корзины
+        <span id="number-products-cart">0</span>psc
+      </div>
+    </header>
+    <main class="main">
+      <aside class="aside">
+        <div class="aside__btn-row">
+          <button class="btn-reset btn">Reset Filters</button>
+          <button class="btn-copy-link btn">Copy link</button>
+        </div>
+        <div class="aside__category">
+          <div class="aside__title">Category</div>
+          <div class="aside__filter-list-category"></div>
+        </div>
+        <div class="aside__title">Brand</div>
+        <div class="aside__brand">
+          <div class="aside__filter-list-brand"></div>
+        </div>
+        <div class="aside__price">
+          <div class="aside__title">Price</div>
+          <div class="aside__price-row">
+            <span class="aside__min-price"></span>
+            <span class="">⟷</span>
+            <span class="aside__max-price"></span>
+          </div>
+          <div  class="multi-range" >
+            <input type="range" class="aside__range-price_lower" value="0">
+            <input type="range" class="aside__range-price_upper" >
+          </div>
+        </div>
+        <div class="aside__stock">
+          <div class="aside__title">Stock</div>
+          <div class="aside__stock-row">
+            <span class="aside__min-stock"></span>
+            <span class="">⟷</span>
+            <span class="aside__max-stock"></span>
+          </div>
+          <div  class="multi-range" >
+            <input type="range" class="aside__range-stock_lower" value="0">
+            <input type="range" class="aside__range-stock_upper" value="0">
+          </div>
+        </div>
+      </aside>
+      <section class="section">
+        <div class="sort-bar">
+          <select class="sort__options">
+            <option value="sort-title">Sort Options</option>
+            <option value="price-ABS">Sort Price ABS</option>
+            <option value="rating-ABS">Sort Rating ABS</option>
+            <option value="price-DESK">Sort Price DESK</option>
+            <option value="rating-DESK">Sort Rating DESK</option>
+          </select>
+          <div class="sort-bar__found-products">Found :<span id="found-products"></span> </div>
+          <div class="sort-bar__search">
+            <input type="search" placeholder="Search product"  id="search">
+          </div>
+          <div class="sort-bar__view-options">
+            <button class="">4колонки</button>
+            <button class="">3колонки</button>
+          </div>
+          </div>
+       
+        <div class="products"></div>
+      </section>
+    </main>
+
+    <footer class="footer"></footer>
+
+    <template id="productItemTemp">
+      <div class="product product__item">
+        <div class="product__title"></div>
+        <div class="product__info">
+          <div class="product__category"></div>
+          <div class="product__brand"></div>
+          <div class="product__price"></div>
+          <div class="product__rating"></div>
+          <div class="product__stock"></div>
+        </div>
+        <div class="product__btn-row">
+          <button class="btn-add-cart btn"></button>
+          <button class="btn-show-details btn"></button>
+        </div>
+      </div>
+    </template>
+
+</html>
