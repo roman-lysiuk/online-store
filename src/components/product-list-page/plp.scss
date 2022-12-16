@@ -25,6 +25,7 @@
         margin-bottom: 10px;
         background-size: cover;
         background-repeat: no-repeat;
+        transition: 500ms;
         &:hover {
             opacity: 0.5;
         }

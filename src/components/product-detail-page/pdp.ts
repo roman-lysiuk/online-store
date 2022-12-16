@@ -11,7 +11,7 @@ class Pdp {
     const productCardClone = <HTMLElement>tempProductDetailPage.content.cloneNode(true);
 
     const breadcrumbs: HTMLElement | null = productCardClone.querySelector('.breadcrumbs');
-    const mainPhoto: HTMLElement | null = productCardClone.querySelector('.gallery__main-photo');
+    const mainPhoto: HTMLElement | null = productCardClone.querySelector('.gallery__main-photo img');
     const galleryAllPhoto: HTMLElement | null = productCardClone.querySelector('.gallery__all-photo');
     const productCardTitle: HTMLElement | null = productCardClone.querySelector('.product-card__title');
     const productCardPrice: HTMLElement | null = productCardClone.querySelector('.product-card__price');
@@ -41,7 +41,8 @@ class Pdp {
       if (galleryAllPhoto) galleryAllPhoto.appendChild(newDiv);
     });
 
-    if (breadcrumbs) breadcrumbs.textContent = `Online store - ${data.category} - ${data.brand} - ${data.title}`;
+    if (breadcrumbs)
+      breadcrumbs.innerHTML = `<div class="breadcrumbs"><a href="">Online store</a><span> - ${data.category} - </span><span>${data.brand} - </span><span>${data.title}</span></div>`;
 
     if (productCardTitle) productCardTitle.textContent = data.title;
     if (productCardPrice) productCardPrice.textContent = `Price: ${data.price.toString()}$`;
@@ -62,6 +63,15 @@ class Pdp {
 
     if (galleryAllPhoto) galleryAllPhoto.addEventListener('click', (e) => this.changeMainImage(e));
   }
-  changeMainImage(e: Event) {}
+  changeMainImage(e: Event) {
+    const mainImg: HTMLElement | null = document.querySelector('.gallery__main-photo');
+
+    const currentImg = <Node>e.target;
+    const parentElementImg = currentImg.parentElement;
+
+    if (mainImg && parentElementImg) {
+      mainImg.innerHTML = parentElementImg.innerHTML;
+    }
+  }
 }
 export default Pdp;
