@@ -1,10 +1,18 @@
 @import "./components/product-list-page/plp.scss";
+@import "./components/product-detail-page/pdp.scss";
 html {
    font-family: Verdana, Geneva, Tahoma, sans-serif;
+   height: 100%;
+}
+body {
+   height: 100%;
+   display: flex;
+   flex-direction: column;
 }
 .header {
    min-height: 70px;
    display: flex;
+   flex: 0 0 auto;
    align-items: center;
    justify-content: space-around;
    border-radius: 10px;
@@ -37,6 +45,7 @@ html {
 .footer {
    display: flex;
    justify-content: center;
+   flex: 0 0 auto;
    gap: 50px;
    min-height: 100px;
    border-radius: 10px;
@@ -50,6 +59,7 @@ html {
 
 .main {
    display: flex;
+   flex: 1 0 auto;
    gap: 30px;
    position: relative;
 }
@@ -64,6 +74,7 @@ html {
    min-height: 40px;
    padding: 10px;
    cursor: pointer;
+   transition: 200ms;
    &:hover {
       box-shadow: 0px 0px 11px 4px rgba(0, 0, 0, 0.2);
    }

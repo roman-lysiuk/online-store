@@ -25,6 +25,7 @@
         margin-bottom: 10px;
         background-size: cover;
         background-repeat: no-repeat;
+        transition: 500ms;
         &:hover {
             opacity: 0.5;
         }
@@ -57,7 +58,7 @@
     position: fixed;
     left: 1%;
     top: 50%;
-    width: 30px;
+    width: 20px;
     animation: arrow-left 1s linear infinite;
     @media (max-width: 1000px) {
         z-index: 1;
@@ -169,6 +170,10 @@
             }
         }
     }
+
+    @media (max-width: 1000px) {
+        position: relative;
+    }
 }
 .sort-bar {
     display: flex;
@@ -193,12 +198,12 @@
 }
 @keyframes arrow-left {
     0% {
-        left: 0;
+        left: 1%;
     }
     50% {
-        left: 10px;
+        left: 2%;
     }
     100% {
-        left: 0;
+        left: 1%;
     }
 }
