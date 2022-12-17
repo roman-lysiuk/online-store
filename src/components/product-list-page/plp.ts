@@ -1,5 +1,7 @@
 import Cart from '../cart/cart';
 
+import Pdp from '../product-detail-page/pdp';
+
 import type { IProduct } from '../../interfaces';
 
 class Plp {
@@ -154,6 +156,7 @@ class Plp {
   drawSort() {}
 
   drawProducts(data: IProduct[]): void {
+    const pdp = new Pdp();
     const copyCart: Cart = Cart.getInstance();
     const fragment = document.createDocumentFragment();
     const productItemTemp = <HTMLTemplateElement>document.querySelector('#productItemTemp');
@@ -163,25 +166,24 @@ class Plp {
       const productClone = <HTMLElement>productItemTemp.content.cloneNode(true);
       const productItem: HTMLElement | null = productClone.querySelector('.product__item');
       const productTitle: HTMLElement | null = productClone.querySelector('.product__title');
-      const productCategory: HTMLElement | null = productClone.querySelector('.product__category');
-      const productBrand: HTMLElement | null = productClone.querySelector('.product__brand');
+      const productImage: HTMLElement | null = productClone.querySelector('.product__image');
       const productPrice: HTMLElement | null = productClone.querySelector('.product__price');
       const productRating: HTMLElement | null = productClone.querySelector('.product__rating');
       const productStock: HTMLElement | null = productClone.querySelector('.product__stock');
       const btnAddCart: HTMLButtonElement | null = productClone.querySelector('.btn-add-cart');
       const btnShowDetails: HTMLButtonElement | null = productClone.querySelector('.btn-show-details');
 
-      if (productItem) {
-        productItem.setAttribute('data-id', item.id.toString());
-        productItem.style.backgroundImage = `url("${item.thumbnail}")`;
-        //сделать метод showDetails
-        productItem.addEventListener('click', () => console.log('Показать подробно'));
-      }
+      if (productItem) productItem.setAttribute('data-id', item.id.toString());
 
+      if (productImage) {
+        //сделать метод showDetails
+        productImage.addEventListener('click', () => pdp.drawPdp(item));
+        productImage.style.backgroundImage = `url("${item.thumbnail}")`;
+      }
       if (productTitle) productTitle.textContent = item.title;
-      if (productCategory) productCategory.textContent = `Category: ${item.category}`;
-      if (productBrand) productBrand.textContent = `Brand: ${item.brand}`;
-      if (productPrice) productPrice.textContent = `Price: ${item.price.toString()}`;
+      // if (productCategory) productCategory.textContent = `Category: ${item.category}`;
+      // if (productBrand) productBrand.textContent = `Brand: ${item.brand}`;
+      if (productPrice) productPrice.textContent = `Price: ${item.price.toString()} $`;
       if (productRating) productRating.textContent = `Rating: ${item.rating.toFixed(1).toString()}`;
       if (productStock) productStock.textContent = `Stock: ${item.stock.toString()}`;
       if (btnAddCart) {
@@ -191,13 +193,29 @@ class Plp {
       if (btnShowDetails) {
         btnShowDetails.textContent = 'Details';
         //сделать метод showDetails
-        btnShowDetails.addEventListener('click', () => console.log('Показать подробно'));
+        btnShowDetails.addEventListener('click', () => pdp.drawPdp(item));
       }
 
       fragment.append(productClone);
     });
 
     if (products) products.append(fragment);
+  }
+
+  showAsideMobile() {
+    const asideArrowRight = document.querySelector('.aside__arrow-right');
+    const aside = document.querySelector('.aside-sticky-box');
+    const asideClose = document.querySelector('.aside__close');
+
+    if (asideArrowRight) {
+      asideArrowRight.addEventListener('click', () => {
+        if (aside) {
+          aside.classList.add('active');
+        }
+      });
+
+      if (asideClose && aside) asideClose.addEventListener('click', () => aside.classList.remove('active'));
+    }
   }
 }
 export default Plp;
