@@ -1,4 +1,9 @@
 @import "./components/product-list-page/plp.scss";
+@import "./components/error/error.scss";
+.container {
+   max-width: 1600px;
+   margin: 0 auto;
+}
 .header {
    height: 70px;
    display: flex;
