@@ -176,23 +176,22 @@ class Plp {
       if (productItem) productItem.setAttribute('data-id', item.id.toString());
 
       if (productImage) {
-        //сделать метод showDetails
         productImage.addEventListener('click', () => pdp.drawPdp(item));
         productImage.style.backgroundImage = `url("${item.thumbnail}")`;
       }
       if (productTitle) productTitle.textContent = item.title;
-      // if (productCategory) productCategory.textContent = `Category: ${item.category}`;
-      // if (productBrand) productBrand.textContent = `Brand: ${item.brand}`;
       if (productPrice) productPrice.textContent = `Price: ${item.price.toString()} $`;
       if (productRating) productRating.textContent = `Rating: ${item.rating.toFixed(1).toString()}`;
       if (productStock) productStock.textContent = `Stock: ${item.stock.toString()}`;
       if (btnAddCart) {
         btnAddCart.textContent = 'Add to Cart';
-        btnAddCart.addEventListener('click', copyCart.addToCart);
+        btnAddCart.addEventListener('click', (e) => {
+          copyCart.changeButtonAddToCart(e);
+          copyCart.addToCart(item);
+        });
       }
       if (btnShowDetails) {
         btnShowDetails.textContent = 'Details';
-        //сделать метод showDetails
         btnShowDetails.addEventListener('click', () => pdp.drawPdp(item));
       }
 

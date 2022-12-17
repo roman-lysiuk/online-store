@@ -24,6 +24,7 @@ class Pdp {
     const productCardDescription: HTMLElement | null = productCardClone.querySelector(
       '.product-card__body-description'
     );
+    const isProductInCart = copyCart.allProductCart.has(data.id);
 
     data.images.forEach((image, index) => {
       if (index === 0 && mainPhoto) {
@@ -59,7 +60,16 @@ class Pdp {
     /// сделать метод BuyNow
     if (btnBuyNow) btnBuyNow.addEventListener('click', () => console.log('сделать метод  btnBuyNow'));
 
-    if (btnAddCart) btnAddCart.addEventListener('click', () => copyCart.addToCart());
+    if (btnAddCart) {
+      if (isProductInCart) {
+        copyCart.changeButtonAddToCart();
+      }
+
+      btnAddCart.addEventListener('click', (e) => {
+        copyCart.changeButtonAddToCart(e);
+        copyCart.addToCart(data);
+      });
+    }
 
     if (galleryAllPhoto) galleryAllPhoto.addEventListener('click', (e) => this.changeMainImage(e));
   }
