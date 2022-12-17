@@ -59,7 +59,7 @@ class Cart {
     if (this.allProductCart.has(item.id)) {
       this.allProductCart.delete(item.id);
       this.plp.showTotalItemCart();
-      this.plp.showTotalCartMoney();to
+      this.plp.showTotalCartMoney();
     }
   }
   changeButtonAddToCart(e?: Event) {
