@@ -216,5 +216,15 @@ class Plp {
       if (asideClose && aside) asideClose.addEventListener('click', () => aside.classList.remove('active'));
     }
   }
+  showTotalItemCart() {
+    const copyCart: Cart = Cart.getInstance();
+    const numberProductsCart = document.getElementById('number-products-cart');
+    if (numberProductsCart) numberProductsCart.textContent = copyCart.totalCartItem().toString();
+  }
+  showTotalCartMoney() {
+    const copyCart: Cart = Cart.getInstance();
+    const totalCart = document.getElementById('total-cart');
+    if (totalCart) totalCart.textContent = copyCart.totalCartMoney().toString();
+  }
 }
 export default Plp;

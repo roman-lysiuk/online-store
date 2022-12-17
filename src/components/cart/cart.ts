@@ -1,10 +1,14 @@
+import Plp from '../product-list-page/plp';
+
 import type { IProduct } from '../../interfaces';
 
 class Cart {
   // патерн singleton
   private static _instance: Cart;
   public allProductCart: Map<number, { item: IProduct; quantity: number }>;
+  plp: Plp;
   constructor() {
+    this.plp = new Plp();
     this.allProductCart = new Map();
   }
 
@@ -19,12 +23,13 @@ class Cart {
   addToCart(item: IProduct): void {
     const objectProductCart = {
       item: item,
-      quantity: 1,
+      quantity: 0,
     };
     if (this.allProductCart.has(item.id)) {
       this.removeProductFromCart(item);
     } else {
       this.allProductCart.set(item.id, objectProductCart);
+      this.addOneQuantity(item);
     }
   }
   addOneQuantity(item: IProduct): void {
@@ -35,6 +40,8 @@ class Cart {
       const currentQuantityProduct = currentProduct.quantity;
       if (currentQuantityProduct < inStock) currentProduct.quantity += 1;
     }
+    this.plp.showTotalItemCart();
+    this.plp.showTotalCartMoney();
   }
   removeOneQuantity(item: IProduct): void {
     const currentProduct = this.allProductCart.get(item.id);
@@ -45,10 +52,14 @@ class Cart {
         currentProduct.quantity -= 1;
       }
     }
+    this.plp.showTotalItemCart();
+    this.plp.showTotalCartMoney();
   }
   removeProductFromCart(item: IProduct) {
     if (this.allProductCart.has(item.id)) {
       this.allProductCart.delete(item.id);
+      this.plp.showTotalItemCart();
+      this.plp.showTotalCartMoney();to
     }
   }
   changeButtonAddToCart(e?: Event) {
@@ -64,6 +75,16 @@ class Cart {
       }
       btnAddToCart.classList.toggle('.product-not-cart');
     }
+  }
+  totalCartItem(): number {
+    let totalItem = 0;
+    this.allProductCart.forEach((item) => (totalItem += item.quantity));
+    return totalItem;
+  }
+  totalCartMoney(): number {
+    let totalMoney = 0;
+    this.allProductCart.forEach((item) => (totalMoney += item.item.price * item.quantity));
+    return totalMoney;
   }
 }
 export default Cart;
