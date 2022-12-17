@@ -6,10 +6,12 @@ class Cart {
   // патерн singleton
   private static _instance: Cart;
   public allProductCart: Map<number, { item: IProduct; quantity: number }>;
+  public allUsedPromoCode: { [key: string]: number };
   plp: Plp;
   constructor() {
     this.plp = new Plp();
     this.allProductCart = new Map();
+    this.allUsedPromoCode = {};
   }
 
   public static getInstance(): Cart {
@@ -85,6 +87,23 @@ class Cart {
     let totalMoney = 0;
     this.allProductCart.forEach((item) => (totalMoney += item.item.price * item.quantity));
     return totalMoney;
+  }
+  isValidationPromo(promo: string): boolean {
+    switch (promo.toLowerCase()) {
+      case 'promo':
+        return true;
+      case 'sale':
+        return true;
+
+      default:
+        return false;
+    }
+  }
+  addPromoCode(promo: string) {
+    this.allUsedPromoCode[promo] = 15;
+  }
+  deletePromoCode(promo: string) {
+    delete this.allUsedPromoCode[promo];
   }
 }
 export default Cart;

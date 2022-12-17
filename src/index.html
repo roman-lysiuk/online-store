@@ -1,30 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="shortcut icon" href="./assets//icons/online-store-website-favicon-white.png" type="image/x-icon">
+    <meta http-equiv="X-UA-Compatible"
+          content="IE=edge" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon"
+          href="./assets//icons/online-store-website-favicon-white.png"
+          type="image/x-icon">
     <title>Online-store</title>
   </head>
+
   <body>
     <header class="header">
-      <a class="header__logo" href=""><img src="./assets/img/online-store-high-resolution-logo-black-on-transparent-background.png" alt="logo"></a>
+      <a class="header__logo"
+         href=""><img src="./assets/img/online-store-high-resolution-logo-black-on-transparent-background.png"
+             alt="logo"></a>
       <div class="header__total-cart">Cart Total: <span id="total-cart">0</span> $</div>
-      <div class ="header__cart">
-        <img id="header-icon-cart" src="./assets/icons/icons8-корзина-100.png" alt="cart">
+      <div class="header__cart">
+        <img id="header-icon-cart"
+             src="./assets/icons/icons8-корзина-100.png"
+             alt="cart">
         <span id="number-products-cart">0</span>psc
       </div>
     </header>
     <main class="main">
-      <svg class="aside__arrow-right" viewBox="0 0 5 9">
-        <path d="M0.419,9.000 L0.003,8.606 L4.164,4.500 L0.003,0.394 L0.419,0.000 L4.997,4.500 L0.419,9.000 Z" ></path>
-    </svg>
+      <svg class="aside__arrow-right"
+           viewBox="0 0 5 9">
+        <path d="M0.419,9.000 L0.003,8.606 L4.164,4.500 L0.003,0.394 L0.419,0.000 L4.997,4.500 L0.419,9.000 Z"></path>
+      </svg>
 
       <div class="aside-sticky-box">
         <aside class="aside">
           <div class="aside__close">
-            <img src="https://img.icons8.com/ios/50/null/close-window--v1.png"/>
+            <img src="https://img.icons8.com/ios/50/null/close-window--v1.png" />
           </div>
           <div class="aside__btn-row">
             <button class="btn-reset btn">Reset Filters</button>
@@ -45,9 +56,12 @@
               <span class="">⟷</span>
               <span class="aside__max-price"></span>
             </div>
-            <div  class="multi-range" >
-              <input type="range" class="aside__range-price_lower" value="0">
-              <input type="range" class="aside__range-price_upper" >
+            <div class="multi-range">
+              <input type="range"
+                     class="aside__range-price_lower"
+                     value="0">
+              <input type="range"
+                     class="aside__range-price_upper">
             </div>
           </div>
           <div class="aside__stock">
@@ -57,9 +71,13 @@
               <span class="">⟷</span>
               <span class="aside__max-stock"></span>
             </div>
-            <div  class="multi-range" >
-              <input type="range" class="aside__range-stock_lower" value="0">
-              <input type="range" class="aside__range-stock_upper" value="0">
+            <div class="multi-range">
+              <input type="range"
+                     class="aside__range-stock_lower"
+                     value="0">
+              <input type="range"
+                     class="aside__range-stock_upper"
+                     value="0">
             </div>
           </div>
         </aside>
@@ -75,37 +93,43 @@
           </select>
           <div class="sort-bar__found-products">Found :<span id="found-products"></span> </div>
           <div class="sort-bar__search">
-            <input type="search" placeholder="Search product"  id="search">
+            <input type="search"
+                   placeholder="Search product"
+                   id="search">
           </div>
           <div class="sort-bar__view-options">
             <button class="">2 columns</button>
             <button class="">3 columns</button>
           </div>
-          </div>
-       
+        </div>
+
         <div class="products"></div>
       </section>
     </main>
 
     <footer class="footer">
       <div class="github-links"> Github:
-        <a href="https://github.com/gekalo1025" target="_blank">gekalo1025</a>
-        <a href="https://github.com/NRG-Spirit" target="_blank">NRG-Spirit</a>
+        <a href="https://github.com/gekalo1025"
+           target="_blank">gekalo1025</a>
+        <a href="https://github.com/NRG-Spirit"
+           target="_blank">NRG-Spirit</a>
       </div>
       <div class="rs-school-link">
-        <a href="https://rs.school/js/" target="_blank"><img src="https://rs.school/images/rs_school_js.svg" alt="rs-school"></a>
+        <a href="https://rs.school/js/"
+           target="_blank"><img src="https://rs.school/images/rs_school_js.svg"
+               alt="rs-school"></a>
       </div>
       <div class="year">2022</div>
     </footer>
     <template id="productItemTemp">
       <div class="product product__item">
         <div class="product__title"></div>
-       <div class="product__image"></div>
-       <div class="product__price"></div>
-       <div class="product__btn-row">
-        <button class="btn-add-cart btn product-not-cart"></button>
-        <button class="btn-show-details btn"></button>
-      </div>
+        <div class="product__image"></div>
+        <div class="product__price"></div>
+        <div class="product__btn-row">
+          <button class="btn-add-cart btn product-not-cart"></button>
+          <button class="btn-show-details btn"></button>
+        </div>
       </div>
     </template>
 
@@ -116,9 +140,9 @@
           <div class="two-column-wraper">
             <div class="product-card__gallery gallery">
               <div class="gallery__main-photo">
-                 <img></img>
-                </div>
-            
+                <img></img>
+              </div>
+
               <div class="gallery__all-photo"></div>
             </div>
             <div class="product-card__info">
@@ -140,6 +164,78 @@
           </div>
         </div>
       </div>
+    </template>
+
+    <template id="template-cart-page">
+      <div class="container">
+        <div class="cart-page">
+          <div class="cart-page__list">
+            <div class="cart-page__header">
+              <h2 class="cart-page__title">Products In Cart</h2>
+              <div class="cart-page__pagination pagination">
+                <div class="pagination__items-per-page">
+                  <div>Items per page </div>
+                  <input type="number"
+                         value="All"
+                         name=""
+                         id="items-per-page">
+                </div>
+                <div class="pagination__current-page">
+                  <button class="pagination__prev-page btn">Prev page</button>
+                  <span class="pagination__number-page"
+                        id="pagination-current-page">1</span>
+                  <button class="pagination__next-page btn">Next page</button>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="cart-page__list-products list-products"></div>
+          </div>
+
+          <div class="cart-page__summary">
+            <h3 class="summary__title">Summary</h3>
+            <div class="summary__products"></div>
+            <div class="summary__total-money"></div>
+            <div class="summary__promocode promocode">
+              <input id="promo"
+                     placeholder="Enter promo code"
+                     type="text">
+              <p class="promocode__info">Promo for test: 'Promo', 'Sale'</p>
+              <div class="promocode__active"></div>
+            </div>
+            <button class="btn btn-buy-now">Buy Now</button>
+          </div>
+
+        </div>
+      </div>
+
+    </template>
+
+
+    <template id="template-product-cart-page">
+      <div class="product-cart">
+        <div class="product-cart__number"></div>
+        <div class="product-cart__img">
+        </div>
+        <div class="product-cart__info info">
+          <div class="info__title"></div>
+          <div class="info__description"></div>
+          <div class="info__rating"></div>
+        </div>
+        <div class="product-cart__controls">
+          <div class="product-cart__stock"></div>
+          <div class="product-cart__control-number">
+            <div class="btn-row">
+              <button class="btn add-number-product">+</button>
+              <span id="current-number-product">1</span>
+              <button class="remove-number-product btn">-</button>
+            </div>
+          </div>
+          <div class="product-cart__total-money"></div>
+        </div>
+      </div>
+
     </template>
 
 </html>
