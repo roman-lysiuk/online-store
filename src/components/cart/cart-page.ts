@@ -1,6 +1,5 @@
 import Pdp from '../product-detail-page/pdp';
 import Plp from '../product-list-page/plp';
-
 import Cart from './cart';
 
 import type { IProduct } from '../../interfaces';
@@ -126,7 +125,7 @@ class CartPage {
     const copyCart = Cart.getInstance();
     const headerIconCart = document.querySelector('#header-icon-cart');
 
-    if (headerIconCart) headerIconCart.addEventListener('click', () => this.drawCartPage(copyCart.allProductCart));
+    if (headerIconCart) headerIconCart.addEventListener('click', () => window.location.hash = `#/cart`);
   }
   showCartIsEmpty(): void {
     const main = document.querySelector('.main');

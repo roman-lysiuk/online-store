@@ -4,18 +4,25 @@ import CartPage from '../cart/cart-page';
 
 class App {
   router: Router;
+  cartPage: CartPage;
 
   constructor() {
     this.router = new Router();
+    this.cartPage = new CartPage();
   }
 
   start() {
+    this.cartPage.showCartPage();
+    document.querySelector('header__logo')?.addEventListener('click', () => window.location.hash = '#/plp');
+    const URLSave = localStorage.getItem('URLSave');
+    if (URLSave) {
+    window.location.hash = URLSave;
+    } else {
     window.location.hash = `#/plp`;
-
+    }
 
     window.addEventListener('load', () => {
       const location = window.location.hash;
-      console.log('location', location);
 
       if (location) {
           this.router.handleRoute(location);
@@ -30,6 +37,7 @@ class App {
       }
     });
     
+    document.querySelector('.header__logo')?.addEventListener('click', () => window.location.hash = '#/plp');
   }
 }
 export default App;
