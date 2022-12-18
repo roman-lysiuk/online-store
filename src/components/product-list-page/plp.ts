@@ -5,6 +5,21 @@ import Cart from '../cart/cart';
 import type { IProduct } from '../../interfaces';
 
 class Plp {
+  drawPlp(data:IProduct[]):void {
+    const tempProductListPage = <HTMLTemplateElement>document.querySelector('#template-plp');
+    const cloneProductListPage = <HTMLElement>tempProductListPage.content.cloneNode(true);
+    const main = document.querySelector('.main');
+    if (cloneProductListPage && main) {
+      main.innerHTML = '';
+      main.append(cloneProductListPage);
+    }
+    this.drawAside(data);
+    this.drawSort();
+    this.showAsideMobile();
+    this.drawProducts(data);
+
+
+  }
   drawAside(data: IProduct[]): void {
     const btnReset: HTMLElement | null = document.querySelector('.btn-reset ');
     const btnCopy: HTMLElement | null = document.querySelector('.btn-copy-link');
