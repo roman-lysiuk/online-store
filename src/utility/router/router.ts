@@ -20,7 +20,6 @@ class Router {
  
    handleRoute(location: string) {
       const adress: Array<string> = location.split('/');
-      console.log(adress);
       switch (adress[1]) {
          case "pdp":
             this.showPdp(adress, location);
@@ -36,21 +35,18 @@ class Router {
      }
    }
    showPdp (adress: Array<string>, location: string) {
-   const item = products.products.filter(el => el.id.toString() === adress[2]);
-   if (item[0]) {
-      localStorage.setItem('URLSave', location);
-      this.pdp.drawPdp(item[0]);
-   } else {
-      this.showError();
-   }
+      const item = products.products.filter(el => el.id.toString() === adress[2]);
+      if (item[0]) {
+         localStorage.setItem('URLSave', location);
+         this.pdp.drawPdp(item[0]);
+      } else {
+         this.showError();
+      }
    }
 
    showPlp (location: string) {
       localStorage.setItem('URLSave', location);
-      this.plp.drawAside(products.products);
-      this.plp.drawSort();
-      this.plp.showAsideMobile();
-      this.plp.drawProducts(products.products);
+      this.plp.drawPlp(products.products);
    }
 
    showCart (location: string) {

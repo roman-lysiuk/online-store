@@ -35,6 +35,7 @@ body {
    &__logo {
       img {
          width: 200px;
+         cursor: pointer;
          @media (max-width: 650px) {
             width: 130px;
          }
