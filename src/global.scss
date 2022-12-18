@@ -4,13 +4,14 @@
 
 @import "./components/product-detail-page/pdp.scss";
 
+@import "./components/cart/cart.scss";
 .container {
-    max-width: 1600px;
-    padding: 0 10px;
-    margin: 0 auto;
-    @media (max-width: 1200px) {
-        max-width: 1000px;
-    }
+   max-width: 1600px;
+   padding: 0 10px;
+   margin: 0 auto;
+   @media (max-width: 1200px) {
+      max-width: 1000px;
+   }
 }
 
 html {
@@ -46,6 +47,7 @@ body {
       }
    }
    &__cart {
+      cursor: pointer;
       display: flex;
       align-items: flex-end;
       gap: 10px;
