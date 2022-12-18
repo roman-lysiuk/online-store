@@ -1,19 +1,35 @@
-import Plp from '../product-list-page/plp';
-
-import products from '../../data/products.json';
+import  Router  from '../../utility/router/router'
 
 class App {
-  plp: Plp;
+  router: Router;
 
   constructor() {
-    this.plp = new Plp();
+    this.router = new Router();
   }
 
   start() {
-    this.plp.drawAside(products.products);
-    this.plp.drawSort();
-    this.plp.showAsideMobile();
-    this.plp.drawProducts(products.products);
+    window.location.hash = `#/plp`;
+
+
+    window.addEventListener('load', () => {
+      const location = window.location.hash;
+      console.log('location', location);
+
+      if (location) {
+          this.router.handleRoute(location);
+      }
+    });
+
+    window.addEventListener('hashchange', () => {
+      const location = window.location.hash;
+
+      if (location) {
+          this.router.handleRoute(location);
+      }
+    });
+
+
+    
   }
 }
 export default App;

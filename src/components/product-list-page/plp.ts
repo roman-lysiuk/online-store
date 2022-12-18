@@ -1,6 +1,6 @@
 import Cart from '../cart/cart';
 
-import Pdp from '../product-detail-page/pdp';
+
 
 import type { IProduct } from '../../interfaces';
 
@@ -156,7 +156,6 @@ class Plp {
   drawSort() {}
 
   drawProducts(data: IProduct[]): void {
-    const pdp = new Pdp();
     const copyCart: Cart = Cart.getInstance();
     const fragment = document.createDocumentFragment();
     const productItemTemp = <HTMLTemplateElement>document.querySelector('#productItemTemp');
@@ -177,7 +176,7 @@ class Plp {
 
       if (productImage) {
         //сделать метод showDetails
-        productImage.addEventListener('click', () => pdp.drawPdp(item));
+        productImage.addEventListener('click', () => window.location.hash = `#/pdp/${item.id}`);
         productImage.style.backgroundImage = `url("${item.thumbnail}")`;
       }
       if (productTitle) productTitle.textContent = item.title;
@@ -193,7 +192,7 @@ class Plp {
       if (btnShowDetails) {
         btnShowDetails.textContent = 'Details';
         //сделать метод showDetails
-        btnShowDetails.addEventListener('click', () => pdp.drawPdp(item));
+        btnShowDetails.addEventListener('click', () => window.location.hash = `#/pdp/${item.id}`);
       }
 
       fragment.append(productClone);
