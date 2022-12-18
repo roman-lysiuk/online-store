@@ -42,6 +42,7 @@ body {
       }
    }
    &__cart {
+      cursor: pointer;
       display: flex;
       align-items: flex-end;
       gap: 10px;

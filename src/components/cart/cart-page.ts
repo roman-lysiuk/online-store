@@ -22,10 +22,23 @@ class CartPage {
     const btnBuyNow: HTMLElement | null = cartPageClone.querySelector('.btn-buy-now');
     const promoInput: HTMLInputElement | null = cartPageClone.querySelector('#promo');
     const promocodeActive: HTMLElement | null = cartPageClone.querySelector('.promocode__active');
-    const deletePromo: HTMLElement | null = cartPageClone.querySelector('.promocode__active');
+    const summaryTotalMoneyUsedPromo: HTMLElement | null = cartPageClone.querySelector(
+      '.summary__total-money-used-promo'
+    );
 
     if (summaryProducts) summaryProducts.textContent = `Products:  ${copyCart.totalCartItem()}`;
     if (summaryTotalMoney) summaryTotalMoney.textContent = `Total: ${copyCart.totalCartMoney()} $`;
+
+    if (Object.keys(copyCart.allUsedPromoCode).length >= 0) {
+      if (summaryTotalMoneyUsedPromo && summaryTotalMoney) {
+        summaryTotalMoneyUsedPromo.textContent = `Total Discounted Price: ${copyCart.totalCartMoney()} $`;
+        if (Object.keys(copyCart.allUsedPromoCode).length !== 0) {
+          summaryTotalMoneyUsedPromo.textContent = `Total Discounted Price: ${copyCart.totalCartMoneyUsedPromo()} $`;
+          summaryTotalMoney.classList.add('strikethrough-text');
+        }
+      }
+    }
+
     // сделать метод buyNow
     if (btnBuyNow) btnBuyNow.addEventListener('click', () => console.log('сделать метод buyNow'));
     if (promoInput)
@@ -33,6 +46,12 @@ class CartPage {
         if (copyCart.isValidationPromo(promoInput.value)) {
           copyCart.addPromoCode(promoInput.value);
           promoInput.value = '';
+          if (Object.keys(copyCart.allUsedPromoCode).length > 0) {
+            if (summaryTotalMoneyUsedPromo && summaryTotalMoney) {
+              summaryTotalMoney.classList.add('strikethrough-text');
+              summaryTotalMoneyUsedPromo.textContent = `Total Discounted Price: ${copyCart.totalCartMoneyUsedPromo()} $`;
+            }
+          }
         }
 
         if (promocodeActive) {
@@ -51,6 +70,15 @@ class CartPage {
               deletePromo.addEventListener('click', () => {
                 const parentDeletePromo = <HTMLElement>deletePromo.parentNode;
                 copyCart.deletePromoCode(parentDeletePromo.id);
+
+                if (summaryTotalMoneyUsedPromo && summaryTotalMoney) {
+                  summaryTotalMoneyUsedPromo.textContent = `Total Discounted Price: ${copyCart.totalCartMoneyUsedPromo()} $`;
+                  if (Object.keys(copyCart.allUsedPromoCode).length === 0) {
+                    summaryTotalMoneyUsedPromo.textContent = `Total Discounted Price: ${copyCart.totalCartMoney()} $`;
+                    summaryTotalMoney.classList.remove('strikethrough-text');
+                  }
+                }
+
                 parentDeletePromo.remove();
               });
             }

@@ -88,6 +88,21 @@ class Cart {
     this.allProductCart.forEach((item) => (totalMoney += item.item.price * item.quantity));
     return totalMoney;
   }
+  totalCartMoneyUsedPromo(): number {
+    let totalMoney = 0;
+    let totalDiscountPercent = 0;
+
+    for (const key in this.allUsedPromoCode) {
+      if (Object.prototype.hasOwnProperty.call(this.allUsedPromoCode, key)) {
+        totalDiscountPercent += this.allUsedPromoCode[key];
+      }
+    }
+
+    this.allProductCart.forEach((item) => (totalMoney += item.item.price * item.quantity));
+
+    const totalDiscountMoney = totalMoney * (totalDiscountPercent / 100);
+    return totalMoney - totalDiscountMoney;
+  }
   isValidationPromo(promo: string): boolean {
     switch (promo.toLowerCase()) {
       case 'promo':
