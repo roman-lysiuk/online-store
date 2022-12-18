@@ -1,4 +1,5 @@
 import Pdp from '../product-detail-page/pdp';
+import Plp from '../product-list-page/plp';
 
 import Cart from './cart';
 
@@ -8,6 +9,7 @@ class CartPage {
   drawCartPage(data: Map<number, { item: IProduct; quantity: number }>) {
     if (data.size === 0) return this.showCartIsEmpty();
     const copyCart = Cart.getInstance();
+    const plp = new Plp();
     const main = document.querySelector('.main');
 
     const cartPageTemp = <HTMLTemplateElement>document.querySelector('#template-cart-page');
@@ -35,6 +37,7 @@ class CartPage {
         if (Object.keys(copyCart.allUsedPromoCode).length !== 0) {
           summaryTotalMoneyUsedPromo.textContent = `Total Discounted Price: ${copyCart.totalCartMoneyUsedPromo()} $`;
           summaryTotalMoney.classList.add('strikethrough-text');
+          plp.showTotalCartMoney();
         }
       }
     }
@@ -50,6 +53,7 @@ class CartPage {
             if (summaryTotalMoneyUsedPromo && summaryTotalMoney) {
               summaryTotalMoney.classList.add('strikethrough-text');
               summaryTotalMoneyUsedPromo.textContent = `Total Discounted Price: ${copyCart.totalCartMoneyUsedPromo()} $`;
+              plp.showTotalCartMoney();
             }
           }
         }
@@ -77,8 +81,8 @@ class CartPage {
                     summaryTotalMoneyUsedPromo.textContent = `Total Discounted Price: ${copyCart.totalCartMoney()} $`;
                     summaryTotalMoney.classList.remove('strikethrough-text');
                   }
+                  plp.showTotalCartMoney();
                 }
-
                 parentDeletePromo.remove();
               });
             }

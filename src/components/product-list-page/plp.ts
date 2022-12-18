@@ -224,7 +224,14 @@ class Plp {
   showTotalCartMoney() {
     const copyCart: Cart = Cart.getInstance();
     const totalCart = document.getElementById('total-cart');
-    if (totalCart) totalCart.textContent = copyCart.totalCartMoney().toString();
+
+    if (totalCart) {
+      if (Object.keys(copyCart.allUsedPromoCode).length > 0) {
+        totalCart.textContent = copyCart.totalCartMoneyUsedPromo().toString();
+      } else {
+        totalCart.textContent = copyCart.totalCartMoney().toString();
+      }
+    }
   }
 }
 export default Plp;
