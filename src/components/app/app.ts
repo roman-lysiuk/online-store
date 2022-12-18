@@ -1,5 +1,7 @@
 import  Router  from '../../utility/router/router'
 
+import CartPage from '../cart/cart-page';
+
 class App {
   router: Router;
 
@@ -27,8 +29,6 @@ class App {
           this.router.handleRoute(location);
       }
     });
-
-
     
   }
 }

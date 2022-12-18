@@ -177,22 +177,25 @@ class Plp {
       if (productImage) {
         //сделать метод showDetails
         productImage.addEventListener('click', () => window.location.hash = `#/pdp/${item.id}`);
+
         productImage.style.backgroundImage = `url("${item.thumbnail}")`;
       }
       if (productTitle) productTitle.textContent = item.title;
-      // if (productCategory) productCategory.textContent = `Category: ${item.category}`;
-      // if (productBrand) productBrand.textContent = `Brand: ${item.brand}`;
       if (productPrice) productPrice.textContent = `Price: ${item.price.toString()} $`;
       if (productRating) productRating.textContent = `Rating: ${item.rating.toFixed(1).toString()}`;
       if (productStock) productStock.textContent = `Stock: ${item.stock.toString()}`;
       if (btnAddCart) {
         btnAddCart.textContent = 'Add to Cart';
-        btnAddCart.addEventListener('click', copyCart.addToCart);
+        btnAddCart.addEventListener('click', (e) => {
+          copyCart.changeButtonAddToCart(e);
+          copyCart.addToCart(item);
+        });
       }
       if (btnShowDetails) {
         btnShowDetails.textContent = 'Details';
         //сделать метод showDetails
         btnShowDetails.addEventListener('click', () => window.location.hash = `#/pdp/${item.id}`);
+
       }
 
       fragment.append(productClone);
@@ -214,6 +217,23 @@ class Plp {
       });
 
       if (asideClose && aside) asideClose.addEventListener('click', () => aside.classList.remove('active'));
+    }
+  }
+  showTotalItemCart() {
+    const copyCart: Cart = Cart.getInstance();
+    const numberProductsCart = document.getElementById('number-products-cart');
+    if (numberProductsCart) numberProductsCart.textContent = copyCart.totalCartItem().toString();
+  }
+  showTotalCartMoney() {
+    const copyCart: Cart = Cart.getInstance();
+    const totalCart = document.getElementById('total-cart');
+
+    if (totalCart) {
+      if (Object.keys(copyCart.allUsedPromoCode).length > 0) {
+        totalCart.textContent = copyCart.totalCartMoneyUsedPromo().toString();
+      } else {
+        totalCart.textContent = copyCart.totalCartMoney().toString();
+      }
     }
   }
 }
