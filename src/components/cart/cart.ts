@@ -86,7 +86,7 @@ class Cart {
   totalCartMoney(): number {
     let totalMoney = 0;
     this.allProductCart.forEach((item) => (totalMoney += item.item.price * item.quantity));
-    return totalMoney;
+    return +totalMoney.toFixed(2);
   }
   totalCartMoneyUsedPromo(): number {
     let totalMoney = 0;
