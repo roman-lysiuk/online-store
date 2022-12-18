@@ -1,5 +1,9 @@
 @import "./components/product-list-page/plp.scss";
+
+@import "./components/error/error.scss";
+
 @import "./components/product-detail-page/pdp.scss";
+
 @import "./components/cart/cart.scss";
 .container {
    max-width: 1600px;
@@ -9,6 +13,7 @@
       max-width: 1000px;
    }
 }
+
 html {
    font-family: Verdana, Geneva, Tahoma, sans-serif;
    height: 100%;
