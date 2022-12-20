@@ -120,5 +120,8 @@ class Cart {
   deletePromoCode(promo: string) {
     delete this.allUsedPromoCode[promo];
   }
+  clearCart(): void {
+    this.allProductCart = new Map();
+  }
 }
 export default Cart;
