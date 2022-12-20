@@ -23,13 +23,19 @@ class CartPage {
     const btnBuyNow: HTMLElement | null = cartPageClone.querySelector('.btn-buy-now');
     const promoInput: HTMLInputElement | null = cartPageClone.querySelector('#promo');
 
+    const buyNowModal: HTMLElement | null = document.querySelector('.buy-now-modal');
+
     if (summaryProducts) summaryProducts.textContent = `Products:  ${copyCart.totalCartItem()}`;
     if (summaryTotalMoney) summaryTotalMoney.textContent = `Total: ${copyCart.totalCartMoney()} $`;
     this.showSummaryTotalMoneyPromo();
     plp.showTotalCartMoney();
 
     // сделать метод buyNow
-    if (btnBuyNow) btnBuyNow.addEventListener('click', () => console.log('сделать метод buyNow'));
+    if (btnBuyNow && buyNowModal)
+      btnBuyNow.addEventListener('click', () => {
+        if (main) main.classList.toggle('popup-active');
+        buyNowModal.classList.toggle('active');
+      });
 
     if (promoInput)
       promoInput.addEventListener('change', () => {
@@ -125,7 +131,7 @@ class CartPage {
     const copyCart = Cart.getInstance();
     const headerIconCart = document.querySelector('#header-icon-cart');
 
-    if (headerIconCart) headerIconCart.addEventListener('click', () => window.location.hash = `#/cart`);
+    if (headerIconCart) headerIconCart.addEventListener('click', () => (window.location.hash = `#/cart`));
   }
   showCartIsEmpty(): void {
     const main = document.querySelector('.main');
