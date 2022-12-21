@@ -5,7 +5,6 @@ const imgVisa = require('~/assets/icons/5968151.png');
 const imgAmerican = require('~/assets/icons/349228.png');
 const imgMaster = require('~/assets/icons/mastercard-credit-debit-card-bank-transaction-32303.webp');
 const imgDefaultCard = require('~/assets/icons/4341764.png');
-Cart;
 class BuyNowModal {
   copyCart: Cart;
   constructor() {
@@ -110,7 +109,6 @@ class BuyNowModal {
           main?.classList.remove('popup-active');
           this.copyCart.clearCart();
           window.location.hash = '#/plp';
-          location.reload();
         }, 3000);
       });
     }

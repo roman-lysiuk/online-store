@@ -130,6 +130,7 @@ class Cart {
   }
   clearCart(): void {
     this.allProductCart = new Map();
+    this.plp.showTotalItemCart();
   }
 }
 export default Cart;
