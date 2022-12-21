@@ -67,7 +67,7 @@ class CartPage {
       if (productImg) {
         const thumbnail = document.createElement('img');
         thumbnail.src = item.item.thumbnail;
-        productImg.addEventListener('click', () => pdp.drawPdp(item.item));
+        productImg.addEventListener('click', () => (window.location.hash = `#/pdp/${item.item.id}`));
         productImg.append(thumbnail);
       }
 
@@ -125,7 +125,7 @@ class CartPage {
     const copyCart = Cart.getInstance();
     const headerIconCart = document.querySelector('#header-icon-cart');
 
-    if (headerIconCart) headerIconCart.addEventListener('click', () => window.location.hash = `#/cart`);
+    if (headerIconCart) headerIconCart.addEventListener('click', () => (window.location.hash = `#/cart`));
   }
   showCartIsEmpty(): void {
     const main = document.querySelector('.main');
