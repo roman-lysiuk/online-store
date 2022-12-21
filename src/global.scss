@@ -5,6 +5,8 @@
 @import "./components/product-detail-page/pdp.scss";
 
 @import "./components/cart/cart.scss";
+
+@import "./components/buy-now-modal/buy-now-modal.scss";
 .container {
    max-width: 1600px;
    padding: 0 10px;
@@ -78,6 +80,9 @@ body {
    flex: 1 0 auto;
    gap: 30px;
    position: relative;
+   &.popup-active {
+      opacity: 0.1;
+   }
 }
 
 .btn {

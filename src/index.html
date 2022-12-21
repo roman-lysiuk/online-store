@@ -241,6 +241,121 @@
 
         <div class="products"></div>
       </section>
+
+    </template>
+    <template id="TempModalBuyNow">
+      <div class="container buy-now-modal">
+
+        <form class="buy-now"
+              action="/"
+              novalidate>
+          <img class="buy-now__close"
+               src="https://img.icons8.com/ios/50/null/close-window--v1.png">
+          <div class="buy-now__personal-info personal-info">
+            <div class="personal-info__title">Personal details</div>
+            <div class="personal-info__name">
+              <input id="personal-info-name"
+                     type="text"
+                     name="full-name"
+                     placeholder="Enter full name"
+                     pattern="^\S{3,}\s\S{3,}$"
+                     title="First Name and Last Name"
+                     required>
+              <span class="error"></span>
+
+            </div>
+            <div class="personal-info__phone-number">
+              <input id="personal-info-phone-number"
+                     type="tel"
+                     name="phone-number"
+                     placeholder="Enter phone number"
+                     minlength="9"
+                     title="Starts with + and contains at least 9 characters"
+                     pattern="^\+\d{8,}$"
+                     required>
+              <span class="error"></span>
+
+            </div>
+            <div class="personal-info__delivery-address">
+              <input id="personal-info-delivery-address"
+                     type="text"
+                     name="delivery-address"
+                     pattern="^\S{5,}\s\S{5,}\s\S{5,}$"
+                     placeholder="Enter delivery address"
+                     required>
+              <span class="error"></span>
+
+            </div>
+            <div class="personal-info__email">
+              <input id="personal-info-email"
+                     type="email"
+                     name="email"
+                     placeholder="Enter email"
+                     required>
+
+              <span class="error"></span>
+
+            </div>
+
+
+          </div>
+          <div class="buy-now__credit-card-details credit-card-details">
+
+            <div class="credit-card-details__title">Credit card details</div>
+            <div class="credit-card-details__cart-number">
+
+              <img alt="img-card"
+                   src="./assets/icons/4341764.png">
+              <input type="text"
+                     name="cart-number"
+                     placeholder="Card Number"
+                     pattern="^\d{16,16}$"
+                     title="Contains 16 digits"
+                     id="cart-number"
+                     minlength="16"
+                     maxlength="16"
+                     required>
+              <span class="error"></span>
+
+            </div>
+            <div class="credit-card-details__wrapper">
+              <div class="credit-card-details__validity">
+                <label for="card-validity">Validity:</label>
+                <input type="text"
+                       name="card-validity"
+                       pattern="^(0[1-9]|1[0-2])\/\d{2,2}$"
+                       placeholder="02/22"
+                       id="card-validity"
+                       maxlength="4"
+                       required>
+                <span class="error"></span>
+
+              </div>
+              <div class="credit-card-details__cvv-code">
+                <label for="cvv-code">CVV:</label>
+                <input type="text"
+                       name="cvv-code"
+                       pattern="^\d{3}$"
+                       placeholder="* * * "
+                       id="cvv-code"
+                       maxlength="3"
+                       required>
+
+
+                <span class="error"></span>
+
+              </div>
+
+
+            </div>
+          </div>
+          <button type="submit"
+                  class="buy-now__submit btn">Confirm</button>
+
+
+        </form>
+      </div>
+      </div>
     </template>
 
 </html>

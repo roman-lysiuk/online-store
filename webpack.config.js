@@ -44,7 +44,7 @@ const baseConfig = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(jpe?g|png|jpg|gif|svg)$/i,
+        test: /\.(jpe?g|png|jpg|gif|svg|webp)$/i,
         type: 'asset/resource',
         generator: {
           filename: 'img/[hash][ext]',
@@ -53,7 +53,7 @@ const baseConfig = {
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js', '.png'],
     alias: {
       '~': path.resolve(__dirname, 'src'),
     },

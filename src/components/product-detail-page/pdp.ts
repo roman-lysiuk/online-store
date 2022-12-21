@@ -25,6 +25,7 @@ class Pdp {
       '.product-card__body-description'
     );
     const isProductInCart = copyCart.allProductCart.has(data.id);
+    const buyNowModal: HTMLElement | null = document.querySelector('.buy-now-modal');
 
     data.images.forEach((image, index) => {
       if (index === 0 && mainPhoto) {
@@ -57,8 +58,12 @@ class Pdp {
       main.innerHTML = '';
       main.append(productCardClone);
     }
-    /// сделать метод BuyNow
-    if (btnBuyNow) btnBuyNow.addEventListener('click', () => console.log('сделать метод  btnBuyNow'));
+
+    if (btnBuyNow && buyNowModal)
+      btnBuyNow.addEventListener('click', () => {
+        if (main) main.classList.toggle('popup-active');
+        buyNowModal.classList.toggle('active');
+      });
 
     if (btnAddCart) {
       if (isProductInCart) {
