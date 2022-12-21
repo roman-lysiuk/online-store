@@ -1,11 +1,9 @@
 import Cart from '../cart/cart';
 
-
-
 import type { IProduct } from '../../interfaces';
 
 class Plp {
-  drawPlp(data:IProduct[]):void {
+  drawPlp(data: IProduct[]): void {
     const tempProductListPage = <HTMLTemplateElement>document.querySelector('#template-plp');
     const cloneProductListPage = <HTMLElement>tempProductListPage.content.cloneNode(true);
     const main = document.querySelector('.main');
@@ -17,8 +15,6 @@ class Plp {
     this.drawSort();
     this.showAsideMobile();
     this.drawProducts(data);
-
-
   }
   drawAside(data: IProduct[]): void {
     const btnReset: HTMLElement | null = document.querySelector('.btn-reset ');
@@ -190,8 +186,7 @@ class Plp {
       if (productItem) productItem.setAttribute('data-id', item.id.toString());
 
       if (productImage) {
-        //сделать метод showDetails
-        productImage.addEventListener('click', () => window.location.hash = `#/pdp/${item.id}`);
+        productImage.addEventListener('click', () => (window.location.hash = `#/pdp/${item.id}`));
 
         productImage.style.backgroundImage = `url("${item.thumbnail}")`;
       }
@@ -200,7 +195,14 @@ class Plp {
       if (productRating) productRating.textContent = `Rating: ${item.rating.toFixed(1).toString()}`;
       if (productStock) productStock.textContent = `Stock: ${item.stock.toString()}`;
       if (btnAddCart) {
-        btnAddCart.textContent = 'Add to Cart';
+        copyCart.changeButtonAddToCart();
+
+        if (copyCart.inCart(item)) {
+          btnAddCart.classList.remove('product-not-cart');
+          btnAddCart.textContent = 'Drop from Cart';
+        } else {
+          btnAddCart.textContent = 'Add to Cart';
+        }
         btnAddCart.addEventListener('click', (e) => {
           copyCart.changeButtonAddToCart(e);
           copyCart.addToCart(item);
@@ -208,9 +210,7 @@ class Plp {
       }
       if (btnShowDetails) {
         btnShowDetails.textContent = 'Details';
-        //сделать метод showDetails
-        btnShowDetails.addEventListener('click', () => window.location.hash = `#/pdp/${item.id}`);
-
+        btnShowDetails.addEventListener('click', () => (window.location.hash = `#/pdp/${item.id}`));
       }
 
       fragment.append(productClone);
