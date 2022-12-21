@@ -11,6 +11,13 @@ class Plp {
       main.innerHTML = '';
       main.append(cloneProductListPage);
     }
+    const sortBarViewOptions = document.querySelector('.sort-bar__view-options');
+    if (sortBarViewOptions) {
+      sortBarViewOptions.addEventListener('click', (e) => {
+        const currentElement: HTMLElement | null = <HTMLElement>e.target;
+        this.changeCardView(currentElement.id);
+      });
+    }
     this.drawAside(data);
     this.drawSort();
     this.showAsideMobile();
@@ -249,6 +256,16 @@ class Plp {
       } else {
         totalCart.textContent = copyCart.totalCartMoney().toString();
       }
+    }
+  }
+  changeCardView(column: string) {
+    const products: NodeListOf<Element> = document.querySelectorAll('.product');
+
+    if (products) {
+      products.forEach((item) => {
+        item.classList.remove('four-columns', 'three-columns');
+        item.classList.add(`${column}`);
+      });
     }
   }
 }
