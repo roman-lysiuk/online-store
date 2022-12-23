@@ -1,7 +1,5 @@
 import Cart from '../cart/cart';
 
-
-
 import type { IProduct } from '../../interfaces';
 
 class Plp {

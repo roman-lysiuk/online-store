@@ -19,7 +19,12 @@ class Router {
    }
  
    handleRoute(location: string) {
-      const adress: Array<string> = location.split('/');
+      const urlString: Array<string> = location.split('?'); 
+      const adress: Array<string> = urlString[0].split('/');
+      if (urlString[1]) {
+         const query: Array<string> = urlString[1].split('&');
+         console.log(query);
+      };
       switch (adress[1]) {
          case "pdp":
             this.showPdp(adress, location);

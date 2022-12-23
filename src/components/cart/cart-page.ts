@@ -67,7 +67,7 @@ class CartPage {
       if (productImg) {
         const thumbnail = document.createElement('img');
         thumbnail.src = item.item.thumbnail;
-        productImg.addEventListener('click', () => pdp.drawPdp(item.item));
+        productImg.addEventListener('click', () => window.location.hash = `#/pdp/${item.item.id}`);
         productImg.append(thumbnail);
       }
 
