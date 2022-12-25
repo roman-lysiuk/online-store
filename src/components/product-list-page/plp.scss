@@ -17,6 +17,19 @@
     display: flex;
     flex-direction: column;
     position: relative;
+
+    &.four-columns {
+        width: calc(25% - 20px);
+        @media (max-width: 650px) {
+            width: calc(100% - 20px);
+        }
+    }
+    &.three-columns {
+        width: calc(33% - 20px);
+        @media (max-width: 650px) {
+            width: calc(100% - 20px);
+        }
+    }
     &__image {
         cursor: pointer;
         border-radius: 10px;

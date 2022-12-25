@@ -64,19 +64,27 @@ class Cart {
       this.plp.showTotalCartMoney();
     }
   }
+
   changeButtonAddToCart(e?: Event) {
     const btnAddToCart: HTMLButtonElement | null = e?.target
       ? <HTMLButtonElement>e?.target
       : document.querySelector('.btn-add-cart');
 
     if (btnAddToCart) {
-      if (btnAddToCart.classList.contains('.product-not-cart')) {
+      btnAddToCart.classList.toggle('product-not-cart');
+      if (btnAddToCart.classList.contains('product-not-cart')) {
         btnAddToCart.textContent = 'Add to Cart';
       } else {
         btnAddToCart.textContent = 'Drop from Cart';
       }
-      btnAddToCart.classList.toggle('.product-not-cart');
     }
+  }
+  inCart(item: IProduct): boolean {
+    const result = [];
+    this.allProductCart.forEach((el) => {
+      if (el.item.id === item.id) result.push(item);
+    });
+    return result.length > 0 ? true : false;
   }
   totalCartItem(): number {
     let totalItem = 0;
@@ -119,6 +127,10 @@ class Cart {
   }
   deletePromoCode(promo: string) {
     delete this.allUsedPromoCode[promo];
+  }
+  clearCart(): void {
+    this.allProductCart = new Map();
+    this.plp.showTotalItemCart();
   }
 }
 export default Cart;

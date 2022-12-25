@@ -1,0 +1,167 @@
+.buy-now-modal {
+    .order-completed {
+        visibility: hidden;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 11px 3px rgba(0, 0, 0, 0.2);
+        &.active {
+            visibility: visible;
+        }
+    }
+}
+
+.buy-now {
+    position: absolute;
+    margin: 0 auto;
+    width: 30%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 0px 11px 3px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    background-color: white;
+    visibility: hidden;
+
+    &.active {
+        visibility: visible;
+
+        body {
+            background-color: black;
+        }
+    }
+
+    &__close {
+        cursor: pointer;
+        display: block;
+        padding: 5px;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    &__personal-info {
+    }
+    &__submit {
+        display: block;
+        margin: 0 auto;
+    }
+    input {
+        border: none;
+        &:invalid {
+            outline: 2px solid red;
+        }
+        &:valid {
+            outline: 2px solid green;
+        }
+    }
+    @media (max-width: 1300px) {
+        width: 50%;
+    }
+    @media (max-width: 900px) {
+        width: 70%;
+    }
+}
+
+.personal-info {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    input {
+        border-radius: 10px;
+        box-shadow: 0px 0px 11px 3px rgba(0, 0, 0, 0.2);
+        border: none;
+        padding: 5px;
+        margin: 10px 30px;
+        &::placeholder {
+            text-align: center;
+            font-size: 1rem;
+        }
+    }
+    &__title {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+    &__name,
+    &__phone-number,
+    &__delivery-address,
+    &__email {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        input {
+            flex: 1 1 auto;
+        }
+    }
+}
+
+.credit-card-details {
+    width: 60%;
+    display: flex;
+    margin: 20px auto;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 11px 3px rgba(0, 0, 0, 0.2);
+    @media (max-width: 1500px) {
+        width: 80%;
+    }
+
+    &__title {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+    &__wrapper {
+        display: flex;
+        gap: 10px;
+    }
+    &__cart-number {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        img {
+            width: 50px;
+        }
+    }
+    &__cvv-code {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5px;
+        align-items: center;
+        input {
+            width: 50%;
+        }
+    }
+    &__validity {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5px;
+        align-items: center;
+        input {
+            width: 50%;
+        }
+    }
+    input {
+        &::placeholder {
+            text-align: center;
+            font-size: 1rem;
+        }
+    }
+}
+
+.order-completed {
+    font-size: 2rem;
+}

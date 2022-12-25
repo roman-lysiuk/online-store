@@ -1,11 +1,12 @@
 import Cart from '../cart/cart';
 
+
 import products from '../../data/products.json';
 
 import type { IProduct } from '../../interfaces';
 
 class Plp {
-  drawPlp(data:IProduct[]):void {
+  drawPlp(data: IProduct[]): void {
     const tempProductListPage = <HTMLTemplateElement>document.querySelector('#template-plp');
     const cloneProductListPage = <HTMLElement>tempProductListPage.content.cloneNode(true);
     const main = document.querySelector('.main');
@@ -13,12 +14,17 @@ class Plp {
       main.innerHTML = '';
       main.append(cloneProductListPage);
     }
+    const sortBarViewOptions = document.querySelector('.sort-bar__view-options');
+    if (sortBarViewOptions) {
+      sortBarViewOptions.addEventListener('click', (e) => {
+        const currentElement: HTMLElement | null = <HTMLElement>e.target;
+        this.changeCardView(currentElement.id);
+      });
+    }
     this.drawAside(products.products);
     this.drawSort();
     this.showAsideMobile();
     this.drawProducts(data);
-
-
   }
   drawAside(data: IProduct[]): void {
     const btnReset: HTMLElement | null = document.querySelector('.btn-reset ');
@@ -190,8 +196,7 @@ class Plp {
       if (productItem) productItem.setAttribute('data-id', item.id.toString());
 
       if (productImage) {
-        //сделать метод showDetails
-        productImage.addEventListener('click', () => window.location.hash = `#/pdp/${item.id}`);
+        productImage.addEventListener('click', () => (window.location.hash = `#/pdp/${item.id}`));
 
         productImage.style.backgroundImage = `url("${item.thumbnail}")`;
       }
@@ -200,7 +205,14 @@ class Plp {
       if (productRating) productRating.textContent = `Rating: ${item.rating.toFixed(1).toString()}`;
       if (productStock) productStock.textContent = `Stock: ${item.stock.toString()}`;
       if (btnAddCart) {
-        btnAddCart.textContent = 'Add to Cart';
+        copyCart.changeButtonAddToCart();
+
+        if (copyCart.inCart(item)) {
+          btnAddCart.classList.remove('product-not-cart');
+          btnAddCart.textContent = 'Drop from Cart';
+        } else {
+          btnAddCart.textContent = 'Add to Cart';
+        }
         btnAddCart.addEventListener('click', (e) => {
           copyCart.changeButtonAddToCart(e);
           copyCart.addToCart(item);
@@ -208,9 +220,7 @@ class Plp {
       }
       if (btnShowDetails) {
         btnShowDetails.textContent = 'Details';
-        //сделать метод showDetails
-        btnShowDetails.addEventListener('click', () => window.location.hash = `#/pdp/${item.id}`);
-
+        btnShowDetails.addEventListener('click', () => (window.location.hash = `#/pdp/${item.id}`));
       }
 
       fragment.append(productClone);
@@ -249,6 +259,16 @@ class Plp {
       } else {
         totalCart.textContent = copyCart.totalCartMoney().toString();
       }
+    }
+  }
+  changeCardView(column: string) {
+    const products: NodeListOf<Element> = document.querySelectorAll('.product');
+
+    if (products) {
+      products.forEach((item) => {
+        item.classList.remove('four-columns', 'three-columns');
+        item.classList.add(`${column}`);
+      });
     }
   }
 }
