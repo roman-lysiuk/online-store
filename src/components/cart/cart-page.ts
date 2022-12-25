@@ -23,14 +23,13 @@ class CartPage {
     const btnBuyNow: HTMLElement | null = cartPageClone.querySelector('.btn-buy-now');
     const promoInput: HTMLInputElement | null = cartPageClone.querySelector('#promo');
 
-    const buyNowModal: HTMLElement | null = document.querySelector('.buy-now-modal');
+    const buyNowModal: HTMLElement | null = document.querySelector('.buy-now');
 
     if (summaryProducts) summaryProducts.textContent = `Products:  ${copyCart.totalCartItem()}`;
     if (summaryTotalMoney) summaryTotalMoney.textContent = `Total: ${copyCart.totalCartMoney()} $`;
     this.showSummaryTotalMoneyPromo();
     plp.showTotalCartMoney();
 
-    // сделать метод buyNow
     if (btnBuyNow && buyNowModal)
       btnBuyNow.addEventListener('click', () => {
         if (main) main.classList.toggle('popup-active');
