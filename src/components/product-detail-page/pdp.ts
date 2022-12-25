@@ -25,7 +25,7 @@ class Pdp {
       '.product-card__body-description'
     );
     const isProductInCart = copyCart.allProductCart.has(data.id);
-    const buyNowModal: HTMLElement | null = document.querySelector('.buy-now-modal');
+    const buyNowModal: HTMLElement | null = document.querySelector('.buy-now');
 
     data.images.forEach((image, index) => {
       if (index === 0 && mainPhoto) {
