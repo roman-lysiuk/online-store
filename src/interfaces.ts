@@ -6,6 +6,7 @@ export interface IProduct {
   brand: string;
   description: string;
   price: number;
+  discountPercentage: number;
   stock: number;
   thumbnail: string;
   images: Array<string>;
