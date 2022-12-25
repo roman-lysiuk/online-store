@@ -1,5 +1,6 @@
 import type { IProduct } from '../../interfaces';
 import Error404 from '../../components/error/error' 
+import Plp from '../../components/product-list-page/plp';
 
 
 // cat = category
@@ -18,8 +19,10 @@ import Error404 from '../../components/error/error'
 
 class QueryAnalizer {
   error404: Error404;
+  plp: Plp;
   constructor() {
     this.error404 = new Error404();
+    this.plp = new Plp();
   }
   handleQuery(products: IProduct[], query: string[]): IProduct[] {
     let handledProducts: IProduct[] = [];
@@ -145,10 +148,10 @@ class QueryAnalizer {
         }
         if (view) {
           const items = document.querySelectorAll('.product');
-          if (Number(view) === 2) {
-            items.forEach(item => item.setAttribute("width", "calc(50%-10px)"));
+          if (Number(view) === 3) {
+            this.plp.changeCardView('three-columns');
           } else {
-              items.forEach(item => item.setAttribute("width", "calc(33%-20px)"))
+            this.plp.changeCardView('four-columns');
           }
         }
       }

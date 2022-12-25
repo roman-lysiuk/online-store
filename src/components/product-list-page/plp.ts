@@ -252,4 +252,5 @@ class Plp {
     }
   }
 }
+
 export default Plp;
