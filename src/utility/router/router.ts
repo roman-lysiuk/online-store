@@ -3,6 +3,7 @@ import Pdp from '../../components/product-detail-page/pdp';
 import Plp from '../../components/product-list-page/plp';
 import CartPage from '../../components/cart/cart-page';
 import Cart from '../../components/cart/cart';
+import QueryAnalizer from '../queryAnalizer/queryAnalizer';
 
 import products from '../../data/products.json';
 
@@ -11,18 +12,21 @@ class Router {
    pdp: Pdp;
    plp: Plp;
    cartPage: CartPage;
+   queryAnalizer: QueryAnalizer;
    constructor() {
       this.error404 = new Error404();
       this.pdp = new Pdp();
       this.plp = new Plp();
       this.cartPage = new CartPage();
+      this.queryAnalizer = new QueryAnalizer();
    }
  
    handleRoute(location: string) {
       const urlString: Array<string> = location.split('?'); 
       const adress: Array<string> = urlString[0].split('/');
+      let query: Array<string> = [];
       if (urlString[1]) {
-         const query: Array<string> = urlString[1].split('&');
+         query = urlString[1].split('&');
          console.log(query);
       };
       switch (adress[1]) {
@@ -30,7 +34,7 @@ class Router {
             this.showPdp(adress, location);
             break;
          case "plp":
-            this.showPlp(location);
+            this.showPlp(location, query);
             break;
          case "cart":
             this.showCart(location);
@@ -49,9 +53,14 @@ class Router {
       }
    }
 
-   showPlp (location: string) {
+   showPlp (location: string, query: string[] | undefined) {
       localStorage.setItem('URLSave', location);
-      this.plp.drawPlp(products.products);
+      if (query?.length) {
+        const data = this.queryAnalizer.handleQuery(products.products, query);
+        this.plp.drawPlp(data);
+      } else {
+        this.plp.drawPlp(products.products);
+      }
    }
 
    showCart (location: string) {
