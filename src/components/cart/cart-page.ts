@@ -23,14 +23,13 @@ class CartPage {
     const btnBuyNow: HTMLElement | null = cartPageClone.querySelector('.btn-buy-now');
     const promoInput: HTMLInputElement | null = cartPageClone.querySelector('#promo');
 
-    const buyNowModal: HTMLElement | null = document.querySelector('.buy-now-modal');
+    const buyNowModal: HTMLElement | null = document.querySelector('.buy-now');
 
     if (summaryProducts) summaryProducts.textContent = `Products:  ${copyCart.totalCartItem()}`;
     if (summaryTotalMoney) summaryTotalMoney.textContent = `Total: ${copyCart.totalCartMoney()} $`;
     this.showSummaryTotalMoneyPromo();
     plp.showTotalCartMoney();
 
-    // сделать метод buyNow
     if (btnBuyNow && buyNowModal)
       btnBuyNow.addEventListener('click', () => {
         if (main) main.classList.toggle('popup-active');
@@ -93,6 +92,7 @@ class CartPage {
         addNumberProduct.addEventListener('click', () => {
           copyCart.addOneQuantity(item.item);
           if (currentNumberProduct) currentNumberProduct.textContent = item.quantity.toString();
+          if (productTotalMoney) productTotalMoney.textContent = `Total Price: ${item.quantity * item.item.price} $`;
           this.drawSummaryBlock(item);
           this.showSummaryTotalMoneyPromo();
         });
@@ -105,9 +105,11 @@ class CartPage {
           if (item.quantity === 1) {
             copyCart.removeOneQuantity(item.item);
             this.drawCartPage(copyCart.allProductCart);
+            this.showSummaryTotalMoneyPromo();
           } else {
             copyCart.removeOneQuantity(item.item);
             if (currentNumberProduct) currentNumberProduct.textContent = item.quantity.toString();
+            if (productTotalMoney) productTotalMoney.textContent = `Total Price: ${item.quantity * item.item.price} $`;
             this.drawSummaryBlock(item);
             this.showSummaryTotalMoneyPromo();
           }
@@ -200,7 +202,6 @@ class CartPage {
   drawSummaryBlock(item: { item: IProduct; quantity: number }): void {
     const copyCart = Cart.getInstance();
     const productStock: HTMLElement | null = document.querySelector('.product-cart__stock');
-    const productTotalMoney: HTMLElement | null = document.querySelector('.product-cart__total-money');
 
     const summaryProducts: HTMLElement | null = document.querySelector('.summary__products');
     const summaryTotalMoney: HTMLElement | null = document.querySelector('.summary__total-money');
@@ -208,7 +209,6 @@ class CartPage {
     if (summaryProducts) summaryProducts.textContent = `Products:  ${copyCart.totalCartItem()}`;
     if (summaryTotalMoney) summaryTotalMoney.textContent = `Total: ${copyCart.totalCartMoney()} $`;
     if (productStock) productStock.textContent = `In stock: ${item.item.stock - item.quantity}`;
-    if (productTotalMoney) productTotalMoney.textContent = `Total Price: ${item.quantity * item.item.price} $`;
   }
 }
 

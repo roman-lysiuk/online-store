@@ -5,7 +5,6 @@ const imgVisa = require('~/assets/icons/5968151.png');
 const imgAmerican = require('~/assets/icons/349228.png');
 const imgMaster = require('~/assets/icons/mastercard-credit-debit-card-bank-transaction-32303.webp');
 const imgDefaultCard = require('~/assets/icons/4341764.png');
-Cart;
 class BuyNowModal {
   copyCart: Cart;
   constructor() {
@@ -15,7 +14,7 @@ class BuyNowModal {
     const main: HTMLElement | null = document.querySelector('.main');
     const tempModalBuyNow = <HTMLTemplateElement>document.querySelector('#TempModalBuyNow');
     const tempModalBuyNowCopy = <HTMLElement>tempModalBuyNow.content.cloneNode(true);
-    const buyNowModal: HTMLElement | null = tempModalBuyNowCopy.querySelector('.buy-now-modal');
+    // const buyNowModal: HTMLElement | null = tempModalBuyNowCopy.querySelector('.buy-now-modal');
     const body = document.querySelector('body');
     const closeButton: HTMLElement | null = tempModalBuyNowCopy.querySelector('.buy-now__close');
     const form = tempModalBuyNowCopy.querySelector('.buy-now');
@@ -32,7 +31,7 @@ class BuyNowModal {
     if (closeButton)
       closeButton.addEventListener('click', () => {
         if (main) main.classList.remove('popup-active');
-        if (buyNowModal) buyNowModal.classList.remove('active');
+        if (form) form.classList.remove('active');
       });
     if (fullName) fullName.addEventListener('input', () => this.isValid(fullName));
     if (phoneNumber) phoneNumber.addEventListener('input', () => this.isValid(phoneNumber));
@@ -104,13 +103,15 @@ class BuyNowModal {
           return;
         }
         e.preventDefault();
-        form.innerHTML = `<div class="order-completed">Order completed</div>`;
+
+        form?.classList.remove('active');
+        this.showToggleOrderComplete();
+
         setTimeout(() => {
-          buyNowModal?.classList.remove('active');
+          this.showToggleOrderComplete();
           main?.classList.remove('popup-active');
           this.copyCart.clearCart();
           window.location.hash = '#/plp';
-          location.reload();
         }, 3000);
       });
     }
@@ -166,6 +167,10 @@ class BuyNowModal {
     } else {
       if (inputError) inputError.textContent = '';
     }
+  }
+  showToggleOrderComplete() {
+    const orderCompleted = document.querySelector('.order-completed');
+    if (orderCompleted) orderCompleted.classList.toggle('active');
   }
 }
 export default BuyNowModal;
