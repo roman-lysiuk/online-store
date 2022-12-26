@@ -155,8 +155,6 @@ class CartPage {
   }
   showListPagination(data: Map<number, { item: IProduct; quantity: number }>, goToPage?: number) {
     if (data.size === 0) {
-      console.log('Dcdc');
-
       return this.showCartIsEmpty();
     }
     const itemPerPageInput: HTMLInputElement | null = <HTMLInputElement>document.getElementById('items-per-page');
@@ -268,9 +266,6 @@ class CartPage {
             this.showSummaryTotalMoneyPromo();
           } else {
             this.copyCart.removeOneQuantity(item.item);
-            console.log(e.target);
-            console.log(`In stock: ${item.item.stock - item.quantity}`);
-
             if (currentNumberProduct) currentNumberProduct.textContent = item.quantity.toString();
             if (productStock) productStock.textContent = `In stock: ${item.item.stock - item.quantity}`;
             if (productTotalMoney) productTotalMoney.textContent = `Total Price: ${item.quantity * item.item.price} $`;
