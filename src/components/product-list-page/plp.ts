@@ -1,5 +1,8 @@
 import Cart from '../cart/cart';
 
+
+import products from '../../data/products.json';
+
 import type { IProduct } from '../../interfaces';
 
 class Plp {
@@ -18,7 +21,7 @@ class Plp {
         this.changeCardView(currentElement.id);
       });
     }
-    this.drawAside(data);
+    this.drawAside(products.products);
     this.drawSort();
     this.showAsideMobile();
     this.drawProducts(data);
@@ -269,4 +272,5 @@ class Plp {
     }
   }
 }
+
 export default Plp;
