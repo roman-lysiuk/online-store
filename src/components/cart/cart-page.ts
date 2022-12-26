@@ -147,14 +147,11 @@ class CartPage {
     }
   }
   drawSummaryBlock(item: { item: IProduct; quantity: number }): void {
-    const productStock: HTMLElement | null = document.querySelector('.product-cart__stock');
-
     const summaryProducts: HTMLElement | null = document.querySelector('.summary__products');
     const summaryTotalMoney: HTMLElement | null = document.querySelector('.summary__total-money');
 
     if (summaryProducts) summaryProducts.textContent = `Products:  ${this.copyCart.totalCartItem()}`;
     if (summaryTotalMoney) summaryTotalMoney.textContent = `Total: ${this.copyCart.totalCartMoney()} $`;
-    if (productStock) productStock.textContent = `In stock: ${item.item.stock - item.quantity}`;
   }
   showListPagination(data: Map<number, { item: IProduct; quantity: number }>, goToPage?: number) {
     if (data.size === 0) {
@@ -254,6 +251,7 @@ class CartPage {
         addNumberProduct.addEventListener('click', () => {
           this.copyCart.addOneQuantity(item.item);
           if (currentNumberProduct) currentNumberProduct.textContent = item.quantity.toString();
+          if (productStock) productStock.textContent = `In stock: ${item.item.stock - item.quantity}`;
           if (productTotalMoney) productTotalMoney.textContent = `Total Price: ${item.quantity * item.item.price} $`;
           this.drawSummaryBlock(item);
           this.showSummaryTotalMoneyPromo();
@@ -261,7 +259,7 @@ class CartPage {
       }
 
       if (removeNumberProduct) {
-        removeNumberProduct.addEventListener('click', () => {
+        removeNumberProduct.addEventListener('click', (e) => {
           if (data.size === 0) this.showCartIsEmpty();
           if (item.quantity === 1) {
             this.copyCart.removeOneQuantity(item.item);
@@ -270,7 +268,11 @@ class CartPage {
             this.showSummaryTotalMoneyPromo();
           } else {
             this.copyCart.removeOneQuantity(item.item);
+            console.log(e.target);
+            console.log(`In stock: ${item.item.stock - item.quantity}`);
+
             if (currentNumberProduct) currentNumberProduct.textContent = item.quantity.toString();
+            if (productStock) productStock.textContent = `In stock: ${item.item.stock - item.quantity}`;
             if (productTotalMoney) productTotalMoney.textContent = `Total Price: ${item.quantity * item.item.price} $`;
             this.drawSummaryBlock(item);
             this.showSummaryTotalMoneyPromo();
