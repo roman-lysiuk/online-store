@@ -45,8 +45,22 @@ class Pdp {
       if (galleryAllPhoto) galleryAllPhoto.appendChild(newDiv);
     });
 
-    if (breadcrumbs)
-      breadcrumbs.innerHTML = `<div class="breadcrumbs"><a href="">Online store</a><span> - ${data.category} - </span><span>${data.brand} - </span><span>${data.title}</span></div>`;
+    if (breadcrumbs) {
+      breadcrumbs.innerHTML = `<div class="breadcrumbs"> <span class="breadcrumbs__main-page"> Online store - </span><span class="breadcrumbs__filter-category">${data.category} - </span><span class="breadcrumbs__filter-brand">${data.brand} - </span><span>${data.title}</span></div>`;
+      const breadcrumbsMainPage: HTMLElement | null = breadcrumbs.querySelector('.breadcrumbs__main-page');
+      const breadcrumbsFilterCategory: HTMLElement | null = breadcrumbs.querySelector('.breadcrumbs__filter-category');
+      const breadcrumbsFilterBrand: HTMLElement | null = breadcrumbs.querySelector('.breadcrumbs__filter-brand');
+      if (breadcrumbsMainPage) breadcrumbsMainPage.addEventListener('click', () => (window.location.hash = '#/plp'));
+      if (breadcrumbsFilterCategory) {
+        breadcrumbsFilterCategory.addEventListener(
+          'click',
+          () => (window.location.hash = `#/plp?cat=${data.category}`)
+        );
+      }
+      if (breadcrumbsFilterBrand) {
+        breadcrumbsFilterBrand.addEventListener('click', () => (window.location.hash = `#/plp?br=${data.brand}`));
+      }
+    }
 
     if (productCardTitle) productCardTitle.textContent = data.title;
     if (productCardPrice) productCardPrice.textContent = `Price: ${data.price.toString()}$`;

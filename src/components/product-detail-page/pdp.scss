@@ -8,8 +8,17 @@
 }
 .breadcrumbs {
     font-size: 1.2rem;
-    font-weight: 600;
     margin-bottom: 20px;
+    &__main-page,
+    &__filter-category,
+    &__filter-brand {
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.3s;
+        &:hover {
+            color: rgb(52, 190, 130);
+        }
+    }
 }
 .two-column-wraper {
     display: flex;
