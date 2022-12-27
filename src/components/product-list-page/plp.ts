@@ -28,8 +28,7 @@ class Plp {
     this.drawProducts(data);
     this.drawSearch(choosedFilters);
 
-
-     if (choosedFilters?.view === '4') {
+    if (choosedFilters?.view === '4') {
       this.changeCardView('four-columns');
     } 
 
@@ -41,7 +40,7 @@ class Plp {
     this.drawFilterCategory(data, choosedFilters);
     this.drawFilterBrand(data, choosedFilters);
     this.drawFilterPrice(data);
-    this.drawFilterStock(data);
+    this.drawFilterStock(data, choosedFilters);
 
     if (btnReset) btnReset.addEventListener('click', () => (window.location.hash = `#/plp`));
     if (btnCopy) btnCopy.addEventListener('click', () => {
@@ -69,32 +68,37 @@ class Plp {
       asideRangeStockUpper.max = allStock.length.toString();
       asideRangeStockLower.max = allStock.length.toString();
       asideRangeStockLower.value = '0';
-      if (choosedFilters?.minStock) {
-        asideRangeStockLower.value = choosedFilters.minStock;
-      }
       asideRangeStockUpper.value = allStock.length.toString();
+
+/*       if (choosedFilters?.minStock) {
+        asideRangeStockLower.value = ???
+      } 
+      if (choosedFilters?.maxStock) {
+        asideRangeStockLower.value = ???
+      } */
+
       asideRangeStockLower.addEventListener('input', () => {
         if (parseInt(asideRangeStockUpper.value) - parseInt(asideRangeStockLower.value) <= minGapRange) {
           asideRangeStockLower.value = `${parseInt(asideRangeStockUpper.value) - minGapRange}`;
         } else {
           asideMinStock.textContent = `${allStockSort[+asideRangeStockLower.value].toString()} pcs`;
-          console.log(asideRangeStockLower.value);
-        }
+          asideMinStock.dataset.value = allStockSort[+asideRangeStockLower.value].toString();
+         }
       });
-
-      asideRangeStockLower.addEventListener('change', this.handleUrl);
 
       asideRangeStockUpper.addEventListener('input', () => {
         if (parseInt(asideRangeStockUpper.value) - parseInt(asideRangeStockLower.value) <= minGapRange) {
           asideRangeStockUpper.value = `${parseInt(asideRangeStockLower.value) + minGapRange}`;
         } else {
           asideMaxStock.textContent = `${allStockSort[+asideRangeStockUpper.value].toString()} pcs`;
+          asideMaxStock.dataset.value = allStockSort[+asideRangeStockUpper.value].toString();
         }
-        this.handleUrl;
       });
     }
+    asideRangeStockLower?.addEventListener('change', this.handleUrl);
+    asideRangeStockUpper?.addEventListener('change', this.handleUrl);
   }
-  drawFilterPrice(data: IProduct[]): void {
+  drawFilterPrice(data: IProduct[], choosedFilters?: IFilter): void {
     const asideMaxPrice: HTMLElement | null = document.querySelector('.aside__max-price');
     const asideMinPrice: HTMLElement | null = document.querySelector('.aside__min-price');
     const asideRangePriceLower: HTMLInputElement | null = document.querySelector('.aside__range-price_lower');
@@ -113,11 +117,20 @@ class Plp {
       asideRangePriceLower.value = '0';
       asideRangePriceUpper.value = allPrice.length.toString();
       const minGap = 1;
+
+/*       if (choosedFilters?.minStock) {
+        asideRangePriceLower.value = ???
+      } 
+      if (choosedFilters?.maxStock) {
+        asideRangePriceUpper.value = ???
+      } */
+
       asideRangePriceLower.addEventListener('input', () => {
         if (parseInt(asideRangePriceUpper.value) - parseInt(asideRangePriceLower.value) <= minGap) {
           asideRangePriceLower.value = `${parseInt(asideRangePriceUpper.value) - minGap}`;
         } else {
           asideMinPrice.textContent = `${allPriceSort[+asideRangePriceLower.value].toString()} $`;
+          asideMinPrice.dataset.value = allPriceSort[+asideRangePriceLower.value].toString();
         }
       });
 
@@ -126,9 +139,12 @@ class Plp {
           asideRangePriceUpper.value = `${parseInt(asideRangePriceLower.value) + minGap}`;
         } else {
           asideMaxPrice.textContent = `${allPriceSort[+asideRangePriceUpper.value].toString()} $`;
+          asideMaxPrice.dataset.value = allPriceSort[+asideRangePriceUpper.value].toString();
         }
       });
     }
+    asideRangePriceLower?.addEventListener('change', this.handleUrl);
+    asideRangePriceUpper?.addEventListener('change', this.handleUrl);
   }
   drawFilterCategory(data: IProduct[], choosedFilters?: IFilter): void {
     const fragmentCategory: DocumentFragment = document.createDocumentFragment();
@@ -335,7 +351,28 @@ class Plp {
     } else {
       query += '&view=3&';
     } 
-  
+
+    const asideMaxStock: HTMLElement | null = document.querySelector('.aside__max-stock');
+    if (asideMaxStock?.dataset.value) {
+      query += `stmax=${asideMaxStock.dataset.value}&`
+    }
+
+    const asideMinStock: HTMLElement | null = document.querySelector('.aside__min-stock');
+    if (asideMinStock?.dataset.value) {
+      query += `stmin=${asideMinStock.dataset.value}&`
+    }
+
+
+    const asideMinPrice: HTMLElement | null = document.querySelector('.aside__min-price');
+    if (asideMinPrice?.dataset.value) {
+      query += `prmin=${asideMinPrice.dataset.value}&`
+    }
+
+
+    const asideMaxPrice: HTMLElement | null = document.querySelector('.aside__max-price');
+    if (asideMaxPrice?.dataset.value) {
+      query += `prmax=${asideMaxPrice.dataset.value}&`
+    }
 
     const searchInput: HTMLInputElement | null = document.querySelector('#search');
     if (searchInput?.value) {
@@ -346,18 +383,6 @@ class Plp {
     if (sortInput?.value) {
       query +=  `so=${sortInput.value}&`;
     }
-
-/*     const asideRangeStockLower: HTMLInputElement | null = document.querySelector('.aside__range-stock_lower');
-    if (asideRangeStockLower) {
-      query +=  `stmin=${asideRangeStockLower.value}&`
-    }
-
-    console.log(asideRangeStockLower?.value);
-
-    const asideRangeStockUpper: HTMLInputElement | null = document.querySelector('.aside__range-stock_upper');
-    if (asideRangeStockUpper) {
-      query +=  `stmax=${asideRangeStockUpper.value}&`
-    } */
 
     if (query[query.length - 1] === '&') query = query.slice(0, -1);
     window.location.hash = `#/plp${query.toLowerCase()}`
