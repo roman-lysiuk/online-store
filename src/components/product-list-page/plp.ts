@@ -20,12 +20,19 @@ class Plp {
         this.changeCardView(currentElement.id);
       });
     }
+
     this.drawAside(products.products, choosedFilters);
     this.drawSort(choosedFilters);
     this.showTotalItemCart();
     this.showAsideMobile();
     this.drawProducts(data);
     this.drawSearch(choosedFilters);
+
+
+     if (choosedFilters?.view === '4') {
+      this.changeCardView('four-columns');
+    } 
+
   }
   drawAside(data: IProduct[], choosedFilters?: IFilter): void {
     const btnReset: HTMLElement | null = document.querySelector('.btn-reset ');
@@ -296,17 +303,15 @@ class Plp {
   }
   changeCardView(column: string) {
     const products: NodeListOf<Element> = document.querySelectorAll('.product');
-    console.log(products);
-    console.log(column)
-
     if (products) {
       products.forEach((item) => {
         item.classList.remove('four-columns', 'three-columns');
         item.classList.add(column);
       });
     }
+    this.handleUrl();
   }
-  handleUrl() {
+  handleUrl():void {
     let query: string = '?';
 
     const categoriesInput = document.querySelectorAll('.input-category') as NodeListOf<HTMLInputElement>;
@@ -322,6 +327,15 @@ class Plp {
         query +=  `br=${el.id}&`
       }
     });
+
+       
+     const product:Element | null = document.querySelector('.product');
+    if (product?.classList.contains('four-columns')) {
+      query += '&view=4&';
+    } else {
+      query += '&view=3&';
+    } 
+  
 
     const searchInput: HTMLInputElement | null = document.querySelector('#search');
     if (searchInput?.value) {
