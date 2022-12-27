@@ -1,6 +1,5 @@
 import Cart from '../cart/cart';
 
-
 import products from '../../data/products.json';
 
 import type { IProduct } from '../../interfaces';
@@ -21,6 +20,7 @@ class Plp {
         this.changeCardView(currentElement.id);
       });
     }
+    this.showTotalItemCart();
     this.drawAside(products.products);
     this.drawSort();
     this.showAsideMobile();

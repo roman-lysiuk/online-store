@@ -3,11 +3,13 @@ import Cart from '../cart/cart';
 import type { IProduct } from '../../interfaces';
 
 class Pdp {
+  copyCart: Cart;
+  constructor() {
+    this.copyCart = Cart.getInstance();
+  }
   drawPdp(data: IProduct) {
     const tempProductDetailPage = <HTMLTemplateElement>document.querySelector('#template-product-detail-page');
     const main: HTMLElement | null = document.querySelector('.main');
-    const copyCart = Cart.getInstance();
-
     const productCardClone = <HTMLElement>tempProductDetailPage.content.cloneNode(true);
 
     const breadcrumbs: HTMLElement | null = productCardClone.querySelector('.breadcrumbs');
@@ -24,7 +26,7 @@ class Pdp {
     const productCardDescription: HTMLElement | null = productCardClone.querySelector(
       '.product-card__body-description'
     );
-    const isProductInCart = copyCart.allProductCart.has(data.id);
+    const isProductInCart = this.copyCart.allProductCart.has(data.id);
     const buyNowModal: HTMLElement | null = document.querySelector('.buy-now');
 
     data.images.forEach((image, index) => {
@@ -43,8 +45,22 @@ class Pdp {
       if (galleryAllPhoto) galleryAllPhoto.appendChild(newDiv);
     });
 
-    if (breadcrumbs)
-      breadcrumbs.innerHTML = `<div class="breadcrumbs"><a href="">Online store</a><span> - ${data.category} - </span><span>${data.brand} - </span><span>${data.title}</span></div>`;
+    if (breadcrumbs) {
+      breadcrumbs.innerHTML = `<div class="breadcrumbs"> <span class="breadcrumbs__main-page"> Online store - </span><span class="breadcrumbs__filter-category">${data.category} - </span><span class="breadcrumbs__filter-brand">${data.brand} - </span><span>${data.title}</span></div>`;
+      const breadcrumbsMainPage: HTMLElement | null = breadcrumbs.querySelector('.breadcrumbs__main-page');
+      const breadcrumbsFilterCategory: HTMLElement | null = breadcrumbs.querySelector('.breadcrumbs__filter-category');
+      const breadcrumbsFilterBrand: HTMLElement | null = breadcrumbs.querySelector('.breadcrumbs__filter-brand');
+      if (breadcrumbsMainPage) breadcrumbsMainPage.addEventListener('click', () => (window.location.hash = '#/plp'));
+      if (breadcrumbsFilterCategory) {
+        breadcrumbsFilterCategory.addEventListener(
+          'click',
+          () => (window.location.hash = `#/plp?cat=${data.category}`)
+        );
+      }
+      if (breadcrumbsFilterBrand) {
+        breadcrumbsFilterBrand.addEventListener('click', () => (window.location.hash = `#/plp?br=${data.brand}`));
+      }
+    }
 
     if (productCardTitle) productCardTitle.textContent = data.title;
     if (productCardPrice) productCardPrice.textContent = `Price: ${data.price.toString()}$`;
@@ -61,18 +77,22 @@ class Pdp {
 
     if (btnBuyNow && buyNowModal)
       btnBuyNow.addEventListener('click', () => {
+        if (!this.copyCart.inCart(data)) {
+          this.copyCart.addToCart(data);
+        }
         if (main) main.classList.toggle('popup-active');
         buyNowModal.classList.toggle('active');
+        window.location.hash = '#/cart';
       });
 
     if (btnAddCart) {
       if (isProductInCart) {
-        copyCart.changeButtonAddToCart();
+        this.copyCart.changeButtonAddToCart();
       }
 
       btnAddCart.addEventListener('click', (e) => {
-        copyCart.changeButtonAddToCart(e);
-        copyCart.addToCart(data);
+        this.copyCart.changeButtonAddToCart(e);
+        this.copyCart.addToCart(data);
       });
     }
 
