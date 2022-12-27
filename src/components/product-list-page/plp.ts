@@ -2,10 +2,10 @@ import Cart from '../cart/cart';
 
 import products from '../../data/products.json';
 
-import type { IProduct } from '../../interfaces';
+import type { IProduct, IFilter } from '../../interfaces';
 
 class Plp {
-  drawPlp(data: IProduct[]): void {
+  drawPlp(data: IProduct[], choosedFilters?: IFilter): void {
     const tempProductListPage = <HTMLTemplateElement>document.querySelector('#template-plp');
     const cloneProductListPage = <HTMLElement>tempProductListPage.content.cloneNode(true);
     const main = document.querySelector('.main');
@@ -20,25 +20,30 @@ class Plp {
         this.changeCardView(currentElement.id);
       });
     }
+    this.drawAside(products.products, choosedFilters);
+    this.drawSort(choosedFilters);
     this.showTotalItemCart();
-    this.drawAside(products.products);
-    this.drawSort();
     this.showAsideMobile();
     this.drawProducts(data);
+    this.drawSearch(choosedFilters);
   }
-  drawAside(data: IProduct[]): void {
+  drawAside(data: IProduct[], choosedFilters?: IFilter): void {
     const btnReset: HTMLElement | null = document.querySelector('.btn-reset ');
     const btnCopy: HTMLElement | null = document.querySelector('.btn-copy-link');
 
-    this.drawFilterCategory(data);
-    this.drawFilterBrand(data);
+    this.drawFilterCategory(data, choosedFilters);
+    this.drawFilterBrand(data, choosedFilters);
     this.drawFilterPrice(data);
     this.drawFilterStock(data);
 
-    if (btnReset) btnReset.addEventListener('click', () => console.log('сброс'));
-    if (btnCopy) btnCopy.addEventListener('click', () => console.log('копировать'));
+    if (btnReset) btnReset.addEventListener('click', () => (window.location.hash = `#/plp`));
+    if (btnCopy) btnCopy.addEventListener('click', () => {
+      navigator.clipboard.writeText(window.location.href);
+      console.log(window.location.href);
+      
+    });
   }
-  drawFilterStock(data: IProduct[]): void {
+  drawFilterStock(data: IProduct[], choosedFilters?: IFilter): void {
     const asideMaxStock: HTMLElement | null = document.querySelector('.aside__max-stock');
     const asideMinStock: HTMLElement | null = document.querySelector('.aside__min-stock');
     const asideRangeStockLower: HTMLInputElement | null = document.querySelector('.aside__range-stock_lower');
@@ -57,14 +62,20 @@ class Plp {
       asideRangeStockUpper.max = allStock.length.toString();
       asideRangeStockLower.max = allStock.length.toString();
       asideRangeStockLower.value = '0';
+      if (choosedFilters?.minStock) {
+        asideRangeStockLower.value = choosedFilters.minStock;
+      }
       asideRangeStockUpper.value = allStock.length.toString();
       asideRangeStockLower.addEventListener('input', () => {
         if (parseInt(asideRangeStockUpper.value) - parseInt(asideRangeStockLower.value) <= minGapRange) {
           asideRangeStockLower.value = `${parseInt(asideRangeStockUpper.value) - minGapRange}`;
         } else {
           asideMinStock.textContent = `${allStockSort[+asideRangeStockLower.value].toString()} pcs`;
+          console.log(asideRangeStockLower.value);
         }
       });
+
+      asideRangeStockLower.addEventListener('change', this.handleUrl);
 
       asideRangeStockUpper.addEventListener('input', () => {
         if (parseInt(asideRangeStockUpper.value) - parseInt(asideRangeStockLower.value) <= minGapRange) {
@@ -72,6 +83,7 @@ class Plp {
         } else {
           asideMaxStock.textContent = `${allStockSort[+asideRangeStockUpper.value].toString()} pcs`;
         }
+        this.handleUrl;
       });
     }
   }
@@ -111,7 +123,7 @@ class Plp {
       });
     }
   }
-  drawFilterCategory(data: IProduct[]): void {
+  drawFilterCategory(data: IProduct[], choosedFilters?: IFilter): void {
     const fragmentCategory: DocumentFragment = document.createDocumentFragment();
     const asideFilterListCategory: HTMLElement | null = document.querySelector('.aside__filter-list-category');
     const allCategory = <Array<string>>[...data.reduce((acc, cur) => acc.add(cur.category), new Set())];
@@ -128,6 +140,9 @@ class Plp {
 
       input.setAttribute('type', 'checkbox');
       input.setAttribute('id', item);
+      input.classList.add('input-category');
+      if (choosedFilters?.categories?.includes(item.toLowerCase())) input.checked = true;
+      input.addEventListener('change', this.handleUrl);
 
       label.setAttribute('for', item);
       label.textContent = item;
@@ -141,7 +156,7 @@ class Plp {
     if (asideFilterListCategory) asideFilterListCategory.append(fragmentCategory);
   }
 
-  drawFilterBrand(data: IProduct[]): void {
+  drawFilterBrand(data: IProduct[], choosedFilters?: IFilter): void {
     const asideFilterListBrand: HTMLElement | null = document.querySelector('.aside__filter-list-brand');
     const fragmentBrand: DocumentFragment = document.createDocumentFragment();
     const allBrand = <Array<string>>[...data.reduce((acc, cur) => acc.add(cur.brand), new Set())];
@@ -159,6 +174,10 @@ class Plp {
       input.setAttribute('type', 'checkbox');
       input.setAttribute('id', item);
 
+      input.classList.add('input-brand');
+      if (choosedFilters?.brands?.includes(item.toLowerCase())) input.checked = true;
+      input.addEventListener('change', this.handleUrl);
+
       label.setAttribute('for', item);
       label.textContent = item;
 
@@ -174,7 +193,30 @@ class Plp {
     if (asideFilterListBrand) asideFilterListBrand.append(fragmentBrand);
   }
 
-  drawSort() {}
+  drawSort(choosedFilters?: IFilter) {
+    const sortInput: HTMLInputElement | null = document.querySelector('.sort__options');
+    sortInput?.addEventListener('change', this.handleUrl);
+    if (choosedFilters?.sorting === 'prup' && sortInput) {
+      sortInput.value = 'price-ABS';
+    }
+    if (choosedFilters?.sorting === 'prdown' && sortInput) {
+      sortInput.value = 'price-DESK';
+    }
+    if (choosedFilters?.sorting === 'rateup' && sortInput) {
+      sortInput.value = 'rating-ABS';
+    }
+    if (choosedFilters?.sorting === 'ratedown' && sortInput) {
+      sortInput.value = 'rating-DESK';
+    }
+  }
+
+  drawSearch(choosedFilters?: IFilter) {
+    const searchInput: HTMLInputElement | null = document.querySelector('#search');
+    searchInput?.addEventListener('change', this.handleUrl);
+    if (choosedFilters?.search && searchInput) {
+      searchInput.value = choosedFilters.search;
+    }
+  }
 
   drawProducts(data: IProduct[]): void {
     const copyCart: Cart = Cart.getInstance();
@@ -263,13 +305,68 @@ class Plp {
   }
   changeCardView(column: string) {
     const products: NodeListOf<Element> = document.querySelectorAll('.product');
+    console.log(products);
+    console.log(column)
 
     if (products) {
       products.forEach((item) => {
         item.classList.remove('four-columns', 'three-columns');
-        item.classList.add(`${column}`);
+        item.classList.add(column);
       });
     }
+  }
+  handleUrl() {
+    let query: string = '?';
+
+    const categoriesInput = document.querySelectorAll('.input-category') as NodeListOf<HTMLInputElement>;
+    categoriesInput.forEach(el => {
+      if (el.checked) {
+        query +=  `cat=${el.id}&`
+      }
+    });
+
+    const brandsInput = document.querySelectorAll('.input-brand') as NodeListOf<HTMLInputElement>;
+    brandsInput.forEach(el => {
+      if (el.checked) {
+        query +=  `br=${el.id}&`
+      }
+    });
+
+    const searchInput: HTMLInputElement | null = document.querySelector('#search');
+    if (searchInput?.value) {
+      query = `?se=${searchInput.value}&`
+    }
+
+    const sortInput: HTMLInputElement | null = document.querySelector('.sort__options');
+    switch (sortInput?.value) {
+      case "price-ABS":
+        query +=  `so=prup&`;
+      break;
+      case "price-DESK":
+        query +=  `so=prdown&`;
+      break;
+      case "rating-ABS":
+        query +=  `so=rateup&`;
+      break;
+      case "rating-DESK":
+        query +=  `ratedown&`;
+      break;
+    }
+
+/*     const asideRangeStockLower: HTMLInputElement | null = document.querySelector('.aside__range-stock_lower');
+    if (asideRangeStockLower) {
+      query +=  `stmin=${asideRangeStockLower.value}&`
+    }
+
+    console.log(asideRangeStockLower?.value);
+
+    const asideRangeStockUpper: HTMLInputElement | null = document.querySelector('.aside__range-stock_upper');
+    if (asideRangeStockUpper) {
+      query +=  `stmax=${asideRangeStockUpper.value}&`
+    } */
+
+    if (query[query.length - 1] === '&') query = query.slice(0, -1);
+    window.location.hash = `#/plp${query.toLowerCase()}`
   }
 }
 

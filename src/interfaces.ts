@@ -11,3 +11,15 @@ export interface IProduct {
   thumbnail: string;
   images: Array<string>;
 }
+
+export interface IFilter { 
+  categories: string[],
+  brands: string[],
+  minPrice: string,
+  maxPrice: string,
+  minStock: string,
+  maxStock: string,
+  sorting: string,
+  search: string,
+  view: string,
+}
