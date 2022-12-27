@@ -1,6 +1,5 @@
 import Cart from '../cart/cart';
 
-
 import products from '../../data/products.json';
 
 import type { IProduct, IFilter } from '../../interfaces';
@@ -23,6 +22,7 @@ class Plp {
     }
     this.drawAside(products.products, choosedFilters);
     this.drawSort(choosedFilters);
+    this.showTotalItemCart();
     this.showAsideMobile();
     this.drawProducts(data);
     this.drawSearch(choosedFilters);

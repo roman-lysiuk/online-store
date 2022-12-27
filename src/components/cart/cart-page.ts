@@ -1,34 +1,59 @@
-import Pdp from '../product-detail-page/pdp';
 import Plp from '../product-list-page/plp';
+
 import Cart from './cart';
 
 import type { IProduct } from '../../interfaces';
 
 class CartPage {
+  copyCart: Cart;
+  plp: Plp;
+  constructor() {
+    this.copyCart = Cart.getInstance();
+    this.plp = new Plp();
+  }
   drawCartPage(data: Map<number, { item: IProduct; quantity: number }>): void {
     if (data.size === 0) return this.showCartIsEmpty();
-    const copyCart = Cart.getInstance();
-    const plp = new Plp();
+
     const main = document.querySelector('.main');
 
     const cartPageTemp = <HTMLTemplateElement>document.querySelector('#template-cart-page');
-    const productItemTemp = <HTMLTemplateElement>document.querySelector('#template-product-cart-page');
 
-    const fragment = document.createDocumentFragment();
     const cartPageClone = <HTMLElement>cartPageTemp.content.cloneNode(true);
-
     const listProducts: HTMLElement | null = cartPageClone.querySelector('.cart-page__list-products');
+
     const summaryProducts: HTMLElement | null = cartPageClone.querySelector('.summary__products');
     const summaryTotalMoney: HTMLElement | null = cartPageClone.querySelector('.summary__total-money');
     const btnBuyNow: HTMLElement | null = cartPageClone.querySelector('.btn-buy-now');
     const promoInput: HTMLInputElement | null = cartPageClone.querySelector('#promo');
+    const paginationNextPage: HTMLInputElement | null = cartPageClone.querySelector('.pagination__next-page');
+    const paginationPrevPage: HTMLInputElement | null = cartPageClone.querySelector('.pagination__prev-page ');
+    const itemsPerPage: HTMLInputElement | null = cartPageClone.querySelector('#items-per-page');
 
     const buyNowModal: HTMLElement | null = document.querySelector('.buy-now');
 
-    if (summaryProducts) summaryProducts.textContent = `Products:  ${copyCart.totalCartItem()}`;
-    if (summaryTotalMoney) summaryTotalMoney.textContent = `Total: ${copyCart.totalCartMoney()} $`;
+    if (itemsPerPage) {
+      itemsPerPage.value = `${this.copyCart.allProductCart.size}`;
+      itemsPerPage.max = `${this.copyCart.allProductCart.size}`;
+      itemsPerPage.addEventListener('input', () => {
+        this.goToPage(1);
+      });
+    }
+    if (paginationPrevPage) {
+      paginationPrevPage.addEventListener('click', () => {
+        this.prevPaginationPage();
+        this.showListPagination(data);
+      });
+    }
+    if (paginationNextPage) {
+      paginationNextPage.addEventListener('click', () => {
+        this.nextPaginationPage();
+        this.showListPagination(data);
+      });
+    }
+    if (summaryProducts) summaryProducts.textContent = `Products:  ${this.copyCart.totalCartItem()}`;
+    if (summaryTotalMoney) summaryTotalMoney.textContent = `Total: ${this.copyCart.totalCartMoney()} $`;
     this.showSummaryTotalMoneyPromo();
-    plp.showTotalCartMoney();
+    this.plp.showTotalCartMoney();
 
     if (btnBuyNow && buyNowModal)
       btnBuyNow.addEventListener('click', () => {
@@ -38,21 +63,153 @@ class CartPage {
 
     if (promoInput)
       promoInput.addEventListener('change', () => {
-        if (copyCart.isValidationPromo(promoInput.value)) {
-          copyCart.addPromoCode(promoInput.value);
+        if (this.copyCart.isValidationPromo(promoInput.value)) {
+          this.copyCart.addPromoCode(promoInput.value);
           promoInput.value = '';
           this.drawUsedPromoCode();
-          plp.showTotalCartMoney();
+          this.plp.showTotalCartMoney();
           this.showSummaryTotalMoneyPromo();
         }
       });
 
+    if (listProducts) this.drawProductList(data, listProducts);
+
+    if (main) {
+      main.innerHTML = '';
+      main.append(cartPageClone);
+    }
+
+    this.drawUsedPromoCode();
+  }
+  showCartPage(): void {
+    const headerIconCart = document.querySelector('#header-icon-cart');
+
+    if (headerIconCart) headerIconCart.addEventListener('click', () => (window.location.hash = `#/cart`));
+  }
+  showCartIsEmpty(): void {
+    const main = document.querySelector('.main');
+
+    if (main)
+      main.innerHTML = `
+      <div class="container">
+       <h2 class="cart-empty">Cart is Empty</h2>
+      </div>`;
+  }
+  drawUsedPromoCode(): void {
+    const promocodeActive: HTMLElement | null = document.querySelector('.promocode__active');
+
+    if (promocodeActive) {
+      const allUsedPromo = this.copyCart.allUsedPromoCode;
+      promocodeActive.innerHTML = '';
+
+      for (const key in allUsedPromo) {
+        console.log(allUsedPromo);
+        const promo = document.createElement('div');
+        promo.innerHTML = `
+                    <div id="${key}" class="promo-used">
+                    <div>"${key}" - ${allUsedPromo[key]}%</div>
+                    <span class="delete-promo">X</span>
+                    </div>`;
+
+        const deletePromo = <Node>promo.querySelector('.delete-promo');
+
+        deletePromo.addEventListener('click', (e) => this.removePromoCode(e));
+
+        promocodeActive.append(promo);
+      }
+    }
+  }
+
+  showSummaryTotalMoneyPromo(): void {
+    const summaryTotalMoneyUsedPromo: HTMLElement | null = document.querySelector('.summary__total-money-used-promo');
+    const summaryTotalMoney: HTMLElement | null = document.querySelector('.summary__total-money');
+
+    if (summaryTotalMoneyUsedPromo && summaryTotalMoney) {
+      if (Object.keys(this.copyCart.allUsedPromoCode).length > 0) {
+        summaryTotalMoneyUsedPromo.textContent = `Total Discounted Price: ${this.copyCart
+          .totalCartMoneyUsedPromo()
+          .toFixed(2)} $`;
+        summaryTotalMoney.classList.add('strikethrough-text');
+      } else {
+        summaryTotalMoneyUsedPromo.innerHTML = '';
+        summaryTotalMoney.classList.remove('strikethrough-text');
+      }
+    }
+  }
+  removePromoCode(e: Event): void {
+    const currentElement = <Node>e.target;
+    const parentDeletePromo = <HTMLElement>currentElement.parentNode;
+    if (parentDeletePromo) {
+      this.copyCart.deletePromoCode(parentDeletePromo.id);
+      this.plp.showTotalCartMoney();
+      this.showSummaryTotalMoneyPromo();
+      parentDeletePromo.remove();
+    }
+  }
+  drawSummaryBlock(item: { item: IProduct; quantity: number }): void {
+    const summaryProducts: HTMLElement | null = document.querySelector('.summary__products');
+    const summaryTotalMoney: HTMLElement | null = document.querySelector('.summary__total-money');
+
+    if (summaryProducts) summaryProducts.textContent = `Products:  ${this.copyCart.totalCartItem()}`;
+    if (summaryTotalMoney) summaryTotalMoney.textContent = `Total: ${this.copyCart.totalCartMoney()} $`;
+  }
+  showListPagination(data: Map<number, { item: IProduct; quantity: number }>, goToPage?: number) {
+    if (data.size === 0) {
+      return this.showCartIsEmpty();
+    }
+    const itemPerPageInput: HTMLInputElement | null = <HTMLInputElement>document.getElementById('items-per-page');
+    const paginationCurrentPage: HTMLElement | null = document.getElementById('pagination-current-page');
+    const itemPerPage: number = +itemPerPageInput.value || this.copyCart.allProductCart.size;
+    const currentPage: number = goToPage ? goToPage : parseInt(<string>paginationCurrentPage?.textContent);
+    const listProducts: HTMLElement | null = document.querySelector('.cart-page__list-products');
+
+    const startSlice = itemPerPage * (currentPage - 1);
+    const endSlice = startSlice + itemPerPage;
+
+    const dataArray = Array.from(data);
+
+    const PaginatedData = dataArray.slice(startSlice, endSlice).reduce((acc, cur) => {
+      return acc.set(cur[1].item.id, cur[1]);
+    }, new Map());
+
+    if (PaginatedData.size === 0) {
+      this.goToPage(currentPage - 1);
+    } else {
+      if (listProducts) this.drawProductList(PaginatedData, listProducts);
+    }
+  }
+  nextPaginationPage() {
+    const paginationCurrentPage: HTMLElement | null = document.getElementById('pagination-current-page');
+    const itemPerPageInput: HTMLInputElement | null = <HTMLInputElement>document.getElementById('items-per-page');
+    const itemPerPageInputValue: number =
+      +itemPerPageInput.value === 0 ? this.copyCart.allProductCart.size : +itemPerPageInput.value;
+
+    const maxPages = Math.ceil(this.copyCart.allProductCart.size / itemPerPageInputValue);
+
+    if (paginationCurrentPage) {
+      const paginationCurrentPageValue: number = parseInt(<string>paginationCurrentPage.textContent);
+      if (paginationCurrentPageValue < maxPages) {
+        paginationCurrentPage.textContent = `${paginationCurrentPageValue + 1}`;
+      } else {
+        paginationCurrentPage.textContent = `${maxPages}`;
+      }
+    }
+  }
+  prevPaginationPage() {
+    const paginationCurrentPage: HTMLElement | null = document.getElementById('pagination-current-page');
+    if (paginationCurrentPage) {
+      const paginationCurrentPageValue: number = parseInt(<string>paginationCurrentPage.textContent);
+
+      if (paginationCurrentPageValue > 1) paginationCurrentPage.textContent = `${paginationCurrentPageValue - 1}`;
+    }
+  }
+  drawProductList(data: Map<number, { item: IProduct; quantity: number }>, listProducts: HTMLElement) {
     let counterNumber = 0;
+    listProducts.innerHTML = ``;
+    const productItemTemp = <HTMLTemplateElement>document.querySelector('#template-product-cart-page');
+    const fragment = document.createDocumentFragment();
 
     data.forEach((item: { item: IProduct; quantity: number }) => {
-      const copyCart = Cart.getInstance();
-      const pdp = new Pdp();
-
       const productClone = <HTMLElement>productItemTemp.content.cloneNode(true);
 
       const productNumber: HTMLElement | null = productClone.querySelector('.product-cart__number');
@@ -90,8 +247,9 @@ class CartPage {
 
       if (addNumberProduct) {
         addNumberProduct.addEventListener('click', () => {
-          copyCart.addOneQuantity(item.item);
+          this.copyCart.addOneQuantity(item.item);
           if (currentNumberProduct) currentNumberProduct.textContent = item.quantity.toString();
+          if (productStock) productStock.textContent = `In stock: ${item.item.stock - item.quantity}`;
           if (productTotalMoney) productTotalMoney.textContent = `Total Price: ${item.quantity * item.item.price} $`;
           this.drawSummaryBlock(item);
           this.showSummaryTotalMoneyPromo();
@@ -99,16 +257,17 @@ class CartPage {
       }
 
       if (removeNumberProduct) {
-        removeNumberProduct.addEventListener('click', () => {
+        removeNumberProduct.addEventListener('click', (e) => {
           if (data.size === 0) this.showCartIsEmpty();
-
           if (item.quantity === 1) {
-            copyCart.removeOneQuantity(item.item);
-            this.drawCartPage(copyCart.allProductCart);
+            this.copyCart.removeOneQuantity(item.item);
+            this.showListPagination(this.copyCart.allProductCart);
+            this.drawSummaryBlock(item);
             this.showSummaryTotalMoneyPromo();
           } else {
-            copyCart.removeOneQuantity(item.item);
+            this.copyCart.removeOneQuantity(item.item);
             if (currentNumberProduct) currentNumberProduct.textContent = item.quantity.toString();
+            if (productStock) productStock.textContent = `In stock: ${item.item.stock - item.quantity}`;
             if (productTotalMoney) productTotalMoney.textContent = `Total Price: ${item.quantity * item.item.price} $`;
             this.drawSummaryBlock(item);
             this.showSummaryTotalMoneyPromo();
@@ -120,95 +279,12 @@ class CartPage {
       fragment.append(productClone);
     });
 
-    if (listProducts) listProducts.appendChild(fragment);
-
-    if (main) {
-      main.innerHTML = '';
-      main.append(cartPageClone);
-    }
-
-    this.drawUsedPromoCode();
+    listProducts.appendChild(fragment);
   }
-  showCartPage(): void {
-    const copyCart = Cart.getInstance();
-    const headerIconCart = document.querySelector('#header-icon-cart');
-
-    if (headerIconCart) headerIconCart.addEventListener('click', () => (window.location.hash = `#/cart`));
-  }
-  showCartIsEmpty(): void {
-    const main = document.querySelector('.main');
-
-    if (main)
-      main.innerHTML = `
-      <div class="container">
-       <h2 class="cart-empty">Cart is Empty</h2>
-      </div>`;
-  }
-  drawUsedPromoCode(): void {
-    const promocodeActive: HTMLElement | null = document.querySelector('.promocode__active');
-    const copyCart = Cart.getInstance();
-
-    if (promocodeActive) {
-      const allUsedPromo = copyCart.allUsedPromoCode;
-      promocodeActive.innerHTML = '';
-
-      for (const key in allUsedPromo) {
-        console.log(allUsedPromo);
-        const promo = document.createElement('div');
-        promo.innerHTML = `
-                    <div id="${key}" class="promo-used">
-                    <div>"${key}" - ${allUsedPromo[key]}%</div>
-                    <span class="delete-promo">X</span>
-                    </div>`;
-
-        const deletePromo = <Node>promo.querySelector('.delete-promo');
-
-        deletePromo.addEventListener('click', (e) => this.removePromoCode(e));
-
-        promocodeActive.append(promo);
-      }
-    }
-  }
-
-  showSummaryTotalMoneyPromo(): void {
-    const copyCart = Cart.getInstance();
-    const summaryTotalMoneyUsedPromo: HTMLElement | null = document.querySelector('.summary__total-money-used-promo');
-    const summaryTotalMoney: HTMLElement | null = document.querySelector('.summary__total-money');
-
-    if (summaryTotalMoneyUsedPromo && summaryTotalMoney) {
-      if (Object.keys(copyCart.allUsedPromoCode).length > 0) {
-        summaryTotalMoneyUsedPromo.textContent = `Total Discounted Price: ${copyCart
-          .totalCartMoneyUsedPromo()
-          .toFixed(2)} $`;
-        summaryTotalMoney.classList.add('strikethrough-text');
-      } else {
-        summaryTotalMoneyUsedPromo.innerHTML = '';
-        summaryTotalMoney.classList.remove('strikethrough-text');
-      }
-    }
-  }
-  removePromoCode(e: Event): void {
-    const copyCart = Cart.getInstance();
-    const plp = new Plp();
-    const currentElement = <Node>e.target;
-    const parentDeletePromo = <HTMLElement>currentElement.parentNode;
-    if (parentDeletePromo) {
-      copyCart.deletePromoCode(parentDeletePromo.id);
-      plp.showTotalCartMoney();
-      this.showSummaryTotalMoneyPromo();
-      parentDeletePromo.remove();
-    }
-  }
-  drawSummaryBlock(item: { item: IProduct; quantity: number }): void {
-    const copyCart = Cart.getInstance();
-    const productStock: HTMLElement | null = document.querySelector('.product-cart__stock');
-
-    const summaryProducts: HTMLElement | null = document.querySelector('.summary__products');
-    const summaryTotalMoney: HTMLElement | null = document.querySelector('.summary__total-money');
-
-    if (summaryProducts) summaryProducts.textContent = `Products:  ${copyCart.totalCartItem()}`;
-    if (summaryTotalMoney) summaryTotalMoney.textContent = `Total: ${copyCart.totalCartMoney()} $`;
-    if (productStock) productStock.textContent = `In stock: ${item.item.stock - item.quantity}`;
+  goToPage(page: number) {
+    const paginationCurrentPage: HTMLElement | null = document.getElementById('pagination-current-page');
+    if (paginationCurrentPage) paginationCurrentPage.textContent = `${page}`;
+    this.showListPagination(this.copyCart.allProductCart, page);
   }
 }
 
