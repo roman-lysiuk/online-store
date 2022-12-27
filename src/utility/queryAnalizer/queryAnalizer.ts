@@ -1,4 +1,4 @@
-import type { IProduct } from '../../interfaces';
+import type { IProduct, IFilter } from '../../interfaces';
 import Error404 from '../../components/error/error' 
 import Plp from '../../components/product-list-page/plp';
 
@@ -24,17 +24,21 @@ class QueryAnalizer {
     this.error404 = new Error404();
     this.plp = new Plp();
   }
-  handleQuery(products: IProduct[], query: string[]): IProduct[] {
-    let handledProducts: IProduct[] = [];
-    let categories: string[] = [];
-    let brands: string[] = [];
-    let minPrice: string = '';
-    let maxPrice: string = '';
-    let minStock: string = '';
-    let maxStock: string = '';
-    let sorting: string = '';
-    let search: string = '';
-    let view: string = '';
+  handleQuery(products: IProduct[], query: string[]): [IProduct[], IFilter] {
+    let handledProducts: IProduct[] = products;
+
+    const choosedFilters: IFilter = {
+      categories : [],
+      brands : [],
+      minPrice : '',
+      maxPrice : '',
+      minStock : '',
+      maxStock : '',
+      sorting : '',
+      search : '',
+      view : '',
+    }
+  
     query.forEach((el) => {
       const queryParam = el.split('=');
       if (!queryParam[1]) {
@@ -42,80 +46,62 @@ class QueryAnalizer {
       } else {
         switch (queryParam[0]) {
           case "cat":
-            categories.push(queryParam[1].replace('%', ' '))
+            choosedFilters.categories.push(queryParam[1].replace('%20', ' '));
           break;
           case "br":
-            brands.push(queryParam[1].replace('%', ' '))
+            choosedFilters.brands.push(queryParam[1].replace('%20', ' '))
           break;
           case "prmin":
-            minPrice = queryParam[1];
+            choosedFilters.minPrice = queryParam[1];
           break;
           case "prmax":
-            maxPrice = queryParam[1];
+            choosedFilters.maxPrice = queryParam[1];
           break;
           case "stmin":
-            minStock = queryParam[1];
+            choosedFilters.minStock = queryParam[1];
           break;          
           case "stmax":
-            maxStock = queryParam[1];
+            choosedFilters.maxStock = queryParam[1];
           break;       
           case "so":
-            sorting = queryParam[1];
+            choosedFilters.sorting = queryParam[1];
           break;     
           case "se":
-            search = queryParam[1];
+            choosedFilters.search = queryParam[1];
           break;    
           case "vi":
-            view = queryParam[1];
+            choosedFilters.view = queryParam[1];
           break;  
         }
-        if (categories.length) {
-          handledProducts = products.filter(item => categories.includes(item.category));
+      }
+  })    
+        if (choosedFilters.categories.length) {
+          handledProducts = handledProducts.filter(item => choosedFilters.categories.includes(item.category.toLowerCase()));
         }
-        if (brands.length) {
+         if (choosedFilters.brands.length) {
+          handledProducts = handledProducts.filter(item => choosedFilters.brands.includes(item.brand.toLowerCase()));
+        }
+        if (choosedFilters.minPrice) {
+          handledProducts = handledProducts.filter(item => item.price >= Number(choosedFilters.minPrice));
+        }
+        if (choosedFilters.maxPrice) {
+          handledProducts = handledProducts.filter(item => item.price <= Number(choosedFilters.maxPrice));
+        }
+        if (choosedFilters.minStock) {
+          handledProducts = handledProducts.filter(item => item.stock >= Number(choosedFilters.minStock));
+        }
+        if (choosedFilters.maxStock) {
+          handledProducts = handledProducts.filter(item => item.stock <= Number(choosedFilters.maxStock));
+        }
+        if (choosedFilters.search) {
+          handledProducts = products.filter(item => item.title.toLocaleLowerCase().includes(choosedFilters.search) || item.description.toLocaleLowerCase().includes(choosedFilters.search) 
+          || item.price.toString().includes(choosedFilters.search) ||item.discountPercentage.toString().includes(choosedFilters.search) 
+          || item.rating.toString().includes(choosedFilters.search) ||item.stock.toString().includes(choosedFilters.search) 
+          || item.brand.toLocaleLowerCase().includes(choosedFilters.search) || item.category.toLocaleLowerCase().includes(choosedFilters.search));
+        }
+        if (choosedFilters.sorting) {
           if (handledProducts.length) {
-            handledProducts = handledProducts.filter(item => brands.includes(item.brand));
-          } else {
-            handledProducts = products.filter(item => brands.includes(item.brand));
-          }
-        }
-        if (minPrice) {
-          if (handledProducts.length) {
-            handledProducts = handledProducts.filter(item => item.price >= Number(minPrice));
-          } else {
-            handledProducts = products.filter(item => item.price >= Number(minPrice));
-          }
-        }
-        if (maxPrice) {
-          if (handledProducts.length) {
-            handledProducts = handledProducts.filter(item => item.price <= Number(maxPrice));
-          } else {
-            handledProducts = products.filter(item => item.price <= Number(maxPrice));
-          }
-        }
-        if (minStock) {
-          if (handledProducts.length) {
-            handledProducts = handledProducts.filter(item => item.stock >= Number(minStock));
-          } else {
-            handledProducts = products.filter(item => item.stock >= Number(minStock));
-          }
-        }
-        if (maxStock) {
-          if (handledProducts.length) {
-            handledProducts = handledProducts.filter(item => item.stock <= Number(maxStock));
-          } else {
-            handledProducts = products.filter(item => item.stock <= Number(maxStock));
-          }
-        }
-        if (search) {
-          handledProducts = products.filter(item => item.title.toLocaleLowerCase().includes(search) || item.description.toLocaleLowerCase().includes(search) 
-          || item.price.toString().includes(search) ||item.discountPercentage.toString().includes(search) 
-          || item.rating.toString().includes(search) ||item.stock.toString().includes(search) 
-          || item.brand.toLocaleLowerCase().includes(search) || item.category.toLocaleLowerCase().includes(search));
-        }
-        if (sorting) {
-          if (handledProducts.length) {
-            switch (sorting) {
+            switch (choosedFilters.sorting) {
               case 'prup':
                 handledProducts = handledProducts.sort((a,b) => a.price - b.price);
                 break;
@@ -130,7 +116,7 @@ class QueryAnalizer {
                 break;
             }
           } else {
-            switch (sorting) {
+            switch (choosedFilters.sorting) {
               case 'prup':
                 handledProducts = products.sort((a,b) => a.price - b.price);
                 break;
@@ -146,20 +132,17 @@ class QueryAnalizer {
             }
           }
         }
-        if (view) {
-          const items = document.querySelectorAll('.product');
-          if (Number(view) === 3) {
+        if (choosedFilters.view) {
+          if (Number(choosedFilters.view) === 3) {
             this.plp.changeCardView('three-columns');
           } else {
             this.plp.changeCardView('four-columns');
           }
-        }
-      }
-    })
-    if (!handledProducts.length) {
-      handledProducts = products;
-    }
-    return handledProducts;
+        } 
+
+
+    const data: [IProduct[], IFilter]= [handledProducts, choosedFilters];
+    return data;
   }
 }
 export default QueryAnalizer;

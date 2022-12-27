@@ -35,7 +35,6 @@ class App {
 
     window.addEventListener('hashchange', () => {
       const location = window.location.hash;
-
       if (location) {
         this.router.handleRoute(location);
       }
