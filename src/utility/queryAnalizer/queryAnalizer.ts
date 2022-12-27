@@ -46,10 +46,10 @@ class QueryAnalizer {
       } else {
         switch (queryParam[0]) {
           case "cat":
-            choosedFilters.categories.push(queryParam[1].replace('%20', ' '));
+            choosedFilters.categories.push(queryParam[1].split('%20').join(' '));
           break;
           case "br":
-            choosedFilters.brands.push(queryParam[1].replace('%20', ' '))
+            choosedFilters.brands.push(queryParam[1].split('%20').join(' '));
           break;
           case "prmin":
             choosedFilters.minPrice = queryParam[1];
@@ -75,6 +75,8 @@ class QueryAnalizer {
         }
       }
   })    
+  console.log(choosedFilters);
+  
         if (choosedFilters.categories.length) {
           handledProducts = handledProducts.filter(item => choosedFilters.categories.includes(item.category.toLowerCase()));
         }
