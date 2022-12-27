@@ -196,17 +196,8 @@ class Plp {
   drawSort(choosedFilters?: IFilter) {
     const sortInput: HTMLInputElement | null = document.querySelector('.sort__options');
     sortInput?.addEventListener('change', this.handleUrl);
-    if (choosedFilters?.sorting === 'prup' && sortInput) {
-      sortInput.value = 'price-ABS';
-    }
-    if (choosedFilters?.sorting === 'prdown' && sortInput) {
-      sortInput.value = 'price-DESK';
-    }
-    if (choosedFilters?.sorting === 'rateup' && sortInput) {
-      sortInput.value = 'rating-ABS';
-    }
-    if (choosedFilters?.sorting === 'ratedown' && sortInput) {
-      sortInput.value = 'rating-DESK';
+    if (choosedFilters?.sorting && sortInput) {
+      sortInput.value = choosedFilters.sorting;
     }
   }
 
@@ -338,19 +329,8 @@ class Plp {
     }
 
     const sortInput: HTMLInputElement | null = document.querySelector('.sort__options');
-    switch (sortInput?.value) {
-      case "price-ABS":
-        query +=  `so=prup&`;
-      break;
-      case "price-DESK":
-        query +=  `so=prdown&`;
-      break;
-      case "rating-ABS":
-        query +=  `so=rateup&`;
-      break;
-      case "rating-DESK":
-        query +=  `ratedown&`;
-      break;
+    if (sortInput?.value) {
+      query +=  `so=${sortInput.value}&`;
     }
 
 /*     const asideRangeStockLower: HTMLInputElement | null = document.querySelector('.aside__range-stock_lower');

@@ -10,10 +10,10 @@ import Plp from '../../components/product-list-page/plp';
 // stmin = minimum stock
 // stmax = maximum stock
 // so = sorting
-//    prup = from low price to high
-//    prdown = from high price to low
-//    rateup = from low rate to high
-//    ratedown = from high rate to low
+//    price-abs = from low price to high
+//    price-desc = from high price to low
+//    rating-abs = from low rate to high
+//    rating-desc = from high rate to low
 // se = searching
 // vi = viewing 2 or 3 columns
 
@@ -102,36 +102,19 @@ class QueryAnalizer {
           || item.brand.toLocaleLowerCase().includes(choosedFilters.search) || item.category.toLocaleLowerCase().includes(choosedFilters.search));
         }
         if (choosedFilters.sorting) {
-          if (handledProducts.length) {
-            switch (choosedFilters.sorting) {
-              case 'prup':
-                handledProducts = handledProducts.sort((a,b) => a.price - b.price);
-                break;
-              case 'prdown':
-                handledProducts = handledProducts.sort((a,b) => b.price - a.price);
-                break;
-              case 'rateup':
-                handledProducts = handledProducts.sort((a,b) => a.rating - b.rating);
-                break;
-              case 'ratedown':
-                handledProducts = handledProducts.sort((a,b) => b.rating - a.rating);
-                break;
-            }
-          } else {
-            switch (choosedFilters.sorting) {
-              case 'prup':
-                handledProducts = products.sort((a,b) => a.price - b.price);
-                break;
-              case 'prdown':
-                handledProducts = products.sort((a,b) => b.price - a.price);
-                break;
-              case 'rateup':
-                handledProducts = products.sort((a,b) => a.rating - b.rating);
-                break;
-              case 'ratedown':
-                handledProducts = products.sort((a,b) => b.rating - a.rating);
-                break;
-            }
+          switch (choosedFilters.sorting) {
+            case 'price-abs':
+              handledProducts = handledProducts.sort((a,b) => a.price - b.price);
+              break;
+            case 'price-desc':
+              handledProducts = handledProducts.sort((a,b) => b.price - a.price);
+              break;
+            case 'rating-abs':
+              handledProducts = handledProducts.sort((a,b) => a.rating - b.rating);
+              break;
+            case 'rating-desc':
+              handledProducts = handledProducts.sort((a,b) => b.rating - a.rating);
+              break;
           }
         }
         if (choosedFilters.view) {
