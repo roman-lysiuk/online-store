@@ -11,7 +11,6 @@ class App {
   buyNowModal: BuyNowModal;
   copyCart: Cart;
   locStorage: locStorage;
-
   constructor() {
     this.router = new Router();
     this.cartPage = new CartPage();
@@ -22,7 +21,6 @@ class App {
 
   start(): void {
     window.addEventListener('load', () => this.locStorage.getLocalStorage('allProductCart'));
-    document.querySelector('header__logo')?.addEventListener('click', () => (window.location.hash = '#/plp'));
 
     this.cartPage.showCartPage();
     this.buyNowModal.drawBuyNowModal();
@@ -33,22 +31,19 @@ class App {
     } else {
       window.location.hash = `#/plp`;
     }
-
     window.addEventListener('load', () => {
       const location = window.location.hash;
-
       if (location) {
         this.router.handleRoute(location);
       }
     });
-
     window.addEventListener('hashchange', () => {
       const location = window.location.hash;
       if (location) {
         this.router.handleRoute(location);
       }
     });
-
+    document.querySelector('.header__logo')?.addEventListener('click', () => (window.location.hash = '#/plp'));
     window.addEventListener('beforeunload', () =>
       this.locStorage.setLocalStorage('allProductCart', this.copyCart.allProductCart)
     );
