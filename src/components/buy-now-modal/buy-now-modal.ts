@@ -62,6 +62,7 @@ class BuyNowModal {
     if (cvvCode) cvvCode.addEventListener('input', () => this.isValid(cvvCode));
     if (validity)
       validity.addEventListener('input', () => {
+        validity.value = validity.value.replace('/', '');
         if (validity.value.length === 4) {
           const valueArray = validity.value.split('');
           const month = valueArray.slice(0, 2);
