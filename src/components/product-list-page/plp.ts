@@ -20,12 +20,18 @@ class Plp {
         this.changeCardView(currentElement.id);
       });
     }
+
     this.drawAside(products.products, choosedFilters);
     this.drawSort(choosedFilters);
     this.showTotalItemCart();
     this.showAsideMobile();
     this.drawProducts(data);
     this.drawSearch(choosedFilters);
+
+    if (choosedFilters?.view === '4') {
+      this.changeCardView('four-columns');
+    } 
+
   }
   drawAside(data: IProduct[], choosedFilters?: IFilter): void {
     const btnReset: HTMLElement | null = document.querySelector('.btn-reset ');
@@ -33,14 +39,12 @@ class Plp {
 
     this.drawFilterCategory(data, choosedFilters);
     this.drawFilterBrand(data, choosedFilters);
-    this.drawFilterPrice(data);
-    this.drawFilterStock(data);
+    this.drawFilterPrice(data, choosedFilters);
+    this.drawFilterStock(data, choosedFilters);
 
     if (btnReset) btnReset.addEventListener('click', () => (window.location.hash = `#/plp`));
     if (btnCopy) btnCopy.addEventListener('click', () => {
       navigator.clipboard.writeText(window.location.href);
-      console.log(window.location.href);
-      
     });
   }
   drawFilterStock(data: IProduct[], choosedFilters?: IFilter): void {
@@ -62,32 +66,41 @@ class Plp {
       asideRangeStockUpper.max = allStock.length.toString();
       asideRangeStockLower.max = allStock.length.toString();
       asideRangeStockLower.value = '0';
-      if (choosedFilters?.minStock) {
-        asideRangeStockLower.value = choosedFilters.minStock;
-      }
       asideRangeStockUpper.value = allStock.length.toString();
+
       asideRangeStockLower.addEventListener('input', () => {
         if (parseInt(asideRangeStockUpper.value) - parseInt(asideRangeStockLower.value) <= minGapRange) {
           asideRangeStockLower.value = `${parseInt(asideRangeStockUpper.value) - minGapRange}`;
         } else {
           asideMinStock.textContent = `${allStockSort[+asideRangeStockLower.value].toString()} pcs`;
-          console.log(asideRangeStockLower.value);
-        }
+          asideMinStock.dataset.value = allStockSort[+asideRangeStockLower.value].toString();
+         }
       });
-
-      asideRangeStockLower.addEventListener('change', this.handleUrl);
 
       asideRangeStockUpper.addEventListener('input', () => {
         if (parseInt(asideRangeStockUpper.value) - parseInt(asideRangeStockLower.value) <= minGapRange) {
           asideRangeStockUpper.value = `${parseInt(asideRangeStockLower.value) + minGapRange}`;
         } else {
           asideMaxStock.textContent = `${allStockSort[+asideRangeStockUpper.value].toString()} pcs`;
+          asideMaxStock.dataset.value = allStockSort[+asideRangeStockUpper.value].toString();
         }
-        this.handleUrl;
       });
     }
+       if (choosedFilters?.minStock && asideMinStock && asideRangeStockLower) {
+        asideMinStock.textContent = `${choosedFilters.minStock} pcs`;
+        asideRangeStockLower.value = allStockSort.indexOf(Number(choosedFilters.minStock)).toString();
+        asideMinStock.dataset.value = allStockSort[+asideRangeStockLower.value].toString();
+      } 
+      if (choosedFilters?.maxStock  && asideMaxStock && asideRangeStockUpper) {
+        asideMaxStock.textContent = `${choosedFilters.maxStock} pcs`;
+        asideRangeStockUpper.value = allStockSort.indexOf(Number(choosedFilters.maxStock)).toString();
+        asideMaxStock.dataset.value = allStockSort[+asideRangeStockUpper.value].toString();
+      } 
+
+    asideRangeStockLower?.addEventListener('change', this.handleUrl);
+    asideRangeStockUpper?.addEventListener('change', this.handleUrl);
   }
-  drawFilterPrice(data: IProduct[]): void {
+  drawFilterPrice(data: IProduct[], choosedFilters?: IFilter): void {
     const asideMaxPrice: HTMLElement | null = document.querySelector('.aside__max-price');
     const asideMinPrice: HTMLElement | null = document.querySelector('.aside__min-price');
     const asideRangePriceLower: HTMLInputElement | null = document.querySelector('.aside__range-price_lower');
@@ -106,11 +119,13 @@ class Plp {
       asideRangePriceLower.value = '0';
       asideRangePriceUpper.value = allPrice.length.toString();
       const minGap = 1;
+
       asideRangePriceLower.addEventListener('input', () => {
         if (parseInt(asideRangePriceUpper.value) - parseInt(asideRangePriceLower.value) <= minGap) {
           asideRangePriceLower.value = `${parseInt(asideRangePriceUpper.value) - minGap}`;
         } else {
           asideMinPrice.textContent = `${allPriceSort[+asideRangePriceLower.value].toString()} $`;
+          asideMinPrice.dataset.value = allPriceSort[+asideRangePriceLower.value].toString();
         }
       });
 
@@ -119,9 +134,25 @@ class Plp {
           asideRangePriceUpper.value = `${parseInt(asideRangePriceLower.value) + minGap}`;
         } else {
           asideMaxPrice.textContent = `${allPriceSort[+asideRangePriceUpper.value].toString()} $`;
+          asideMaxPrice.dataset.value = allPriceSort[+asideRangePriceUpper.value].toString();
         }
       });
     }
+
+    if (choosedFilters?.minPrice && asideMinPrice && asideRangePriceLower) {
+      asideMinPrice.textContent = `${choosedFilters.minPrice} $`;
+        asideRangePriceLower.value = allPriceSort.indexOf(Number(choosedFilters.minPrice)).toString();
+        asideMinPrice.dataset.value = allPriceSort[+asideRangePriceLower.value].toString();
+    } 
+
+    if (choosedFilters?.maxPrice && asideMaxPrice && asideRangePriceUpper) {
+      asideMaxPrice.textContent = `${choosedFilters.maxPrice} $`;
+      asideRangePriceUpper.value = allPriceSort.indexOf(Number(choosedFilters.maxPrice)).toString();
+      asideMaxPrice.dataset.value = allPriceSort[+asideRangePriceUpper.value].toString();
+    }
+
+    asideRangePriceLower?.addEventListener('change', this.handleUrl);
+    asideRangePriceUpper?.addEventListener('change', this.handleUrl);
   }
   drawFilterCategory(data: IProduct[], choosedFilters?: IFilter): void {
     const fragmentCategory: DocumentFragment = document.createDocumentFragment();
@@ -296,17 +327,15 @@ class Plp {
   }
   changeCardView(column: string) {
     const products: NodeListOf<Element> = document.querySelectorAll('.product');
-    console.log(products);
-    console.log(column)
-
     if (products) {
       products.forEach((item) => {
         item.classList.remove('four-columns', 'three-columns');
         item.classList.add(column);
       });
     }
+    this.handleUrl();
   }
-  handleUrl() {
+  handleUrl():void {
     let query: string = '?';
 
     const categoriesInput = document.querySelectorAll('.input-category') as NodeListOf<HTMLInputElement>;
@@ -323,6 +352,36 @@ class Plp {
       }
     });
 
+       
+     const product:Element | null = document.querySelector('.product');
+    if (product?.classList.contains('four-columns')) {
+      query += '&view=4&';
+    } else {
+      query += '&view=3&';
+    } 
+
+    const asideMaxStock: HTMLElement | null = document.querySelector('.aside__max-stock');
+    if (asideMaxStock?.dataset.value) {
+      query += `stmax=${asideMaxStock.dataset.value}&`
+    }
+
+    const asideMinStock: HTMLElement | null = document.querySelector('.aside__min-stock');
+    if (asideMinStock?.dataset.value) {
+      query += `stmin=${asideMinStock.dataset.value}&`
+    }
+
+
+    const asideMinPrice: HTMLElement | null = document.querySelector('.aside__min-price');
+    if (asideMinPrice?.dataset.value) {
+      query += `prmin=${asideMinPrice.dataset.value}&`
+    }
+
+
+    const asideMaxPrice: HTMLElement | null = document.querySelector('.aside__max-price');
+    if (asideMaxPrice?.dataset.value) {
+      query += `prmax=${asideMaxPrice.dataset.value}&`
+    }
+
     const searchInput: HTMLInputElement | null = document.querySelector('#search');
     if (searchInput?.value) {
       query = `?se=${searchInput.value}&`
@@ -332,18 +391,6 @@ class Plp {
     if (sortInput?.value) {
       query +=  `so=${sortInput.value}&`;
     }
-
-/*     const asideRangeStockLower: HTMLInputElement | null = document.querySelector('.aside__range-stock_lower');
-    if (asideRangeStockLower) {
-      query +=  `stmin=${asideRangeStockLower.value}&`
-    }
-
-    console.log(asideRangeStockLower?.value);
-
-    const asideRangeStockUpper: HTMLInputElement | null = document.querySelector('.aside__range-stock_upper');
-    if (asideRangeStockUpper) {
-      query +=  `stmax=${asideRangeStockUpper.value}&`
-    } */
 
     if (query[query.length - 1] === '&') query = query.slice(0, -1);
     window.location.hash = `#/plp${query.toLowerCase()}`

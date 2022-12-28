@@ -15,7 +15,7 @@ import Plp from '../../components/product-list-page/plp';
 //    rating-abs = from low rate to high
 //    rating-desc = from high rate to low
 // se = searching
-// vi = viewing 2 or 3 columns
+// view = viewing 2 or 3 columns
 
 class QueryAnalizer {
   error404: Error404;
@@ -69,14 +69,12 @@ class QueryAnalizer {
           case "se":
             choosedFilters.search = queryParam[1];
           break;    
-          case "vi":
+          case "view":
             choosedFilters.view = queryParam[1];
           break;  
         }
       }
   })    
-  console.log(choosedFilters);
-  
         if (choosedFilters.categories.length) {
           handledProducts = handledProducts.filter(item => choosedFilters.categories.includes(item.category.toLowerCase()));
         }
@@ -117,13 +115,7 @@ class QueryAnalizer {
               break;
           }
         }
-        if (choosedFilters.view) {
-          if (Number(choosedFilters.view) === 3) {
-            this.plp.changeCardView('three-columns');
-          } else {
-            this.plp.changeCardView('four-columns');
-          }
-        } 
+
 
 
     const data: [IProduct[], IFilter]= [handledProducts, choosedFilters];
