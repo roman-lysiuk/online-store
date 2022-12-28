@@ -44,6 +44,8 @@ class Plp {
     if (btnCopy)
       btnCopy.addEventListener('click', () => {
         navigator.clipboard.writeText(window.location.href);
+        btnCopy.textContent = `Copied`;
+        setTimeout(() => (btnCopy.textContent = `Copy link`), 1000);
       });
   }
   drawFilterStock(data: IProduct[], choosedFilters?: IFilter): void {
