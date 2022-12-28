@@ -9,6 +9,10 @@ class Plp {
     const tempProductListPage: HTMLTemplateElement | null = document.querySelector('#template-plp');
     const cloneProductListPage: HTMLElement | null = <HTMLElement>tempProductListPage?.content.cloneNode(true);
     const main: HTMLElement | null = document.querySelector('.main');
+    const foundProducts: HTMLElement | null = cloneProductListPage.querySelector('#found-products');
+
+    if (foundProducts) foundProducts.textContent = `${data.length}`;
+
     if (cloneProductListPage && main) {
       main.innerHTML = '';
       main.append(cloneProductListPage);
