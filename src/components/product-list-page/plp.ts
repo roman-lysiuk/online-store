@@ -39,14 +39,12 @@ class Plp {
 
     this.drawFilterCategory(data, choosedFilters);
     this.drawFilterBrand(data, choosedFilters);
-    this.drawFilterPrice(data);
+    this.drawFilterPrice(data, choosedFilters);
     this.drawFilterStock(data, choosedFilters);
 
     if (btnReset) btnReset.addEventListener('click', () => (window.location.hash = `#/plp`));
     if (btnCopy) btnCopy.addEventListener('click', () => {
       navigator.clipboard.writeText(window.location.href);
-      console.log(window.location.href);
-      
     });
   }
   drawFilterStock(data: IProduct[], choosedFilters?: IFilter): void {
@@ -70,13 +68,6 @@ class Plp {
       asideRangeStockLower.value = '0';
       asideRangeStockUpper.value = allStock.length.toString();
 
-/*       if (choosedFilters?.minStock) {
-        asideRangeStockLower.value = ???
-      } 
-      if (choosedFilters?.maxStock) {
-        asideRangeStockLower.value = ???
-      } */
-
       asideRangeStockLower.addEventListener('input', () => {
         if (parseInt(asideRangeStockUpper.value) - parseInt(asideRangeStockLower.value) <= minGapRange) {
           asideRangeStockLower.value = `${parseInt(asideRangeStockUpper.value) - minGapRange}`;
@@ -95,6 +86,16 @@ class Plp {
         }
       });
     }
+
+       if (choosedFilters?.minStock && asideMinStock && asideRangeStockLower) {
+        asideMinStock.textContent = `${choosedFilters.minStock} pcs`;
+//        asideRangeStockLower.value = ???
+      } 
+      if (choosedFilters?.maxStock  && asideMaxStock && asideRangeStockUpper) {
+        asideMaxStock.textContent = `${choosedFilters.maxStock} pcs`;
+//        asideRangeStockLower.value = ???
+      } 
+
     asideRangeStockLower?.addEventListener('change', this.handleUrl);
     asideRangeStockUpper?.addEventListener('change', this.handleUrl);
   }
@@ -118,13 +119,6 @@ class Plp {
       asideRangePriceUpper.value = allPrice.length.toString();
       const minGap = 1;
 
-/*       if (choosedFilters?.minStock) {
-        asideRangePriceLower.value = ???
-      } 
-      if (choosedFilters?.maxStock) {
-        asideRangePriceUpper.value = ???
-      } */
-
       asideRangePriceLower.addEventListener('input', () => {
         if (parseInt(asideRangePriceUpper.value) - parseInt(asideRangePriceLower.value) <= minGap) {
           asideRangePriceLower.value = `${parseInt(asideRangePriceUpper.value) - minGap}`;
@@ -143,6 +137,17 @@ class Plp {
         }
       });
     }
+
+    if (choosedFilters?.minPrice && asideMinPrice && asideRangePriceLower) {
+      asideMinPrice.textContent = `${choosedFilters.minPrice} $`;
+//        asideRangePriceLower.value = ???
+    } 
+
+    if (choosedFilters?.maxPrice && asideMaxPrice) {
+      asideMaxPrice.textContent = `${choosedFilters.maxPrice} $`;
+//        asideRangePriceUpper.value = ???
+    }
+
     asideRangePriceLower?.addEventListener('change', this.handleUrl);
     asideRangePriceUpper?.addEventListener('change', this.handleUrl);
   }

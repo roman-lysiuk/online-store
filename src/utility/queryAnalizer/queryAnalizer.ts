@@ -75,8 +75,6 @@ class QueryAnalizer {
         }
       }
   })    
-        console.log(choosedFilters);
-        
         if (choosedFilters.categories.length) {
           handledProducts = handledProducts.filter(item => choosedFilters.categories.includes(item.category.toLowerCase()));
         }
