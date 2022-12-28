@@ -257,6 +257,9 @@ class Plp {
     const productItemTemp: HTMLTemplateElement | null = document.querySelector('#productItemTemp');
     const products: HTMLElement | null = document.querySelector('.products');
 
+    if (data.length === 0) {
+      if (products) products.innerHTML = `<h3 class ="products-not-found">Products not found</h3>`;
+    }
     data.forEach((item) => {
       const productClone: HTMLElement = <HTMLElement>productItemTemp?.content.cloneNode(true);
       const productItem: HTMLElement | null = productClone.querySelector('.product__item');
