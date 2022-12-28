@@ -1,6 +1,6 @@
 class ErrorPage {
-  drawErrorPage() {
-    const main = document.querySelector('.main');
+  drawErrorPage(): void {
+    const main: HTMLElement | null = document.querySelector('.main');
     if (main) {
       main.innerHTML = `
       <div class="container">

@@ -5,19 +5,20 @@ const imgVisa = require('~/assets/icons/5968151.png');
 const imgAmerican = require('~/assets/icons/349228.png');
 const imgMaster = require('~/assets/icons/mastercard-credit-debit-card-bank-transaction-32303.webp');
 const imgDefaultCard = require('~/assets/icons/4341764.png');
+
 class BuyNowModal {
   copyCart: Cart;
   constructor() {
     this.copyCart = Cart.getInstance();
   }
-  drawBuyNowModal() {
+  drawBuyNowModal(): void {
     const main: HTMLElement | null = document.querySelector('.main');
-    const tempModalBuyNow = <HTMLTemplateElement>document.querySelector('#TempModalBuyNow');
-    const tempModalBuyNowCopy = <HTMLElement>tempModalBuyNow.content.cloneNode(true);
-    // const buyNowModal: HTMLElement | null = tempModalBuyNowCopy.querySelector('.buy-now-modal');
-    const body = document.querySelector('body');
+    const tempModalBuyNow: HTMLTemplateElement | null = document.querySelector('#TempModalBuyNow');
+    const tempModalBuyNowCopy: HTMLElement = <HTMLElement>tempModalBuyNow?.content.cloneNode(true);
+    const body: HTMLElement | null = document.querySelector('body');
     const closeButton: HTMLElement | null = tempModalBuyNowCopy.querySelector('.buy-now__close');
-    const form = tempModalBuyNowCopy.querySelector('.buy-now');
+    const form: HTMLElement | null = tempModalBuyNowCopy.querySelector('.buy-now');
+
     const fullName: HTMLInputElement | null = tempModalBuyNowCopy.querySelector('#personal-info-name');
     const phoneNumber: HTMLInputElement | null = tempModalBuyNowCopy.querySelector('#personal-info-phone-number');
     const deliveryAddress: HTMLInputElement | null = tempModalBuyNowCopy.querySelector(
@@ -118,7 +119,7 @@ class BuyNowModal {
 
     if (body) body.append(tempModalBuyNowCopy);
   }
-  isValid(input: HTMLInputElement) {
+  isValid(input: HTMLInputElement): void {
     const inputError: ChildNode | null = input.nextElementSibling;
 
     if (input.validity.valueMissing) {
@@ -168,8 +169,8 @@ class BuyNowModal {
       if (inputError) inputError.textContent = '';
     }
   }
-  showToggleOrderComplete() {
-    const orderCompleted = document.querySelector('.order-completed');
+  showToggleOrderComplete(): void {
+    const orderCompleted: HTMLElement | null = document.querySelector('.order-completed');
     if (orderCompleted) orderCompleted.classList.toggle('active');
   }
 }

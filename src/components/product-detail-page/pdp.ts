@@ -7,11 +7,10 @@ class Pdp {
   constructor() {
     this.copyCart = Cart.getInstance();
   }
-  drawPdp(data: IProduct) {
-    const tempProductDetailPage = <HTMLTemplateElement>document.querySelector('#template-product-detail-page');
+  drawPdp(data: IProduct): void {
+    const tempProductDetailPage: HTMLTemplateElement | null = document.querySelector('#template-product-detail-page');
     const main: HTMLElement | null = document.querySelector('.main');
-    const productCardClone = <HTMLElement>tempProductDetailPage.content.cloneNode(true);
-
+    const productCardClone: HTMLElement | null = <HTMLElement>tempProductDetailPage?.content.cloneNode(true);
     const breadcrumbs: HTMLElement | null = productCardClone.querySelector('.breadcrumbs');
     const mainPhoto: HTMLElement | null = productCardClone.querySelector('.gallery__main-photo img');
     const galleryAllPhoto: HTMLElement | null = productCardClone.querySelector('.gallery__all-photo');
@@ -26,14 +25,23 @@ class Pdp {
     const productCardDescription: HTMLElement | null = productCardClone.querySelector(
       '.product-card__body-description'
     );
-    const isProductInCart = this.copyCart.allProductCart.has(data.id);
+    const isProductInCart: boolean = this.copyCart.allProductCart.has(data.id);
     const buyNowModal: HTMLElement | null = document.querySelector('.buy-now');
+
+    if (productCardTitle) productCardTitle.textContent = data.title;
+    if (productCardPrice) productCardPrice.textContent = `Price: ${data.price.toString()}$`;
+    if (productCardCategory) productCardCategory.textContent = `Category: ${data.category}`;
+    if (productCardBrand) productCardBrand.textContent = `Brand: ${data.brand}`;
+    if (productCardRating) productCardRating.textContent = `Rating: ${data.rating.toFixed(1).toString()}`;
+    if (productCardStock) productCardStock.textContent = `In stock: ${data.stock.toString()}`;
+    if (productCardDescription) productCardDescription.textContent = data.description;
 
     data.images.forEach((image, index) => {
       if (index === 0 && mainPhoto) {
         mainPhoto.setAttribute('src', `${image}`);
         mainPhoto.setAttribute('alt', `main photo products`);
       }
+
       const newDiv = document.createElement('div');
       const newImg = document.createElement('img');
 
@@ -62,20 +70,7 @@ class Pdp {
       }
     }
 
-    if (productCardTitle) productCardTitle.textContent = data.title;
-    if (productCardPrice) productCardPrice.textContent = `Price: ${data.price.toString()}$`;
-    if (productCardCategory) productCardCategory.textContent = `Category: ${data.category}`;
-    if (productCardBrand) productCardBrand.textContent = `Brand: ${data.brand}`;
-    if (productCardRating) productCardRating.textContent = `Rating: ${data.rating.toFixed(1).toString()}`;
-    if (productCardStock) productCardStock.textContent = `In stock: ${data.stock.toString()}`;
-    if (productCardDescription) productCardDescription.textContent = data.description;
-
-    if (main) {
-      main.innerHTML = '';
-      main.append(productCardClone);
-    }
-
-    if (btnBuyNow && buyNowModal)
+    if (btnBuyNow && buyNowModal) {
       btnBuyNow.addEventListener('click', () => {
         if (!this.copyCart.inCart(data)) {
           this.copyCart.addToCart(data);
@@ -84,6 +79,7 @@ class Pdp {
         buyNowModal.classList.toggle('active');
         window.location.hash = '#/cart';
       });
+    }
 
     if (btnAddCart) {
       if (isProductInCart) {
@@ -96,13 +92,18 @@ class Pdp {
       });
     }
 
+    if (main) {
+      main.innerHTML = '';
+      main.append(productCardClone);
+    }
+
     if (galleryAllPhoto) galleryAllPhoto.addEventListener('click', (e) => this.changeMainImage(e));
   }
-  changeMainImage(e: Event) {
+  changeMainImage(e: Event): void {
     const mainImg: HTMLElement | null = document.querySelector('.gallery__main-photo');
 
-    const currentImg = <Node>e.target;
-    const parentElementImg = currentImg.parentElement;
+    const currentImg: Node = <Node>e.target;
+    const parentElementImg: HTMLElement | null = currentImg.parentElement;
 
     if (mainImg && parentElementImg) {
       mainImg.innerHTML = parentElementImg.innerHTML;

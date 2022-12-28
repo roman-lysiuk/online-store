@@ -12,14 +12,23 @@ export interface IProduct {
   images: Array<string>;
 }
 
-export interface IFilter { 
-  categories: string[],
-  brands: string[],
-  minPrice: string,
-  maxPrice: string,
-  minStock: string,
-  maxStock: string,
-  sorting: string,
-  search: string,
-  view: string,
+export interface IFilter {
+  categories: string[];
+  brands: string[];
+  minPrice: string;
+  maxPrice: string;
+  minStock: string;
+  maxStock: string;
+  sorting: string;
+  search: string;
+  view: string;
+}
+export interface IObjectProductCart {
+  item: IProduct;
+  quantity: number;
+}
+export type allProductCart = Map<number, IObjectProductCart>;
+
+export interface IAllUsedPromo {
+  [key: string]: number;
 }

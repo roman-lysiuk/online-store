@@ -2,7 +2,7 @@ import Plp from '../product-list-page/plp';
 
 import Cart from './cart';
 
-import type { IProduct } from '../../interfaces';
+import type { allProductCart, IAllUsedPromo, IObjectProductCart } from '../../interfaces';
 
 class CartPage {
   copyCart: Cart;
@@ -11,16 +11,13 @@ class CartPage {
     this.copyCart = Cart.getInstance();
     this.plp = new Plp();
   }
-  drawCartPage(data: Map<number, { item: IProduct; quantity: number }>): void {
+  drawCartPage(data: allProductCart): void {
     if (data.size === 0) return this.showCartIsEmpty();
 
-    const main = document.querySelector('.main');
-
-    const cartPageTemp = <HTMLTemplateElement>document.querySelector('#template-cart-page');
-
-    const cartPageClone = <HTMLElement>cartPageTemp.content.cloneNode(true);
+    const main: HTMLElement | null = document.querySelector('.main');
+    const cartPageTemp: HTMLTemplateElement | null = document.querySelector('#template-cart-page');
+    const cartPageClone: HTMLElement = <HTMLElement>cartPageTemp?.content.cloneNode(true);
     const listProducts: HTMLElement | null = cartPageClone.querySelector('.cart-page__list-products');
-
     const summaryProducts: HTMLElement | null = cartPageClone.querySelector('.summary__products');
     const summaryTotalMoney: HTMLElement | null = cartPageClone.querySelector('.summary__total-money');
     const btnBuyNow: HTMLElement | null = cartPageClone.querySelector('.btn-buy-now');
@@ -28,7 +25,6 @@ class CartPage {
     const paginationNextPage: HTMLInputElement | null = cartPageClone.querySelector('.pagination__next-page');
     const paginationPrevPage: HTMLInputElement | null = cartPageClone.querySelector('.pagination__prev-page ');
     const itemsPerPage: HTMLInputElement | null = cartPageClone.querySelector('#items-per-page');
-
     const buyNowModal: HTMLElement | null = document.querySelector('.buy-now');
 
     if (itemsPerPage) {
@@ -50,8 +46,10 @@ class CartPage {
         this.showListPagination(data);
       });
     }
+
     if (summaryProducts) summaryProducts.textContent = `Products:  ${this.copyCart.totalCartItem()}`;
     if (summaryTotalMoney) summaryTotalMoney.textContent = `Total: ${this.copyCart.totalCartMoney()} $`;
+
     this.showSummaryTotalMoneyPromo();
     this.plp.showTotalCartMoney();
 
@@ -82,12 +80,12 @@ class CartPage {
     this.drawUsedPromoCode();
   }
   showCartPage(): void {
-    const headerIconCart = document.querySelector('#header-icon-cart');
+    const headerIconCart: HTMLElement | null = document.querySelector('#header-icon-cart');
 
     if (headerIconCart) headerIconCart.addEventListener('click', () => (window.location.hash = `#/cart`));
   }
   showCartIsEmpty(): void {
-    const main = document.querySelector('.main');
+    const main: HTMLElement | null = document.querySelector('.main');
 
     if (main)
       main.innerHTML = `
@@ -99,21 +97,20 @@ class CartPage {
     const promocodeActive: HTMLElement | null = document.querySelector('.promocode__active');
 
     if (promocodeActive) {
-      const allUsedPromo = this.copyCart.allUsedPromoCode;
+      const allUsedPromo: IAllUsedPromo = this.copyCart.allUsedPromoCode;
       promocodeActive.innerHTML = '';
 
       for (const key in allUsedPromo) {
-        console.log(allUsedPromo);
-        const promo = document.createElement('div');
+        const promo: HTMLDivElement = document.createElement('div');
         promo.innerHTML = `
                     <div id="${key}" class="promo-used">
                     <div>"${key}" - ${allUsedPromo[key]}%</div>
                     <span class="delete-promo">X</span>
                     </div>`;
 
-        const deletePromo = <Node>promo.querySelector('.delete-promo');
+        const deletePromo: HTMLElement | null = promo.querySelector('.delete-promo');
 
-        deletePromo.addEventListener('click', (e) => this.removePromoCode(e));
+        if (deletePromo) deletePromo.addEventListener('click', (e) => this.removePromoCode(e));
 
         promocodeActive.append(promo);
       }
@@ -137,8 +134,8 @@ class CartPage {
     }
   }
   removePromoCode(e: Event): void {
-    const currentElement = <Node>e.target;
-    const parentDeletePromo = <HTMLElement>currentElement.parentNode;
+    const currentElement: Node = <Node>e.target;
+    const parentDeletePromo: HTMLElement | null = <HTMLElement>currentElement.parentNode;
     if (parentDeletePromo) {
       this.copyCart.deletePromoCode(parentDeletePromo.id);
       this.plp.showTotalCartMoney();
@@ -146,14 +143,14 @@ class CartPage {
       parentDeletePromo.remove();
     }
   }
-  drawSummaryBlock(item: { item: IProduct; quantity: number }): void {
+  drawSummaryBlock(): void {
     const summaryProducts: HTMLElement | null = document.querySelector('.summary__products');
     const summaryTotalMoney: HTMLElement | null = document.querySelector('.summary__total-money');
 
     if (summaryProducts) summaryProducts.textContent = `Products:  ${this.copyCart.totalCartItem()}`;
     if (summaryTotalMoney) summaryTotalMoney.textContent = `Total: ${this.copyCart.totalCartMoney()} $`;
   }
-  showListPagination(data: Map<number, { item: IProduct; quantity: number }>, goToPage?: number) {
+  showListPagination(data: allProductCart, goToPage?: number): void {
     if (data.size === 0) {
       return this.showCartIsEmpty();
     }
@@ -163,12 +160,12 @@ class CartPage {
     const currentPage: number = goToPage ? goToPage : parseInt(<string>paginationCurrentPage?.textContent);
     const listProducts: HTMLElement | null = document.querySelector('.cart-page__list-products');
 
-    const startSlice = itemPerPage * (currentPage - 1);
-    const endSlice = startSlice + itemPerPage;
+    const startSlice: number = itemPerPage * (currentPage - 1);
+    const endSlice: number = startSlice + itemPerPage;
 
-    const dataArray = Array.from(data);
+    const dataArray: Array<[number, IObjectProductCart]> = Array.from(data);
 
-    const PaginatedData = dataArray.slice(startSlice, endSlice).reduce((acc, cur) => {
+    const PaginatedData: allProductCart = dataArray.slice(startSlice, endSlice).reduce((acc, cur) => {
       return acc.set(cur[1].item.id, cur[1]);
     }, new Map());
 
@@ -178,16 +175,17 @@ class CartPage {
       if (listProducts) this.drawProductList(PaginatedData, listProducts);
     }
   }
-  nextPaginationPage() {
+  nextPaginationPage(): void {
     const paginationCurrentPage: HTMLElement | null = document.getElementById('pagination-current-page');
     const itemPerPageInput: HTMLInputElement | null = <HTMLInputElement>document.getElementById('items-per-page');
     const itemPerPageInputValue: number =
       +itemPerPageInput.value === 0 ? this.copyCart.allProductCart.size : +itemPerPageInput.value;
 
-    const maxPages = Math.ceil(this.copyCart.allProductCart.size / itemPerPageInputValue);
+    const maxPages: number = Math.ceil(this.copyCart.allProductCart.size / itemPerPageInputValue);
 
     if (paginationCurrentPage) {
       const paginationCurrentPageValue: number = parseInt(<string>paginationCurrentPage.textContent);
+
       if (paginationCurrentPageValue < maxPages) {
         paginationCurrentPage.textContent = `${paginationCurrentPageValue + 1}`;
       } else {
@@ -195,7 +193,7 @@ class CartPage {
       }
     }
   }
-  prevPaginationPage() {
+  prevPaginationPage(): void {
     const paginationCurrentPage: HTMLElement | null = document.getElementById('pagination-current-page');
     if (paginationCurrentPage) {
       const paginationCurrentPageValue: number = parseInt(<string>paginationCurrentPage.textContent);
@@ -203,14 +201,14 @@ class CartPage {
       if (paginationCurrentPageValue > 1) paginationCurrentPage.textContent = `${paginationCurrentPageValue - 1}`;
     }
   }
-  drawProductList(data: Map<number, { item: IProduct; quantity: number }>, listProducts: HTMLElement) {
+  drawProductList(data: allProductCart, listProducts: HTMLElement): void {
     let counterNumber = 0;
     listProducts.innerHTML = ``;
-    const productItemTemp = <HTMLTemplateElement>document.querySelector('#template-product-cart-page');
-    const fragment = document.createDocumentFragment();
+    const productItemTemp: HTMLTemplateElement | null = document.querySelector('#template-product-cart-page');
+    const fragment: DocumentFragment = document.createDocumentFragment();
 
-    data.forEach((item: { item: IProduct; quantity: number }) => {
-      const productClone = <HTMLElement>productItemTemp.content.cloneNode(true);
+    data.forEach((item: IObjectProductCart) => {
+      const productClone: HTMLElement = <HTMLElement>productItemTemp?.content.cloneNode(true);
 
       const productNumber: HTMLElement | null = productClone.querySelector('.product-cart__number');
       const productImg: HTMLElement | null = productClone.querySelector('.product-cart__img');
@@ -227,7 +225,7 @@ class CartPage {
       if (productNumber) productNumber.textContent = counterNumber.toString();
 
       if (productImg) {
-        const thumbnail = document.createElement('img');
+        const thumbnail: HTMLImageElement = document.createElement('img');
         thumbnail.src = item.item.thumbnail;
         productImg.addEventListener('click', () => (window.location.hash = `#/pdp/${item.item.id}`));
         productImg.append(thumbnail);
@@ -251,7 +249,7 @@ class CartPage {
           if (currentNumberProduct) currentNumberProduct.textContent = item.quantity.toString();
           if (productStock) productStock.textContent = `In stock: ${item.item.stock - item.quantity}`;
           if (productTotalMoney) productTotalMoney.textContent = `Total Price: ${item.quantity * item.item.price} $`;
-          this.drawSummaryBlock(item);
+          this.drawSummaryBlock();
           this.showSummaryTotalMoneyPromo();
         });
       }
@@ -262,14 +260,14 @@ class CartPage {
           if (item.quantity === 1) {
             this.copyCart.removeOneQuantity(item.item);
             this.showListPagination(this.copyCart.allProductCart);
-            this.drawSummaryBlock(item);
+            this.drawSummaryBlock();
             this.showSummaryTotalMoneyPromo();
           } else {
             this.copyCart.removeOneQuantity(item.item);
             if (currentNumberProduct) currentNumberProduct.textContent = item.quantity.toString();
             if (productStock) productStock.textContent = `In stock: ${item.item.stock - item.quantity}`;
             if (productTotalMoney) productTotalMoney.textContent = `Total Price: ${item.quantity * item.item.price} $`;
-            this.drawSummaryBlock(item);
+            this.drawSummaryBlock();
             this.showSummaryTotalMoneyPromo();
           }
         });
@@ -281,7 +279,7 @@ class CartPage {
 
     listProducts.appendChild(fragment);
   }
-  goToPage(page: number) {
+  goToPage(page: number): void {
     const paginationCurrentPage: HTMLElement | null = document.getElementById('pagination-current-page');
     if (paginationCurrentPage) paginationCurrentPage.textContent = `${page}`;
     this.showListPagination(this.copyCart.allProductCart, page);
