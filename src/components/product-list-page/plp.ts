@@ -86,14 +86,15 @@ class Plp {
         }
       });
     }
-
        if (choosedFilters?.minStock && asideMinStock && asideRangeStockLower) {
         asideMinStock.textContent = `${choosedFilters.minStock} pcs`;
-//        asideRangeStockLower.value = ???
+        asideRangeStockLower.value = allStockSort.indexOf(Number(choosedFilters.minStock)).toString();
+        asideMinStock.dataset.value = allStockSort[+asideRangeStockLower.value].toString();
       } 
       if (choosedFilters?.maxStock  && asideMaxStock && asideRangeStockUpper) {
         asideMaxStock.textContent = `${choosedFilters.maxStock} pcs`;
-//        asideRangeStockLower.value = ???
+        asideRangeStockUpper.value = allStockSort.indexOf(Number(choosedFilters.maxStock)).toString();
+        asideMaxStock.dataset.value = allStockSort[+asideRangeStockUpper.value].toString();
       } 
 
     asideRangeStockLower?.addEventListener('change', this.handleUrl);
@@ -140,12 +141,14 @@ class Plp {
 
     if (choosedFilters?.minPrice && asideMinPrice && asideRangePriceLower) {
       asideMinPrice.textContent = `${choosedFilters.minPrice} $`;
-//        asideRangePriceLower.value = ???
+        asideRangePriceLower.value = allPriceSort.indexOf(Number(choosedFilters.minPrice)).toString();
+        asideMinPrice.dataset.value = allPriceSort[+asideRangePriceLower.value].toString();
     } 
 
-    if (choosedFilters?.maxPrice && asideMaxPrice) {
+    if (choosedFilters?.maxPrice && asideMaxPrice && asideRangePriceUpper) {
       asideMaxPrice.textContent = `${choosedFilters.maxPrice} $`;
-//        asideRangePriceUpper.value = ???
+      asideRangePriceUpper.value = allPriceSort.indexOf(Number(choosedFilters.maxPrice)).toString();
+      asideMaxPrice.dataset.value = allPriceSort[+asideRangePriceUpper.value].toString();
     }
 
     asideRangePriceLower?.addEventListener('change', this.handleUrl);
