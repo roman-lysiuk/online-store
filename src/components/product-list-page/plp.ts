@@ -27,7 +27,6 @@ class Plp {
     this.showAsideMobile();
     this.drawProducts(data);
     this.drawSearch(choosedFilters);
-
     if (choosedFilters?.view === '4') {
       this.changeCardView('four-columns');
     } 
@@ -352,7 +351,6 @@ class Plp {
       }
     });
 
-       
      const product:Element | null = document.querySelector('.product');
     if (product?.classList.contains('four-columns')) {
       query += '&view=4&';
@@ -384,7 +382,7 @@ class Plp {
 
     const searchInput: HTMLInputElement | null = document.querySelector('#search');
     if (searchInput?.value) {
-      query = `?se=${searchInput.value}&`
+      query += `se=${searchInput.value}&`
     }
 
     const sortInput: HTMLInputElement | null = document.querySelector('.sort__options');
