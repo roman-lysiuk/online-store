@@ -1,12 +1,11 @@
 import Plp from '../product-list-page/plp';
 
-import type { IProduct } from '../../interfaces';
+import type { IProduct, IObjectProductCart, allProductCart, IAllUsedPromo } from '../../interfaces';
 
 class Cart {
-  // патерн singleton
   private static _instance: Cart;
-  public allProductCart: Map<number, { item: IProduct; quantity: number }>;
-  public allUsedPromoCode: { [key: string]: number };
+  public allProductCart: allProductCart;
+  public allUsedPromoCode: IAllUsedPromo;
   plp: Plp;
   constructor() {
     this.plp = new Plp();
@@ -23,10 +22,11 @@ class Cart {
   }
 
   addToCart(item: IProduct): void {
-    const objectProductCart = {
+    const objectProductCart: IObjectProductCart = {
       item: item,
       quantity: 0,
     };
+
     if (this.allProductCart.has(item.id)) {
       this.removeProductFromCart(item);
     } else {
@@ -35,18 +35,18 @@ class Cart {
     }
   }
   addOneQuantity(item: IProduct): void {
-    const inStock = item.stock;
-    const currentProduct = this.allProductCart.get(item.id);
+    const inStock: number = item.stock;
+    const currentProduct: IObjectProductCart | undefined = this.allProductCart.get(item.id);
 
     if (currentProduct) {
-      const currentQuantityProduct = currentProduct.quantity;
+      const currentQuantityProduct: number = currentProduct.quantity;
       if (currentQuantityProduct < inStock) currentProduct.quantity += 1;
     }
     this.plp.showTotalItemCart();
     this.plp.showTotalCartMoney();
   }
   removeOneQuantity(item: IProduct): void {
-    const currentProduct = this.allProductCart.get(item.id);
+    const currentProduct: IObjectProductCart | undefined = this.allProductCart.get(item.id);
     if (currentProduct) {
       if (currentProduct.quantity === 1) {
         this.removeProductFromCart(item);
@@ -57,7 +57,7 @@ class Cart {
     this.plp.showTotalItemCart();
     this.plp.showTotalCartMoney();
   }
-  removeProductFromCart(item: IProduct) {
+  removeProductFromCart(item: IProduct): void {
     if (this.allProductCart.has(item.id)) {
       this.allProductCart.delete(item.id);
       this.plp.showTotalItemCart();
@@ -65,9 +65,10 @@ class Cart {
     }
   }
 
-  changeButtonAddToCart(e?: Event) {
-    const btnAddToCart: HTMLButtonElement | null = e?.target
-      ? <HTMLButtonElement>e?.target
+  changeButtonAddToCart(e?: Event): void {
+    const currentElement: HTMLButtonElement | null = <HTMLButtonElement | null>e?.target;
+    const btnAddToCart: HTMLButtonElement | null = currentElement
+      ? currentElement
       : document.querySelector('.btn-add-cart');
 
     if (btnAddToCart) {
@@ -80,7 +81,7 @@ class Cart {
     }
   }
   inCart(item: IProduct): boolean {
-    const result = [];
+    const result: Array<IProduct> = [];
     this.allProductCart.forEach((el) => {
       if (el.item.id === item.id) result.push(item);
     });
@@ -122,10 +123,10 @@ class Cart {
         return false;
     }
   }
-  addPromoCode(promo: string) {
+  addPromoCode(promo: string): void {
     this.allUsedPromoCode[promo] = 15;
   }
-  deletePromoCode(promo: string) {
+  deletePromoCode(promo: string): void {
     delete this.allUsedPromoCode[promo];
   }
   clearCart(): void {
