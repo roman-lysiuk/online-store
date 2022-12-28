@@ -7,7 +7,7 @@ import QueryAnalizer from '../queryAnalizer/queryAnalizer';
 
 import products from '../../data/products.json';
 
-import { IProduct } from '../../interfaces';
+import { IFilter, IProduct } from '../../interfaces';
 
 class Router {
   error404: Error404;
@@ -23,7 +23,7 @@ class Router {
     this.queryAnalizer = new QueryAnalizer();
   }
 
-  handleRoute(location: string) {
+  handleRoute(location: string): void {
     const urlString: Array<string> = location.split('?');
     const adress: Array<string> = urlString[0].split('/');
     let query: Array<string> = [];
@@ -44,7 +44,7 @@ class Router {
         this.showError();
     }
   }
-  showPdp(adress: Array<string>, location: string) {
+  showPdp(adress: Array<string>, location: string): void {
     const item = products.products.filter((el) => el.id.toString() === adress[2]);
     if (item[0]) {
       localStorage.setItem('URLSave', location);
@@ -53,25 +53,25 @@ class Router {
       this.showError();
     }
   }
-  showPlp(location: string, query: string[] | undefined) {
+  showPlp(location: string, query: string[] | undefined): void {
     localStorage.setItem('URLSave', location);
     if (query?.length) {
       const data = this.queryAnalizer.handleQuery(products.products, query);
       const filteredProducts: IProduct[] = data[0];
-      const choosedFilters = data[1];
+      const choosedFilters: IFilter = data[1];
       this.plp.drawPlp(filteredProducts, choosedFilters);
     } else {
       this.plp.drawPlp(products.products);
     }
   }
 
-  showCart(location: string) {
+  showCart(location: string): void {
     localStorage.setItem('URLSave', location);
-    const copyCart = Cart.getInstance();
+    const copyCart: Cart = Cart.getInstance();
     this.cartPage.drawCartPage(copyCart.allProductCart);
   }
 
-  showError() {
+  showError(): void {
     this.error404.drawErrorPage();
   }
 }

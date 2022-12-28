@@ -6,14 +6,14 @@ import type { IProduct, IFilter } from '../../interfaces';
 
 class Plp {
   drawPlp(data: IProduct[], choosedFilters?: IFilter): void {
-    const tempProductListPage = <HTMLTemplateElement>document.querySelector('#template-plp');
-    const cloneProductListPage = <HTMLElement>tempProductListPage.content.cloneNode(true);
-    const main = document.querySelector('.main');
+    const tempProductListPage: HTMLTemplateElement | null = document.querySelector('#template-plp');
+    const cloneProductListPage: HTMLElement | null = <HTMLElement>tempProductListPage?.content.cloneNode(true);
+    const main: HTMLElement | null = document.querySelector('.main');
     if (cloneProductListPage && main) {
       main.innerHTML = '';
       main.append(cloneProductListPage);
     }
-    const sortBarViewOptions = document.querySelector('.sort-bar__view-options');
+    const sortBarViewOptions: HTMLElement | null = document.querySelector('.sort-bar__view-options');
     if (sortBarViewOptions) {
       sortBarViewOptions.addEventListener('click', (e) => {
         const currentElement: HTMLElement | null = <HTMLElement>e.target;
@@ -29,12 +29,11 @@ class Plp {
     this.drawSearch(choosedFilters);
     if (choosedFilters?.view === '4') {
       this.changeCardView('four-columns');
-    } 
-
+    }
   }
   drawAside(data: IProduct[], choosedFilters?: IFilter): void {
-    const btnReset: HTMLElement | null = document.querySelector('.btn-reset ');
-    const btnCopy: HTMLElement | null = document.querySelector('.btn-copy-link');
+    const btnReset: HTMLButtonElement | null = document.querySelector('.btn-reset ');
+    const btnCopy: HTMLButtonElement | null = document.querySelector('.btn-copy-link');
 
     this.drawFilterCategory(data, choosedFilters);
     this.drawFilterBrand(data, choosedFilters);
@@ -42,9 +41,10 @@ class Plp {
     this.drawFilterStock(data, choosedFilters);
 
     if (btnReset) btnReset.addEventListener('click', () => (window.location.hash = `#/plp`));
-    if (btnCopy) btnCopy.addEventListener('click', () => {
-      navigator.clipboard.writeText(window.location.href);
-    });
+    if (btnCopy)
+      btnCopy.addEventListener('click', () => {
+        navigator.clipboard.writeText(window.location.href);
+      });
   }
   drawFilterStock(data: IProduct[], choosedFilters?: IFilter): void {
     const asideMaxStock: HTMLElement | null = document.querySelector('.aside__max-stock');
@@ -52,7 +52,7 @@ class Plp {
     const asideRangeStockLower: HTMLInputElement | null = document.querySelector('.aside__range-stock_lower');
     const asideRangeStockUpper: HTMLInputElement | null = document.querySelector('.aside__range-stock_upper');
 
-    const allStock = <Array<number>>[...data.reduce((acc, cur) => acc.add(cur.stock), new Set())];
+    const allStock: number[] = <Array<number>>[...data.reduce((acc, cur) => acc.add(cur.stock), new Set())];
     const allStockSort: number[] = allStock.sort((a, b) => a - b);
 
     if (asideMinStock) asideMinStock.textContent = `${allStockSort[0].toString()} pcs`;
@@ -68,33 +68,39 @@ class Plp {
       asideRangeStockUpper.value = allStock.length.toString();
 
       asideRangeStockLower.addEventListener('input', () => {
-        if (parseInt(asideRangeStockUpper.value) - parseInt(asideRangeStockLower.value) <= minGapRange) {
-          asideRangeStockLower.value = `${parseInt(asideRangeStockUpper.value) - minGapRange}`;
+        const asideRangeStockUpperValue: number = parseInt(asideRangeStockUpper.value);
+        const asideRangeStockLowerValue: number = parseInt(asideRangeStockLower.value);
+
+        if (asideRangeStockUpperValue - asideRangeStockLowerValue <= minGapRange) {
+          asideRangeStockLower.value = `${asideRangeStockUpperValue - minGapRange}`;
         } else {
-          asideMinStock.textContent = `${allStockSort[+asideRangeStockLower.value].toString()} pcs`;
-          asideMinStock.dataset.value = allStockSort[+asideRangeStockLower.value].toString();
-         }
+          asideMinStock.textContent = `${allStockSort[asideRangeStockLowerValue].toString()} pcs`;
+          asideMinStock.dataset.value = allStockSort[asideRangeStockLowerValue].toString();
+        }
       });
 
       asideRangeStockUpper.addEventListener('input', () => {
-        if (parseInt(asideRangeStockUpper.value) - parseInt(asideRangeStockLower.value) <= minGapRange) {
-          asideRangeStockUpper.value = `${parseInt(asideRangeStockLower.value) + minGapRange}`;
+        const asideRangeStockUpperValue: number = parseInt(asideRangeStockUpper.value);
+        const asideRangeStockLowerValue: number = parseInt(asideRangeStockLower.value);
+
+        if (asideRangeStockUpperValue - asideRangeStockLowerValue <= minGapRange) {
+          asideRangeStockUpper.value = `${asideRangeStockLowerValue + minGapRange}`;
         } else {
-          asideMaxStock.textContent = `${allStockSort[+asideRangeStockUpper.value].toString()} pcs`;
-          asideMaxStock.dataset.value = allStockSort[+asideRangeStockUpper.value].toString();
+          asideMaxStock.textContent = `${allStockSort[asideRangeStockUpperValue].toString()} pcs`;
+          asideMaxStock.dataset.value = allStockSort[asideRangeStockUpperValue].toString();
         }
       });
     }
-       if (choosedFilters?.minStock && asideMinStock && asideRangeStockLower) {
-        asideMinStock.textContent = `${choosedFilters.minStock} pcs`;
-        asideRangeStockLower.value = allStockSort.indexOf(Number(choosedFilters.minStock)).toString();
-        asideMinStock.dataset.value = allStockSort[+asideRangeStockLower.value].toString();
-      } 
-      if (choosedFilters?.maxStock  && asideMaxStock && asideRangeStockUpper) {
-        asideMaxStock.textContent = `${choosedFilters.maxStock} pcs`;
-        asideRangeStockUpper.value = allStockSort.indexOf(Number(choosedFilters.maxStock)).toString();
-        asideMaxStock.dataset.value = allStockSort[+asideRangeStockUpper.value].toString();
-      } 
+    if (choosedFilters?.minStock && asideMinStock && asideRangeStockLower) {
+      asideMinStock.textContent = `${choosedFilters.minStock} pcs`;
+      asideRangeStockLower.value = allStockSort.indexOf(Number(choosedFilters.minStock)).toString();
+      asideMinStock.dataset.value = allStockSort[+asideRangeStockLower.value].toString();
+    }
+    if (choosedFilters?.maxStock && asideMaxStock && asideRangeStockUpper) {
+      asideMaxStock.textContent = `${choosedFilters.maxStock} pcs`;
+      asideRangeStockUpper.value = allStockSort.indexOf(Number(choosedFilters.maxStock)).toString();
+      asideMaxStock.dataset.value = allStockSort[+asideRangeStockUpper.value].toString();
+    }
 
     asideRangeStockLower?.addEventListener('change', this.handleUrl);
     asideRangeStockUpper?.addEventListener('change', this.handleUrl);
@@ -105,7 +111,7 @@ class Plp {
     const asideRangePriceLower: HTMLInputElement | null = document.querySelector('.aside__range-price_lower');
     const asideRangePriceUpper: HTMLInputElement | null = document.querySelector('.aside__range-price_upper');
 
-    const allPrice = <Array<number>>[...data.reduce((acc, cur) => acc.add(cur.price), new Set())];
+    const allPrice: number[] = <Array<number>>[...data.reduce((acc, cur) => acc.add(cur.price), new Set())];
     const allPriceSort: number[] = allPrice.sort((a, b) => a - b);
 
     if (asideMinPrice) asideMinPrice.textContent = `${allPriceSort[0].toString()} $`;
@@ -140,9 +146,9 @@ class Plp {
 
     if (choosedFilters?.minPrice && asideMinPrice && asideRangePriceLower) {
       asideMinPrice.textContent = `${choosedFilters.minPrice} $`;
-        asideRangePriceLower.value = allPriceSort.indexOf(Number(choosedFilters.minPrice)).toString();
-        asideMinPrice.dataset.value = allPriceSort[+asideRangePriceLower.value].toString();
-    } 
+      asideRangePriceLower.value = allPriceSort.indexOf(Number(choosedFilters.minPrice)).toString();
+      asideMinPrice.dataset.value = allPriceSort[+asideRangePriceLower.value].toString();
+    }
 
     if (choosedFilters?.maxPrice && asideMaxPrice && asideRangePriceUpper) {
       asideMaxPrice.textContent = `${choosedFilters.maxPrice} $`;
@@ -156,13 +162,13 @@ class Plp {
   drawFilterCategory(data: IProduct[], choosedFilters?: IFilter): void {
     const fragmentCategory: DocumentFragment = document.createDocumentFragment();
     const asideFilterListCategory: HTMLElement | null = document.querySelector('.aside__filter-list-category');
-    const allCategory = <Array<string>>[...data.reduce((acc, cur) => acc.add(cur.category), new Set())];
+    const allCategory: string[] = <Array<string>>[...data.reduce((acc, cur) => acc.add(cur.category), new Set())];
 
     allCategory.forEach((item) => {
-      const newCategory = document.createElement('div');
-      const label = document.createElement('label');
-      const input = document.createElement('input');
-      const span = document.createElement('span');
+      const newCategory: HTMLDivElement = document.createElement('div');
+      const label: HTMLLabelElement = document.createElement('label');
+      const input: HTMLInputElement = document.createElement('input');
+      const span: HTMLSpanElement = document.createElement('span');
 
       const amountProductsCategory: number = data.filter((elem) => elem.category === item).length;
 
@@ -189,13 +195,13 @@ class Plp {
   drawFilterBrand(data: IProduct[], choosedFilters?: IFilter): void {
     const asideFilterListBrand: HTMLElement | null = document.querySelector('.aside__filter-list-brand');
     const fragmentBrand: DocumentFragment = document.createDocumentFragment();
-    const allBrand = <Array<string>>[...data.reduce((acc, cur) => acc.add(cur.brand), new Set())];
+    const allBrand: string[] = <Array<string>>[...data.reduce((acc, cur) => acc.add(cur.brand), new Set())];
 
     allBrand.forEach((item) => {
-      const newBrand = document.createElement('div');
-      const label = document.createElement('label');
-      const input = document.createElement('input');
-      const span = document.createElement('span');
+      const newBrand: HTMLDivElement = document.createElement('div');
+      const label: HTMLLabelElement = document.createElement('label');
+      const input: HTMLInputElement = document.createElement('input');
+      const span: HTMLSpanElement = document.createElement('span');
 
       const amountProductsBrand: number = data.filter((elem) => elem.brand === item).length;
 
@@ -223,7 +229,7 @@ class Plp {
     if (asideFilterListBrand) asideFilterListBrand.append(fragmentBrand);
   }
 
-  drawSort(choosedFilters?: IFilter) {
+  drawSort(choosedFilters?: IFilter): void {
     const sortInput: HTMLInputElement | null = document.querySelector('.sort__options');
     sortInput?.addEventListener('change', this.handleUrl);
     if (choosedFilters?.sorting && sortInput) {
@@ -231,7 +237,7 @@ class Plp {
     }
   }
 
-  drawSearch(choosedFilters?: IFilter) {
+  drawSearch(choosedFilters?: IFilter): void {
     const searchInput: HTMLInputElement | null = document.querySelector('#search');
     searchInput?.addEventListener('change', this.handleUrl);
     if (choosedFilters?.search && searchInput) {
@@ -241,12 +247,12 @@ class Plp {
 
   drawProducts(data: IProduct[]): void {
     const copyCart: Cart = Cart.getInstance();
-    const fragment = document.createDocumentFragment();
-    const productItemTemp = <HTMLTemplateElement>document.querySelector('#productItemTemp');
+    const fragment: DocumentFragment = document.createDocumentFragment();
+    const productItemTemp: HTMLTemplateElement | null = document.querySelector('#productItemTemp');
     const products: HTMLElement | null = document.querySelector('.products');
 
     data.forEach((item) => {
-      const productClone = <HTMLElement>productItemTemp.content.cloneNode(true);
+      const productClone: HTMLElement = <HTMLElement>productItemTemp?.content.cloneNode(true);
       const productItem: HTMLElement | null = productClone.querySelector('.product__item');
       const productTitle: HTMLElement | null = productClone.querySelector('.product__title');
       const productImage: HTMLElement | null = productClone.querySelector('.product__image');
@@ -292,10 +298,10 @@ class Plp {
     if (products) products.append(fragment);
   }
 
-  showAsideMobile() {
-    const asideArrowRight = document.querySelector('.aside__arrow-right');
-    const aside = document.querySelector('.aside-sticky-box');
-    const asideClose = document.querySelector('.aside__close');
+  showAsideMobile(): void {
+    const asideArrowRight: HTMLElement | null = document.querySelector('.aside__arrow-right');
+    const aside: HTMLElement | null = document.querySelector('.aside-sticky-box');
+    const asideClose: HTMLElement | null = document.querySelector('.aside__close');
 
     if (asideArrowRight) {
       asideArrowRight.addEventListener('click', () => {
@@ -307,14 +313,14 @@ class Plp {
       if (asideClose && aside) asideClose.addEventListener('click', () => aside.classList.remove('active'));
     }
   }
-  showTotalItemCart() {
+  showTotalItemCart(): void {
     const copyCart: Cart = Cart.getInstance();
-    const numberProductsCart = document.getElementById('number-products-cart');
+    const numberProductsCart: HTMLElement | null = document.getElementById('number-products-cart');
     if (numberProductsCart) numberProductsCart.textContent = copyCart.totalCartItem().toString();
   }
-  showTotalCartMoney() {
+  showTotalCartMoney(): void {
     const copyCart: Cart = Cart.getInstance();
-    const totalCart = document.getElementById('total-cart');
+    const totalCart: HTMLElement | null = document.getElementById('total-cart');
 
     if (totalCart) {
       if (Object.keys(copyCart.allUsedPromoCode).length > 0) {
@@ -324,7 +330,7 @@ class Plp {
       }
     }
   }
-  changeCardView(column: string) {
+  changeCardView(column: string): void {
     const products: NodeListOf<Element> = document.querySelectorAll('.product');
     if (products) {
       products.forEach((item) => {
@@ -334,64 +340,66 @@ class Plp {
     }
     this.handleUrl();
   }
-  handleUrl():void {
-    let query: string = '?';
+  handleUrl(): void {
+    let query = '?';
 
-    const categoriesInput = document.querySelectorAll('.input-category') as NodeListOf<HTMLInputElement>;
-    categoriesInput.forEach(el => {
+    const categoriesInput: NodeListOf<HTMLInputElement> = document.querySelectorAll(
+      '.input-category'
+    ) as NodeListOf<HTMLInputElement>;
+    categoriesInput.forEach((el) => {
       if (el.checked) {
-        query +=  `cat=${el.id}&`
+        query += `cat=${el.id}&`;
       }
     });
 
-    const brandsInput = document.querySelectorAll('.input-brand') as NodeListOf<HTMLInputElement>;
-    brandsInput.forEach(el => {
+    const brandsInput: NodeListOf<HTMLInputElement> = document.querySelectorAll(
+      '.input-brand'
+    ) as NodeListOf<HTMLInputElement>;
+    brandsInput.forEach((el) => {
       if (el.checked) {
-        query +=  `br=${el.id}&`
+        query += `br=${el.id}&`;
       }
     });
 
-     const product:Element | null = document.querySelector('.product');
+    const product: HTMLElement | null = document.querySelector('.product');
     if (product?.classList.contains('four-columns')) {
       query += '&view=4&';
     } else {
       query += '&view=3&';
-    } 
+    }
 
     const asideMaxStock: HTMLElement | null = document.querySelector('.aside__max-stock');
     if (asideMaxStock?.dataset.value) {
-      query += `stmax=${asideMaxStock.dataset.value}&`
+      query += `stmax=${asideMaxStock.dataset.value}&`;
     }
 
     const asideMinStock: HTMLElement | null = document.querySelector('.aside__min-stock');
     if (asideMinStock?.dataset.value) {
-      query += `stmin=${asideMinStock.dataset.value}&`
+      query += `stmin=${asideMinStock.dataset.value}&`;
     }
-
 
     const asideMinPrice: HTMLElement | null = document.querySelector('.aside__min-price');
     if (asideMinPrice?.dataset.value) {
-      query += `prmin=${asideMinPrice.dataset.value}&`
+      query += `prmin=${asideMinPrice.dataset.value}&`;
     }
-
 
     const asideMaxPrice: HTMLElement | null = document.querySelector('.aside__max-price');
     if (asideMaxPrice?.dataset.value) {
-      query += `prmax=${asideMaxPrice.dataset.value}&`
+      query += `prmax=${asideMaxPrice.dataset.value}&`;
     }
 
     const searchInput: HTMLInputElement | null = document.querySelector('#search');
     if (searchInput?.value) {
-      query += `se=${searchInput.value}&`
+      query += `se=${searchInput.value}&`;
     }
 
     const sortInput: HTMLInputElement | null = document.querySelector('.sort__options');
     if (sortInput?.value) {
-      query +=  `so=${sortInput.value}&`;
+      query += `so=${sortInput.value}&`;
     }
 
     if (query[query.length - 1] === '&') query = query.slice(0, -1);
-    window.location.hash = `#/plp${query.toLowerCase()}`
+    window.location.hash = `#/plp${query.toLowerCase()}`;
   }
 }
 
