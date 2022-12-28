@@ -94,7 +94,7 @@ class QueryAnalizer {
           handledProducts = handledProducts.filter(item => item.stock <= Number(choosedFilters.maxStock));
         }
         if (choosedFilters.search) {
-          handledProducts = products.filter(item => item.title.toLocaleLowerCase().includes(choosedFilters.search) || item.description.toLocaleLowerCase().includes(choosedFilters.search) 
+          handledProducts = handledProducts.filter(item => item.title.toLocaleLowerCase().includes(choosedFilters.search) || item.description.toLocaleLowerCase().includes(choosedFilters.search) 
           || item.price.toString().includes(choosedFilters.search) ||item.discountPercentage.toString().includes(choosedFilters.search) 
           || item.rating.toString().includes(choosedFilters.search) ||item.stock.toString().includes(choosedFilters.search) 
           || item.brand.toLocaleLowerCase().includes(choosedFilters.search) || item.category.toLocaleLowerCase().includes(choosedFilters.search));
