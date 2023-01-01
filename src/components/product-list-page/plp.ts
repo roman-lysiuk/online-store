@@ -25,7 +25,7 @@ class Plp {
       });
     }
 
-    this.drawAside(products.products, choosedFilters);
+    this.drawAside(data, choosedFilters);
     this.drawSort(choosedFilters);
     this.showTotalItemCart();
     this.showAsideMobile();
@@ -184,7 +184,8 @@ class Plp {
       const input: HTMLInputElement = document.createElement('input');
       const span: HTMLSpanElement = document.createElement('span');
 
-      const amountProductsCategory: number = data.filter((elem) => elem.category === item).length;
+      const amountProductsCategory: number = products.products.filter((elem) => elem.category === item).length;
+      const numberPerPage: number = data.filter((elem) => elem.category === item).length;
 
       newCategory.classList.add('checkbox-line');
 
@@ -196,7 +197,7 @@ class Plp {
 
       label.setAttribute('for', item);
       label.textContent = item;
-      span.textContent = `(num/${amountProductsCategory})`;
+      span.textContent = `(${numberPerPage}/${amountProductsCategory})`;
       newCategory.appendChild(input);
       newCategory.appendChild(label);
       newCategory.appendChild(span);
@@ -217,7 +218,8 @@ class Plp {
       const input: HTMLInputElement = document.createElement('input');
       const span: HTMLSpanElement = document.createElement('span');
 
-      const amountProductsBrand: number = data.filter((elem) => elem.brand === item).length;
+      const amountProductsBrand: number = products.products.filter((elem) => elem.brand === item).length;
+      const numberPerPage: number = data.filter((elem) => elem.brand === item).length;
 
       newBrand.classList.add('checkbox-line');
 
@@ -231,7 +233,7 @@ class Plp {
       label.setAttribute('for', item);
       label.textContent = item;
 
-      span.textContent = `(num/${amountProductsBrand})`;
+      span.textContent = `(${numberPerPage}/${amountProductsBrand})`;
 
       newBrand.appendChild(input);
       newBrand.appendChild(label);
