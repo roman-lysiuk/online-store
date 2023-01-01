@@ -49,7 +49,6 @@ class Plp {
     if (btnReset) btnReset.addEventListener('click', () => (window.location.hash = `#/plp`));
     if (btnCopy) btnCopy.addEventListener('click', () => {
       navigator.clipboard.writeText(window.location.href);
-      btnCopy.classList.add('btn-copy-link-active');
     });
   }
   drawFilterStock(data: IProduct[], choosedFilters?: IFilter): void {
