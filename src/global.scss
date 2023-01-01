@@ -118,6 +118,10 @@ body {
       font-size: 1.3rem;
       max-height: max-content;
    }
+   &.sort-bar__view-options_btn-active {
+      border: 2px solid black;
+      background-color: rgb(56, 164, 117);
+   }
 }
 
 a {
