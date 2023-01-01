@@ -205,6 +205,11 @@
         display: flex;
         gap: 10px;
     }
+
+    &__view-options_btn-active {
+      background: green;
+    }
+
     @media (max-width: 650px) {
         font-size: 1rem;
         gap: 10px;
