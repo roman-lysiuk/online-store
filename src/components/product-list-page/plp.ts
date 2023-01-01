@@ -9,9 +9,8 @@ class Plp {
     const tempProductListPage: HTMLTemplateElement | null = document.querySelector('#template-plp');
     const cloneProductListPage: HTMLElement | null = <HTMLElement>tempProductListPage?.content.cloneNode(true);
     const main: HTMLElement | null = document.querySelector('.main');
-    const foundProducts: HTMLElement | null = cloneProductListPage.querySelector('#found-products');
 
-    if (foundProducts) foundProducts.textContent = `${data.length}`;
+    this.showQuantityFindedProducts(data.length);
 
     if (cloneProductListPage && main) {
       main.innerHTML = '';
@@ -244,7 +243,7 @@ class Plp {
 
     if (asideFilterListBrand) asideFilterListBrand.append(fragmentBrand);
   }
-  
+
   drawSort(choosedFilters?: IFilter): void {
     const sortInput: HTMLInputElement | null = document.querySelector('.sort__options');
     sortInput?.addEventListener('change', this.handleUrl);
@@ -332,13 +331,13 @@ class Plp {
       if (asideClose && aside) asideClose.addEventListener('click', () => aside.classList.remove('active'));
     }
   }
-  
+
   showTotalItemCart(): void {
     const copyCart: Cart = Cart.getInstance();
     const numberProductsCart: HTMLElement | null = document.getElementById('number-products-cart');
     if (numberProductsCart) numberProductsCart.textContent = copyCart.totalCartItem().toString();
   }
-  
+
   showTotalCartMoney(): void {
     const copyCart: Cart = Cart.getInstance();
     const totalCart: HTMLElement | null = document.getElementById('total-cart');
@@ -425,16 +424,9 @@ class Plp {
   }
 
   showQuantityFindedProducts(quantity: number): void {
-    const out:HTMLElement | null = document.getElementById("found-products");
-    if (out) {
-      if (quantity === 1) {
-        out.innerHTML =  `Found : ${quantity} product`;
-      } else {
-        out.innerHTML =  `Found : ${quantity} products`;
-      }
-    }
+    const foundProducts: HTMLElement | null = document.getElementById('found-products');
+    if (foundProducts) foundProducts.textContent = `${quantity}`;
   }
-  
 }
 
 export default Plp;
