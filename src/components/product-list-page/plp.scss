@@ -40,8 +40,10 @@
         width: 100%;
         margin-bottom: 10px;
         background-size: cover;
+        background-position: center center;
         background-repeat: no-repeat;
         transition: 500ms;
+
         &:hover {
             opacity: 0.5;
         }
@@ -63,6 +65,7 @@
         display: flex;
         justify-content: space-around;
         padding-bottom: 10px;
+        gap: 5px;
     }
     @media (max-width: 650px) {
         width: calc(100% - 20px);
@@ -82,13 +85,12 @@
     }
 }
 .aside-sticky-box {
-    flex: 0 1 15%;
+    flex: 0 0 15%;
     @media (max-width: 1000px) {
         display: none;
-        background-color: white;
         position: fixed;
         z-index: 2;
-        top: 5px;
+        top: 0px;
     }
     &.active {
         display: block;
@@ -98,12 +100,17 @@
     display: flex;
     flex-direction: column;
     position: sticky;
-    top: 0px;
+    top: 80px;
     padding-bottom: 50px;
     margin-bottom: 10px;
     border-radius: 10px;
+    background-color: white;
     box-shadow: 0px 0px 11px 3px rgba(0, 0, 0, 0.2);
     gap: 20px;
+    @media (max-width: 1000px) {
+        position: fixed;
+        top: 0px;
+    }
     &__close {
         display: none;
         width: 30px;
@@ -113,6 +120,7 @@
         }
         @media (max-width: 1000px) {
             display: block;
+            padding-top: 10px;
         }
     }
     &__filter-list-category,
@@ -130,9 +138,12 @@
     }
     &__btn-row {
         display: flex;
-        padding: 5px 10px 0 10px;
-        row-gap: 5px;
+        padding: 10px 10px 0 10px;
+        gap: 5px;
         justify-content: space-around;
+        @media (max-width: 1000px) {
+            padding: 0px 10px;
+        }
     }
     &__title {
         padding: 5px 0;
@@ -227,4 +238,9 @@
     100% {
         left: 1%;
     }
+}
+.products-not-found {
+    margin: 0 auto;
+    font-size: 1.3rem;
+    font-weight: 600;
 }
