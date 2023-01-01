@@ -9,6 +9,10 @@ class Plp {
     const tempProductListPage: HTMLTemplateElement | null = document.querySelector('#template-plp');
     const cloneProductListPage: HTMLElement | null = <HTMLElement>tempProductListPage?.content.cloneNode(true);
     const main: HTMLElement | null = document.querySelector('.main');
+    const foundProducts: HTMLElement | null = cloneProductListPage.querySelector('#found-products');
+
+    if (foundProducts) foundProducts.textContent = `${data.length}`;
+
     if (cloneProductListPage && main) {
       main.innerHTML = '';
       main.append(cloneProductListPage);
@@ -44,6 +48,8 @@ class Plp {
     if (btnCopy)
       btnCopy.addEventListener('click', () => {
         navigator.clipboard.writeText(window.location.href);
+        btnCopy.textContent = `Copied`;
+        setTimeout(() => (btnCopy.textContent = `Copy link`), 1000);
       });
   }
   drawFilterStock(data: IProduct[], choosedFilters?: IFilter): void {
@@ -251,6 +257,9 @@ class Plp {
     const productItemTemp: HTMLTemplateElement | null = document.querySelector('#productItemTemp');
     const products: HTMLElement | null = document.querySelector('.products');
 
+    if (data.length === 0) {
+      if (products) products.innerHTML = `<h3 class ="products-not-found">Products not found</h3>`;
+    }
     data.forEach((item) => {
       const productClone: HTMLElement = <HTMLElement>productItemTemp?.content.cloneNode(true);
       const productItem: HTMLElement | null = productClone.querySelector('.product__item');
