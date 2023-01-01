@@ -62,11 +62,14 @@ class Pdp {
       if (breadcrumbsFilterCategory) {
         breadcrumbsFilterCategory.addEventListener(
           'click',
-          () => (window.location.hash = `#/plp?cat=${data.category}`)
+          () => (window.location.hash = `#/plp?cat=${data.category.toLowerCase()}`)
         );
       }
       if (breadcrumbsFilterBrand) {
-        breadcrumbsFilterBrand.addEventListener('click', () => (window.location.hash = `#/plp?br=${data.brand}`));
+        breadcrumbsFilterBrand.addEventListener(
+          'click',
+          () => (window.location.hash = `#/plp?br=${data.brand.toLowerCase()}`)
+        );
       }
     }
 
