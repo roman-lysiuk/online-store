@@ -9,7 +9,8 @@
     "build:dev": "webpack --mode=development --node-env=development",
     "build:prod": "webpack --mode=production --node-env=production",
     "watch": "webpack --watch --node-env=development",
-    "start": "webpack-dev-server --node-env=development"
+    "start": "webpack-dev-server --node-env=development",
+    "lint": "eslint . --ext .ts"
   },
   "repository": {
     "type": "git",
