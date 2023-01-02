@@ -246,6 +246,7 @@ class CartPage {
       if (addNumberProduct) {
         addNumberProduct.addEventListener('click', () => {
           this.copyCart.addOneQuantity(item.item);
+          this.plp.showTotalItemCartAndCartMoney();
           if (currentNumberProduct) currentNumberProduct.textContent = item.quantity.toString();
           if (productStock) productStock.textContent = `In stock: ${item.item.stock - item.quantity}`;
           if (productTotalMoney) productTotalMoney.textContent = `Total Price: ${item.quantity * item.item.price} $`;
@@ -270,6 +271,7 @@ class CartPage {
             this.drawSummaryBlock();
             this.showSummaryTotalMoneyPromo();
           }
+          this.plp.showTotalItemCartAndCartMoney();
         });
       }
 

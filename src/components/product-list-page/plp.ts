@@ -5,6 +5,10 @@ import products from '../../data/products.json';
 import type { IProduct, IFilter } from '../../interfaces';
 
 class Plp {
+  copyCart: Cart;
+  constructor() {
+    this.copyCart = Cart.getInstance();
+  }
   drawPlp(data: IProduct[], choosedFilters?: IFilter): void {
     const tempProductListPage: HTMLTemplateElement | null = document.querySelector('#template-plp');
     const cloneProductListPage: HTMLElement | null = <HTMLElement>tempProductListPage?.content.cloneNode(true);
@@ -242,7 +246,7 @@ class Plp {
 
     if (asideFilterListBrand) asideFilterListBrand.append(fragmentBrand);
   }
-  
+
   drawSort(choosedFilters?: IFilter): void {
     const sortInput: HTMLInputElement | null = document.querySelector('.sort__options');
     sortInput?.addEventListener('change', this.handleUrl);
@@ -260,7 +264,6 @@ class Plp {
   }
 
   drawProducts(data: IProduct[]): void {
-    const copyCart: Cart = Cart.getInstance();
     const fragment: DocumentFragment = document.createDocumentFragment();
     const productItemTemp: HTMLTemplateElement | null = document.querySelector('#productItemTemp');
     const products: HTMLElement | null = document.querySelector('.products');
@@ -291,17 +294,18 @@ class Plp {
       if (productRating) productRating.textContent = `Rating: ${item.rating.toFixed(1).toString()}`;
       if (productStock) productStock.textContent = `Stock: ${item.stock.toString()}`;
       if (btnAddCart) {
-        copyCart.changeButtonAddToCart();
+        this.copyCart.changeButtonAddToCart();
 
-        if (copyCart.inCart(item)) {
+        if (this.copyCart.inCart(item)) {
           btnAddCart.classList.remove('product-not-cart');
           btnAddCart.textContent = 'Drop from Cart';
         } else {
           btnAddCart.textContent = 'Add to Cart';
         }
         btnAddCart.addEventListener('click', (e) => {
-          copyCart.changeButtonAddToCart(e);
-          copyCart.addToCart(item);
+          this.copyCart.changeButtonAddToCart(e);
+          this.copyCart.addToCart(item);
+          this.showTotalItemCartAndCartMoney();
         });
       }
       if (btnShowDetails) {
@@ -330,22 +334,20 @@ class Plp {
       if (asideClose && aside) asideClose.addEventListener('click', () => aside.classList.remove('active'));
     }
   }
-  
+
   showTotalItemCart(): void {
-    const copyCart: Cart = Cart.getInstance();
     const numberProductsCart: HTMLElement | null = document.getElementById('number-products-cart');
-    if (numberProductsCart) numberProductsCart.textContent = copyCart.totalCartItem().toString();
+    if (numberProductsCart) numberProductsCart.textContent = this.copyCart.totalCartItem().toString();
   }
-  
+
   showTotalCartMoney(): void {
-    const copyCart: Cart = Cart.getInstance();
     const totalCart: HTMLElement | null = document.getElementById('total-cart');
 
     if (totalCart) {
-      if (Object.keys(copyCart.allUsedPromoCode).length > 0) {
-        totalCart.textContent = copyCart.totalCartMoneyUsedPromo().toString();
+      if (Object.keys(this.copyCart.allUsedPromoCode).length > 0) {
+        totalCart.textContent = this.copyCart.totalCartMoneyUsedPromo().toString();
       } else {
-        totalCart.textContent = copyCart.totalCartMoney().toString();
+        totalCart.textContent = this.copyCart.totalCartMoney().toString();
       }
     }
   }
@@ -423,16 +425,19 @@ class Plp {
   }
 
   showQuantityFindedProducts(quantity: number): void {
-    const out:HTMLElement | null = document.getElementById("found-products");
+    const out: HTMLElement | null = document.getElementById('found-products');
     if (out) {
       if (quantity === 1) {
-        out.innerHTML =  `Found : ${quantity} product`;
+        out.innerHTML = `Found : ${quantity} product`;
       } else {
-        out.innerHTML =  `Found : ${quantity} products`;
+        out.innerHTML = `Found : ${quantity} products`;
       }
     }
   }
-  
+  showTotalItemCartAndCartMoney() {
+    this.showTotalItemCart();
+    this.showTotalCartMoney();
+  }
 }
 
 export default Plp;

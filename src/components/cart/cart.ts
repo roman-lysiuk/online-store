@@ -1,14 +1,11 @@
-import Plp from '../product-list-page/plp';
-
 import type { IProduct, IObjectProductCart, allProductCart, IAllUsedPromo } from '../../interfaces';
 
 class Cart {
   private static _instance: Cart;
   public allProductCart: allProductCart;
   public allUsedPromoCode: IAllUsedPromo;
-  plp: Plp;
+
   constructor() {
-    this.plp = new Plp();
     this.allProductCart = new Map();
     this.allUsedPromoCode = {};
   }
@@ -42,8 +39,6 @@ class Cart {
       const currentQuantityProduct: number = currentProduct.quantity;
       if (currentQuantityProduct < inStock) currentProduct.quantity += 1;
     }
-    this.plp.showTotalItemCart();
-    this.plp.showTotalCartMoney();
   }
   removeOneQuantity(item: IProduct): void {
     const currentProduct: IObjectProductCart | undefined = this.allProductCart.get(item.id);
@@ -54,14 +49,10 @@ class Cart {
         currentProduct.quantity -= 1;
       }
     }
-    this.plp.showTotalItemCart();
-    this.plp.showTotalCartMoney();
   }
   removeProductFromCart(item: IProduct): void {
     if (this.allProductCart.has(item.id)) {
       this.allProductCart.delete(item.id);
-      this.plp.showTotalItemCart();
-      this.plp.showTotalCartMoney();
     }
   }
 
@@ -131,7 +122,6 @@ class Cart {
   }
   clearCart(): void {
     this.allProductCart = new Map();
-    this.plp.showTotalItemCart();
   }
 }
 export default Cart;
