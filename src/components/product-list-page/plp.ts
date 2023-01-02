@@ -429,7 +429,10 @@ class Plp {
     const foundProducts: HTMLElement | null = document.getElementById('found-products');
     if (foundProducts) foundProducts.textContent = `${quantity}`;
   }
-
+  showTotalItemCartAndCartMoney() {
+    this.showTotalCartMoney();
+    this.showTotalItemCart();
+  }
 }
 
 export default Plp;

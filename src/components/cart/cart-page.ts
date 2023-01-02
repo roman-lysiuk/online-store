@@ -256,7 +256,7 @@ class CartPage {
       }
 
       if (removeNumberProduct) {
-        removeNumberProduct.addEventListener('click', (e) => {
+        removeNumberProduct.addEventListener('click', () => {
           if (data.size === 0) this.showCartIsEmpty();
           if (item.quantity === 1) {
             this.copyCart.removeOneQuantity(item.item);
