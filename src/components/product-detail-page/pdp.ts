@@ -90,7 +90,8 @@ class Pdp {
 
     if (btnAddCart) {
       if (isProductInCart) {
-        this.copyCart.changeButtonAddToCart();
+        btnAddCart.classList.remove('product-not-cart');
+        btnAddCart.textContent = 'Drop from Cart';
       }
 
       btnAddCart.addEventListener('click', (e) => {
