@@ -1,12 +1,34 @@
 import Cart from '../components/cart/cart';
-import App from '../components/app/app';
+import { IObjectProductCart, IProduct } from '../interfaces';
 
-describe('Cart', () => {
-  const copyCart = Cart.getInstance();
-  // const app = new App();
-  beforeAll(() => {
-    // app.start();
-  });
+const copyCart = Cart.getInstance();
+
+class Product implements IProduct {
+  constructor(id: number) {
+    this.id = id;
+  }
+  id: number;
+  title = 'Title';
+  category = 'category';
+  rating = 4;
+  brand = 'brand';
+  description = 'description';
+  price = 10;
+  discountPercentage = 12;
+  stock = 5;
+  thumbnail = '';
+  images: string[] = [];
+}
+const product1 = new Product(1);
+const product2 = new Product(2);
+const product3 = new Product(3);
+
+const objectProductCart: IObjectProductCart = {
+  item: product1,
+  quantity: 1,
+};
+
+describe('Promo code ', () => {
   beforeEach(() => {
     copyCart.allUsedPromoCode = {};
   });
@@ -42,28 +64,101 @@ describe('Cart', () => {
   });
 });
 
-const product = {
-  id: 1,
-  title: 'iPhone 9',
-  description: 'An apple mobile which is nothing like apple',
-  price: 549,
-  discountPercentage: 12.96,
-  rating: 4.69,
-  stock: 94,
-  brand: 'Apple',
-  category: 'smartphones',
-  thumbnail: 'https://i.dummyjson.com/data/products/1/thumbnail.jpg',
-  images: [
-    'https://i.dummyjson.com/data/products/1/1.jpg',
-    'https://i.dummyjson.com/data/products/1/3.jpg',
-    'https://i.dummyjson.com/data/products/1/4.jpg',
-  ],
-};
+describe('Cart ', () => {
+  beforeEach(() => {
+    copyCart.clearCart();
+  });
+  test('is Map', () => {
+    expect(copyCart.allProductCart).toBeInstanceOf(Map);
+  });
 
-const objectProductCart = {
-  item: product,
-  quantity: 0,
-};
+  test('add to one product', () => {
+    const result = new Map();
+    result.set(product1.id, objectProductCart);
 
-const AllProductCart = new Map();
-AllProductCart.set(objectProductCart.item.id, objectProductCart);
+    copyCart.addToCart(product1);
+
+    expect(copyCart.allProductCart).toEqual(result);
+  });
+  test('add five quantity product in cart', () => {
+    copyCart.addToCart(product1);
+    copyCart.addOneQuantity(product1);
+    copyCart.addOneQuantity(product1);
+    copyCart.addOneQuantity(product1);
+    copyCart.addOneQuantity(product1);
+    const productQuantity = copyCart.allProductCart.get(product1.id)?.quantity;
+    expect(productQuantity).toEqual(5);
+  });
+  test('remove two quantity product in cart', () => {
+    copyCart.addToCart(product1);
+    copyCart.addOneQuantity(product1);
+    copyCart.addOneQuantity(product1);
+    copyCart.addOneQuantity(product1);
+    copyCart.addOneQuantity(product1);
+    copyCart.removeOneQuantity(product1);
+    copyCart.removeOneQuantity(product1);
+    const productQuantity = copyCart.allProductCart.get(product1.id)?.quantity;
+    expect(productQuantity).toEqual(3);
+  });
+  test('remove one product in cart', () => {
+    copyCart.addToCart(product1);
+    copyCart.addToCart(product2);
+    copyCart.addToCart(product3);
+    expect(copyCart.allProductCart.size).toEqual(3);
+    copyCart.removeProductFromCart(product2);
+    expect(copyCart.allProductCart.size).toEqual(2);
+    expect(copyCart.allProductCart).not.toEqual(product2.id);
+  });
+  test('checking if a product is in the cart', () => {
+    copyCart.addToCart(product1);
+    copyCart.addToCart(product3);
+    expect(copyCart.inCart(product1)).toBe(true);
+    expect(copyCart.inCart(product2)).toBe(false);
+    expect(copyCart.inCart(product3)).toBe(true);
+  });
+  test('total Item in the cart', () => {
+    copyCart.addToCart(product1);
+    copyCart.addOneQuantity(product1);
+    copyCart.addOneQuantity(product1);
+    copyCart.addOneQuantity(product1);
+    copyCart.addOneQuantity(product1);
+    expect(copyCart.totalCartItem()).toBe(5);
+    copyCart.addToCart(product3);
+    copyCart.addOneQuantity(product3);
+    copyCart.addOneQuantity(product3);
+    copyCart.addOneQuantity(product3);
+    copyCart.addOneQuantity(product3);
+    expect(copyCart.totalCartItem()).toBe(10);
+    copyCart.removeProductFromCart(product3);
+    expect(copyCart.totalCartItem()).toBe(5);
+  });
+  test('total Money in the cart', () => {
+    copyCart.addToCart(product1);
+    copyCart.addOneQuantity(product1);
+    copyCart.addOneQuantity(product1);
+    copyCart.addOneQuantity(product1);
+    copyCart.addOneQuantity(product1);
+    expect(copyCart.totalCartMoney()).toBe(50);
+    copyCart.addToCart(product3);
+    copyCart.addOneQuantity(product3);
+    copyCart.addOneQuantity(product3);
+    copyCart.addOneQuantity(product3);
+    copyCart.addOneQuantity(product3);
+    expect(copyCart.totalCartMoney()).toBe(100);
+    copyCart.removeProductFromCart(product3);
+    expect(copyCart.totalCartMoney()).toBe(50);
+  });
+  test('clear Cart', () => {
+    copyCart.addToCart(product1);
+    copyCart.addToCart(product2);
+    copyCart.addOneQuantity(product1);
+    copyCart.addOneQuantity(product1);
+    copyCart.addOneQuantity(product1);
+    copyCart.addToCart(product3);
+    copyCart.addOneQuantity(product3);
+    copyCart.addOneQuantity(product3);
+    copyCart.clearCart();
+    expect(copyCart.allProductCart).toBeInstanceOf(Map);
+    expect(copyCart.allProductCart.size).toBe(0);
+  });
+});
