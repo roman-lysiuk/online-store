@@ -96,6 +96,7 @@ class Pdp {
       btnAddCart.addEventListener('click', (e) => {
         this.copyCart.changeButtonAddToCart(e);
         this.copyCart.addToCart(data);
+        this.plp.showTotalItemCartAndCartMoney();
       });
     }
 
