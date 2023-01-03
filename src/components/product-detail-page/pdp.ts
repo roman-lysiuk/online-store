@@ -1,11 +1,14 @@
 import Cart from '../cart/cart';
+import Plp from '../product-list-page/plp';
 
 import type { IProduct } from '../../interfaces';
 
 class Pdp {
   copyCart: Cart;
+  plp: Plp;
   constructor() {
     this.copyCart = Cart.getInstance();
+    this.plp = new Plp();
   }
   drawPdp(data: IProduct): void {
     const tempProductDetailPage: HTMLTemplateElement | null = document.querySelector('#template-product-detail-page');
@@ -62,11 +65,14 @@ class Pdp {
       if (breadcrumbsFilterCategory) {
         breadcrumbsFilterCategory.addEventListener(
           'click',
-          () => (window.location.hash = `#/plp?cat=${data.category}`)
+          () => (window.location.hash = `#/plp?cat=${data.category.toLowerCase()}`)
         );
       }
       if (breadcrumbsFilterBrand) {
-        breadcrumbsFilterBrand.addEventListener('click', () => (window.location.hash = `#/plp?br=${data.brand}`));
+        breadcrumbsFilterBrand.addEventListener(
+          'click',
+          () => (window.location.hash = `#/plp?br=${data.brand.toLowerCase()}`)
+        );
       }
     }
 
@@ -74,6 +80,7 @@ class Pdp {
       btnBuyNow.addEventListener('click', () => {
         if (!this.copyCart.inCart(data)) {
           this.copyCart.addToCart(data);
+          this.plp.showTotalItemCartAndCartMoney();
         }
         if (main) main.classList.toggle('popup-active');
         buyNowModal.classList.toggle('active');
@@ -83,12 +90,14 @@ class Pdp {
 
     if (btnAddCart) {
       if (isProductInCart) {
-        this.copyCart.changeButtonAddToCart();
+        btnAddCart.classList.remove('product-not-cart');
+        btnAddCart.textContent = 'Drop from Cart';
       }
 
       btnAddCart.addEventListener('click', (e) => {
         this.copyCart.changeButtonAddToCart(e);
         this.copyCart.addToCart(data);
+        this.plp.showTotalItemCartAndCartMoney();
       });
     }
 

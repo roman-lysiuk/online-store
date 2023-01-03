@@ -1,15 +1,16 @@
 import Cart from '../cart/cart';
+import Plp from '../product-list-page/plp';
 
-/* eslint-disable @typescript-eslint/no-var-requires */
-const imgVisa = require('~/assets/icons/5968151.png');
-const imgAmerican = require('~/assets/icons/349228.png');
-const imgMaster = require('~/assets/icons/mastercard-credit-debit-card-bank-transaction-32303.webp');
-const imgDefaultCard = require('~/assets/icons/4341764.png');
-
+import imgAmerican from '~/assets/icons/349228.png';
+import imgDefaultCard from '~/assets/icons/4341764.png';
+import imgVisa from '~/assets/icons/5968151.png';
+import imgMaster from '~/assets/icons/mastercard-credit-debit-card-bank-transaction-32303.webp';
 class BuyNowModal {
   copyCart: Cart;
+  plp: Plp;
   constructor() {
     this.copyCart = Cart.getInstance();
+    this.plp = new Plp();
   }
   drawBuyNowModal(): void {
     const main: HTMLElement | null = document.querySelector('.main');
@@ -113,6 +114,7 @@ class BuyNowModal {
           this.showToggleOrderComplete();
           main?.classList.remove('popup-active');
           this.copyCart.clearCart();
+          this.plp.showTotalItemCart();
           window.location.hash = '#/plp';
         }, 3000);
       });

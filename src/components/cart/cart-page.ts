@@ -266,6 +266,7 @@ class CartPage {
       if (addNumberProduct) {
         addNumberProduct.addEventListener('click', () => {
           this.copyCart.addOneQuantity(item.item);
+          this.plp.showTotalItemCartAndCartMoney();
           if (currentNumberProduct) currentNumberProduct.textContent = item.quantity.toString();
           if (productStock) productStock.textContent = `In stock: ${item.item.stock - item.quantity}`;
           if (productTotalMoney) productTotalMoney.textContent = `Total Price: ${item.quantity * item.item.price} $`;
@@ -275,7 +276,7 @@ class CartPage {
       }
 
       if (removeNumberProduct) {
-        removeNumberProduct.addEventListener('click', (e) => {
+        removeNumberProduct.addEventListener('click', () => {
           if (data.size === 0) this.showCartIsEmpty();
           if (item.quantity === 1) {
             this.copyCart.removeOneQuantity(item.item);
@@ -290,6 +291,7 @@ class CartPage {
             this.drawSummaryBlock();
             this.showSummaryTotalMoneyPromo();
           }
+          this.plp.showTotalItemCartAndCartMoney();
         });
       }
       fragment.append(productClone);
