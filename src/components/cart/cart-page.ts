@@ -7,13 +7,27 @@ import type { allProductCart, IAllUsedPromo, IFilter, IObjectProductCart } from 
 class CartPage {
   copyCart: Cart;
   plp: Plp;
+  itemsPerPage: number;
+  currentPageNumber: number;
   constructor() {
     this.copyCart = Cart.getInstance();
     this.plp = new Plp();
+    this.itemsPerPage = 10;
+    this.currentPageNumber = 1;
   }
   drawCartPage(data: allProductCart, choosedFilters?: IFilter): void {
     if (data.size === 0) return this.showCartIsEmpty();
 
+    if (choosedFilters?.cartPageNumber && Number(choosedFilters?.cartPageNumber) <= data.size / this.itemsPerPage + 1) {
+      this.currentPageNumber = Number(choosedFilters?.cartPageNumber);
+    } else this.currentPageNumber = 1;
+    if (choosedFilters?.cartPageSize) {
+      this.itemsPerPage = Number(choosedFilters?.cartPageSize);
+    } else this.itemsPerPage = 10;
+
+    console.log('IPP:', this.itemsPerPage);
+    console.log('CPN:', this.currentPageNumber);
+    
     const main: HTMLElement | null = document.querySelector('.main');
     const cartPageTemp: HTMLTemplateElement | null = document.querySelector('#template-cart-page');
     const cartPageClone: HTMLElement = <HTMLElement>cartPageTemp?.content.cloneNode(true);
@@ -28,22 +42,29 @@ class CartPage {
     const buyNowModal: HTMLElement | null = document.querySelector('.buy-now');
 
     if (itemsPerPage) {
-      itemsPerPage.value = `${this.copyCart.allProductCart.size}`;
+      itemsPerPage.value = this.itemsPerPage.toString();
       itemsPerPage.max = `${this.copyCart.allProductCart.size}`;
       itemsPerPage.addEventListener('input', () => {
-        this.goToPage(1);
+        this.itemsPerPage = Number(itemsPerPage.value);
+        window.location.hash = `#/cart?cps=${this.itemsPerPage}`
       });
     }
+
     if (paginationPrevPage) {
       paginationPrevPage.addEventListener('click', () => {
-        this.prevPaginationPage();
-        this.showListPagination(data);
+        if (this.currentPageNumber > 1) {
+          this.currentPageNumber--;
+          window.location.hash = `#/cart?cps=${this.itemsPerPage}&cpn=${this.currentPageNumber}`
+        }
       });
     }
+
     if (paginationNextPage) {
       paginationNextPage.addEventListener('click', () => {
-        this.nextPaginationPage();
-        this.showListPagination(data);
+        if (this.currentPageNumber < data.size / this.itemsPerPage) {
+          this.currentPageNumber++;
+          window.location.hash = `#/cart?cps=${this.itemsPerPage}&cpn=${this.currentPageNumber}`
+        }
       });
     }
 
@@ -77,6 +98,7 @@ class CartPage {
       main.append(cartPageClone);
     }
 
+    this.goToPage();
     this.drawUsedPromoCode();
   }
   showCartPage(): void {
@@ -116,7 +138,6 @@ class CartPage {
       }
     }
   }
-
   showSummaryTotalMoneyPromo(): void {
     const summaryTotalMoneyUsedPromo: HTMLElement | null = document.querySelector('.summary__total-money-used-promo');
     const summaryTotalMoney: HTMLElement | null = document.querySelector('.summary__total-money');
@@ -150,27 +171,25 @@ class CartPage {
     if (summaryProducts) summaryProducts.textContent = `Products:  ${this.copyCart.totalCartItem()}`;
     if (summaryTotalMoney) summaryTotalMoney.textContent = `Total: ${this.copyCart.totalCartMoney()} $`;
   }
-  showListPagination(data: allProductCart, goToPage?: number): void {
-    if (data.size === 0) {
+  showListPagination(): void {
+    if (this.copyCart.allProductCart.size === 0) {
       return this.showCartIsEmpty();
     }
     const itemPerPageInput: HTMLInputElement | null = <HTMLInputElement>document.getElementById('items-per-page');
-    const paginationCurrentPage: HTMLElement | null = document.getElementById('pagination-current-page');
     const itemPerPage: number = +itemPerPageInput.value || this.copyCart.allProductCart.size;
-    const currentPage: number = goToPage ? goToPage : parseInt(<string>paginationCurrentPage?.textContent);
     const listProducts: HTMLElement | null = document.querySelector('.cart-page__list-products');
 
-    const startSlice: number = itemPerPage * (currentPage - 1);
+    const startSlice: number = itemPerPage * (this.currentPageNumber - 1);
     const endSlice: number = startSlice + itemPerPage;
 
-    const dataArray: Array<[number, IObjectProductCart]> = Array.from(data);
+    const dataArray: Array<[number, IObjectProductCart]> = Array.from(this.copyCart.allProductCart);
 
     const PaginatedData: allProductCart = dataArray.slice(startSlice, endSlice).reduce((acc, cur) => {
       return acc.set(cur[1].item.id, cur[1]);
     }, new Map());
 
     if (PaginatedData.size === 0) {
-      this.goToPage(currentPage - 1);
+//      this.goToPage(currentPage - 1);
     } else {
       if (listProducts) this.drawProductList(PaginatedData, listProducts);
     }
@@ -202,12 +221,13 @@ class CartPage {
     }
   }
   drawProductList(data: allProductCart, listProducts: HTMLElement): void {
-    let counterNumber = 0;
+    let counterNumber = 0 + (this.currentPageNumber - 1) * this.itemsPerPage;
     listProducts.innerHTML = ``;
     const productItemTemp: HTMLTemplateElement | null = document.querySelector('#template-product-cart-page');
     const fragment: DocumentFragment = document.createDocumentFragment();
 
     data.forEach((item: IObjectProductCart) => {
+      counterNumber++;
       const productClone: HTMLElement = <HTMLElement>productItemTemp?.content.cloneNode(true);
 
       const productNumber: HTMLElement | null = productClone.querySelector('.product-cart__number');
@@ -259,7 +279,7 @@ class CartPage {
           if (data.size === 0) this.showCartIsEmpty();
           if (item.quantity === 1) {
             this.copyCart.removeOneQuantity(item.item);
-            this.showListPagination(this.copyCart.allProductCart);
+            this.showListPagination();
             this.drawSummaryBlock();
             this.showSummaryTotalMoneyPromo();
           } else {
@@ -272,17 +292,15 @@ class CartPage {
           }
         });
       }
-
-      counterNumber++;
       fragment.append(productClone);
     });
 
     listProducts.appendChild(fragment);
   }
-  goToPage(page: number): void {
+  goToPage(): void {
     const paginationCurrentPage: HTMLElement | null = document.getElementById('pagination-current-page');
-    if (paginationCurrentPage) paginationCurrentPage.textContent = `${page}`;
-    this.showListPagination(this.copyCart.allProductCart, page);
+    if (paginationCurrentPage) paginationCurrentPage.textContent = `${this.currentPageNumber}`;
+    this.showListPagination();
   }
 }
 

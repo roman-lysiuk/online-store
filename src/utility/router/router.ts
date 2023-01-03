@@ -22,7 +22,6 @@ class Router {
     this.cartPage = new CartPage();
     this.queryAnalizer = new QueryAnalizer();
   }
-
   handleRoute(location: string): void {
     const urlString: Array<string> = location.split('?');
     const adress: Array<string> = urlString[0].split('/');
@@ -63,7 +62,6 @@ class Router {
       this.plp.drawPlp(products.products);
     }
   }
-
   showCart(location: string, query: string[] | undefined): void {
     localStorage.setItem('URLSave', location);
     const copyCart: Cart = Cart.getInstance();
@@ -74,9 +72,9 @@ class Router {
       this.cartPage.drawCartPage(copyCart.allProductCart);
     }
   }
-
   showError(): void {
     this.error404.drawErrorPage();
   }
 }
+
 export default Router;

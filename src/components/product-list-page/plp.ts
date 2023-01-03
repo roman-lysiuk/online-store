@@ -40,7 +40,6 @@ class Plp {
       document.getElementById('three-columns')?.classList.add('sort-bar__view-options_btn-active');
     }
   }
-
   drawAside(data: IProduct[], choosedFilters?: IFilter): void {
     const btnReset: HTMLButtonElement | null = document.querySelector('.btn-reset ');
     const btnCopy: HTMLButtonElement | null = document.querySelector('.btn-copy-link');
@@ -117,7 +116,6 @@ class Plp {
     asideRangeStockLower?.addEventListener('change', this.handleUrl);
     asideRangeStockUpper?.addEventListener('change', this.handleUrl);
   }
-
   drawFilterPrice(data: IProduct[], choosedFilters?: IFilter): void {
     const asideMaxPrice: HTMLElement | null = document.querySelector('.aside__max-price');
     const asideMinPrice: HTMLElement | null = document.querySelector('.aside__min-price');
@@ -172,7 +170,6 @@ class Plp {
     asideRangePriceLower?.addEventListener('change', this.handleUrl);
     asideRangePriceUpper?.addEventListener('change', this.handleUrl);
   }
-
   drawFilterCategory(data: IProduct[], choosedFilters?: IFilter): void {
     const fragmentCategory: DocumentFragment = document.createDocumentFragment();
     const asideFilterListCategory: HTMLElement | null = document.querySelector('.aside__filter-list-category');
@@ -205,7 +202,6 @@ class Plp {
 
     if (asideFilterListCategory) asideFilterListCategory.append(fragmentCategory);
   }
-
   drawFilterBrand(data: IProduct[], choosedFilters?: IFilter): void {
     const asideFilterListBrand: HTMLElement | null = document.querySelector('.aside__filter-list-brand');
     const fragmentBrand: DocumentFragment = document.createDocumentFragment();
@@ -242,7 +238,6 @@ class Plp {
 
     if (asideFilterListBrand) asideFilterListBrand.append(fragmentBrand);
   }
-  
   drawSort(choosedFilters?: IFilter): void {
     const sortInput: HTMLInputElement | null = document.querySelector('.sort__options');
     sortInput?.addEventListener('change', this.handleUrl);
@@ -250,7 +245,6 @@ class Plp {
       sortInput.value = choosedFilters.sorting;
     }
   }
-
   drawSearch(choosedFilters?: IFilter): void {
     const searchInput: HTMLInputElement | null = document.querySelector('#search');
     searchInput?.addEventListener('change', this.handleUrl);
@@ -258,7 +252,6 @@ class Plp {
       searchInput.value = choosedFilters.search;
     }
   }
-
   drawProducts(data: IProduct[]): void {
     const copyCart: Cart = Cart.getInstance();
     const fragment: DocumentFragment = document.createDocumentFragment();
@@ -314,7 +307,6 @@ class Plp {
 
     if (products) products.append(fragment);
   }
-
   showAsideMobile(): void {
     const asideArrowRight: HTMLElement | null = document.querySelector('.aside__arrow-right');
     const aside: HTMLElement | null = document.querySelector('.aside-sticky-box');
@@ -330,13 +322,11 @@ class Plp {
       if (asideClose && aside) asideClose.addEventListener('click', () => aside.classList.remove('active'));
     }
   }
-  
   showTotalItemCart(): void {
     const copyCart: Cart = Cart.getInstance();
     const numberProductsCart: HTMLElement | null = document.getElementById('number-products-cart');
     if (numberProductsCart) numberProductsCart.textContent = copyCart.totalCartItem().toString();
   }
-  
   showTotalCartMoney(): void {
     const copyCart: Cart = Cart.getInstance();
     const totalCart: HTMLElement | null = document.getElementById('total-cart');
@@ -349,7 +339,6 @@ class Plp {
       }
     }
   }
-
   changeCardView(column: string): void {
     const products: NodeListOf<Element> = document.querySelectorAll('.product');
     if (products) {
@@ -360,7 +349,6 @@ class Plp {
     }
     this.handleUrl();
   }
-
   handleUrl(): void {
     let query = '?';
     const categoriesInput: NodeListOf<HTMLInputElement> = document.querySelectorAll(
@@ -421,7 +409,6 @@ class Plp {
     if (query[query.length - 1] === '&') query = query.slice(0, -1);
     window.location.hash = `#/plp${query.toLowerCase()}`;
   }
-
   showQuantityFindedProducts(quantity: number): void {
     const out:HTMLElement | null = document.getElementById("found-products");
     if (out) {
@@ -432,7 +419,6 @@ class Plp {
       }
     }
   }
-  
 }
 
 export default Plp;

@@ -87,7 +87,6 @@ class QueryAnalizer {
     });
     return choosedFilters;
   }
-
   applyQuery(products: IProduct[], choosedFilters: IFilter): IProduct[] {
     let handledProducts: IProduct[] = products;
     if (choosedFilters.categories.length) {
@@ -142,4 +141,5 @@ class QueryAnalizer {
     return handledProducts;
   }
 }
+
 export default QueryAnalizer;
