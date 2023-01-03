@@ -17,6 +17,8 @@ import type { IProduct, IFilter } from '../../interfaces';
 //    rating-desc = from high rate to low
 // se = searching
 // view = viewing 2 or 3 columns
+// cpn = cart page number
+// cps = cart page size (quantity of products on 1 page)
 
 class QueryAnalizer {
   error404: Error404;
@@ -25,9 +27,7 @@ class QueryAnalizer {
     this.error404 = new Error404();
     this.plp = new Plp();
   }
-  handleQuery(products: IProduct[], query: string[]): [IProduct[], IFilter] {
-    let handledProducts: IProduct[] = products;
-
+  handleQuery(query: string[]): IFilter {
     const choosedFilters: IFilter = {
       categories: [],
       brands: [],
@@ -38,8 +38,9 @@ class QueryAnalizer {
       sorting: '',
       search: '',
       view: '',
+      cartPageNumber: '',
+      cartPageSize: '',
     };
-
     query.forEach((el) => {
       const queryParam: string[] = el.split('=');
       if (!queryParam[1]) {
@@ -73,9 +74,22 @@ class QueryAnalizer {
           case 'view':
             choosedFilters.view = queryParam[1];
             break;
+          case 'cps':
+            choosedFilters.cartPageSize = queryParam[1];
+            break; 
+          case 'cpn':
+            choosedFilters.cartPageNumber = queryParam[1];
+            break; 
+          default:
+            break;
         }
       }
     });
+    return choosedFilters;
+  }
+
+  applyQuery(products: IProduct[], choosedFilters: IFilter): IProduct[] {
+    let handledProducts: IProduct[] = products;
     if (choosedFilters.categories.length) {
       handledProducts = handledProducts.filter((item) =>
         choosedFilters.categories.includes(item.category.toLowerCase())
@@ -125,9 +139,7 @@ class QueryAnalizer {
           break;
       }
     }
-
-    const data: [IProduct[], IFilter] = [handledProducts, choosedFilters];
-    return data;
+    return handledProducts;
   }
 }
 export default QueryAnalizer;

@@ -2,7 +2,7 @@ import Plp from '../product-list-page/plp';
 
 import Cart from './cart';
 
-import type { allProductCart, IAllUsedPromo, IObjectProductCart } from '../../interfaces';
+import type { allProductCart, IAllUsedPromo, IFilter, IObjectProductCart } from '../../interfaces';
 
 class CartPage {
   copyCart: Cart;
@@ -11,7 +11,7 @@ class CartPage {
     this.copyCart = Cart.getInstance();
     this.plp = new Plp();
   }
-  drawCartPage(data: allProductCart): void {
+  drawCartPage(data: allProductCart, choosedFilters?: IFilter): void {
     if (data.size === 0) return this.showCartIsEmpty();
 
     const main: HTMLElement | null = document.querySelector('.main');

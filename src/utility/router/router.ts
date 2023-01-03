@@ -38,7 +38,7 @@ class Router {
         this.showPlp(location, query);
         break;
       case 'cart':
-        this.showCart(location);
+        this.showCart(location, query);
         break;
       default:
         this.showError();
@@ -56,19 +56,23 @@ class Router {
   showPlp(location: string, query: string[] | undefined): void {
     localStorage.setItem('URLSave', location);
     if (query?.length) {
-      const data = this.queryAnalizer.handleQuery(products.products, query);
-      const filteredProducts: IProduct[] = data[0];
-      const choosedFilters: IFilter = data[1];
+      const choosedFilters: IFilter = this.queryAnalizer.handleQuery(query);
+      const filteredProducts: IProduct[] = this.queryAnalizer.applyQuery(products.products, choosedFilters);;
       this.plp.drawPlp(filteredProducts, choosedFilters);
     } else {
       this.plp.drawPlp(products.products);
     }
   }
 
-  showCart(location: string): void {
+  showCart(location: string, query: string[] | undefined): void {
     localStorage.setItem('URLSave', location);
     const copyCart: Cart = Cart.getInstance();
-    this.cartPage.drawCartPage(copyCart.allProductCart);
+    if (query?.length) {
+      const choosedFilters: IFilter = this.queryAnalizer.handleQuery(query);
+      this.cartPage.drawCartPage(copyCart.allProductCart, choosedFilters);
+    } else {
+      this.cartPage.drawCartPage(copyCart.allProductCart);
+    }
   }
 
   showError(): void {
