@@ -17,17 +17,15 @@ class CartPage {
   }
   drawCartPage(data: allProductCart, choosedFilters?: IFilter): void {
     if (data.size === 0) return this.showCartIsEmpty();
+console.log(choosedFilters);
 
-    if (choosedFilters?.cartPageNumber && Number(choosedFilters?.cartPageNumber) <= data.size / this.itemsPerPage + 1) {
-      this.currentPageNumber = Number(choosedFilters?.cartPageNumber);
-    } else this.currentPageNumber = 1;
     if (choosedFilters?.cartPageSize) {
       this.itemsPerPage = Number(choosedFilters?.cartPageSize);
     } else this.itemsPerPage = 10;
+    if (choosedFilters?.cartPageNumber && Number(choosedFilters?.cartPageNumber) <= data.size / this.itemsPerPage + 1) {
+      this.currentPageNumber = Number(choosedFilters?.cartPageNumber);
+    } else this.currentPageNumber = 1;
 
-    console.log('IPP:', this.itemsPerPage);
-    console.log('CPN:', this.currentPageNumber);
-    
     const main: HTMLElement | null = document.querySelector('.main');
     const cartPageTemp: HTMLTemplateElement | null = document.querySelector('#template-cart-page');
     const cartPageClone: HTMLElement = <HTMLElement>cartPageTemp?.content.cloneNode(true);
@@ -189,7 +187,8 @@ class CartPage {
     }, new Map());
 
     if (PaginatedData.size === 0) {
-//      this.goToPage(currentPage - 1);
+      this.currentPageNumber--;
+      this.goToPage();
     } else {
       if (listProducts) this.drawProductList(PaginatedData, listProducts);
     }
