@@ -21,15 +21,17 @@ class App {
 
   start(): void {
     window.addEventListener('load', () => this.locStorage.getLocalStorage('allProductCart'));
-
+    console.log(window.location.hash);
     this.cartPage.showCartPage();
     this.buyNowModal.drawBuyNowModal();
 
     const URLSave: string | null = localStorage.getItem('URLSave');
-    if (URLSave) {
-      window.location.hash = URLSave;
-    } else {
+    if (window.location.hash === '#/plp' || window.location.hash === '') {
+      if (URLSave) { 
+        window.location.hash = URLSave;
+      } else {
       window.location.hash = `#/plp`;
+      }
     }
     window.addEventListener('load', () => {
       const location = window.location.hash;
