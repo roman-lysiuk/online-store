@@ -235,6 +235,7 @@ class CartPage {
       const productNumber: HTMLElement | null = productClone.querySelector('.product-cart__number');
       const productImg: HTMLElement | null = productClone.querySelector('.product-cart__img');
       const productTitle: HTMLElement | null = productClone.querySelector('.info__title');
+      const productPrice: HTMLElement | null = productClone.querySelector('.info__price');
       const productDescription: HTMLElement | null = productClone.querySelector('.info__description');
       const productRating: HTMLElement | null = productClone.querySelector('.info__rating');
       const productStock: HTMLElement | null = productClone.querySelector('.product-cart__stock');
@@ -245,6 +246,8 @@ class CartPage {
       const removeNumberProduct: HTMLButtonElement | null = productClone.querySelector('.remove-number-product');
 
       if (productNumber) productNumber.textContent = counterNumber.toString();
+
+      if (productPrice) productPrice.textContent = `Price: ${item.item.price} $`;
 
       if (productImg) {
         const thumbnail: HTMLImageElement = document.createElement('img');
