@@ -1,5 +1,6 @@
 import Cart from '../cart/cart';
 import Plp from '../product-list-page/plp';
+import locStorage from '../../utility/localStorage/local-storage';
 
 import imgAmerican from '~/assets/icons/349228.png';
 import imgDefaultCard from '~/assets/icons/4341764.png';
@@ -8,9 +9,11 @@ import imgMaster from '~/assets/icons/mastercard-credit-debit-card-bank-transact
 class BuyNowModal {
   copyCart: Cart;
   plp: Plp;
+  locStorage: locStorage;
   constructor() {
     this.copyCart = Cart.getInstance();
     this.plp = new Plp();
+    this.locStorage = new locStorage();
   }
   drawBuyNowModal(): void {
     const main: HTMLElement | null = document.querySelector('.main');
@@ -77,30 +80,30 @@ class BuyNowModal {
         const allInput: NodeListOf<HTMLInputElement> = document.querySelectorAll('form input');
         allInput.forEach((item) => this.isValid(item));
 
-        if (!fullName?.validity.valid) {
-          e.preventDefault();
-          return;
-        }
-        if (!phoneNumber?.validity.valid) {
-          e.preventDefault();
-          return;
-        }
-        if (!deliveryAddress?.validity.valid) {
-          e.preventDefault();
-          return;
-        }
-        if (!email?.validity.valid) {
-          e.preventDefault();
-          return;
-        }
-        if (!cardNumber?.validity.valid) {
-          e.preventDefault();
-          return;
-        }
-        if (!validity?.validity.valid) {
-          e.preventDefault();
-          return;
-        }
+        // if (!fullName?.validity.valid) {
+        //   e.preventDefault();
+        //   return;
+        // }
+        // if (!phoneNumber?.validity.valid) {
+        //   e.preventDefault();
+        //   return;
+        // }
+        // if (!deliveryAddress?.validity.valid) {
+        //   e.preventDefault();
+        //   return;
+        // }
+        // if (!email?.validity.valid) {
+        //   e.preventDefault();
+        //   return;
+        // }
+        // if (!cardNumber?.validity.valid) {
+        //   e.preventDefault();
+        //   return;
+        // }
+        // if (!validity?.validity.valid) {
+        //   e.preventDefault();
+        //   return;
+        // }
         if (!cvvCode?.validity.valid) {
           e.preventDefault();
           return;
@@ -116,6 +119,7 @@ class BuyNowModal {
           this.copyCart.clearCart();
           this.plp.showTotalItemCart();
           this.plp.showTotalCartMoney();
+          this.locStorage.setLocalStorage('allProductCart', this.copyCart.allProductCart);
           window.location.hash = '#/plp';
         }, 3000);
       });

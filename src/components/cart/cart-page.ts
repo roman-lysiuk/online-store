@@ -1,4 +1,5 @@
 import Plp from '../product-list-page/plp';
+import locStorage from '../../utility/localStorage/local-storage';
 
 import Cart from './cart';
 
@@ -9,11 +10,13 @@ class CartPage {
   plp: Plp;
   itemsPerPage: number;
   currentPageNumber: number;
+  locStorage: locStorage;
   constructor() {
     this.copyCart = Cart.getInstance();
     this.plp = new Plp();
     this.itemsPerPage = 10;
     this.currentPageNumber = 1;
+    this.locStorage = new locStorage();
   }
   drawCartPage(data: allProductCart, choosedFilters?: IFilter): void {
     if (data.size === 0) return this.showCartIsEmpty();
@@ -274,6 +277,7 @@ class CartPage {
           if (productTotalMoney) productTotalMoney.textContent = `Total Price: ${item.quantity * item.item.price} $`;
           this.drawSummaryBlock();
           this.showSummaryTotalMoneyPromo();
+          this.locStorage.setLocalStorage('allProductCart', this.copyCart.allProductCart);
         });
       }
 
@@ -294,6 +298,7 @@ class CartPage {
             this.showSummaryTotalMoneyPromo();
           }
           this.plp.showTotalItemCartAndCartMoney();
+          this.locStorage.setLocalStorage('allProductCart', this.copyCart.allProductCart);
         });
       }
       fragment.append(productClone);
