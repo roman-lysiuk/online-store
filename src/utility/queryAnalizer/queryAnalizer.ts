@@ -88,7 +88,7 @@ class QueryAnalizer {
     return choosedFilters;
   }
   applyQuery(products: IProduct[], choosedFilters: IFilter): IProduct[] {
-    let handledProducts: IProduct[] = products;
+    let handledProducts: IProduct[] = Array.from(products);
     if (choosedFilters.categories.length) {
       handledProducts = handledProducts.filter((item) =>
         choosedFilters.categories.includes(item.category.toLowerCase())

@@ -28,7 +28,7 @@ class Plp {
       });
     }
 
-    this.drawAside(data, choosedFilters);
+    this.drawAside(products.products, choosedFilters);
     this.drawSort(choosedFilters);
     this.showTotalItemCart();
     this.showAsideMobile();
