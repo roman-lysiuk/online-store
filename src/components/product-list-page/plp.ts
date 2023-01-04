@@ -34,6 +34,7 @@ class Plp {
     this.drawAside(data, choosedFilters);
     this.drawSort(choosedFilters);
     this.showTotalItemCart();
+    this.showTotalCartMoney();
     this.showAsideMobile();
     this.drawProducts(data);
     this.drawSearch(choosedFilters);
