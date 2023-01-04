@@ -56,7 +56,7 @@ class Router {
     localStorage.setItem('URLSave', location);
     if (query?.length) {
       const choosedFilters: IFilter = this.queryAnalizer.handleQuery(query);
-      const filteredProducts: IProduct[] = this.queryAnalizer.applyQuery(products.products, choosedFilters);;
+      const filteredProducts: IProduct[] = this.queryAnalizer.applyQuery(products.products, choosedFilters);
       this.plp.drawPlp(filteredProducts, choosedFilters);
     } else {
       this.plp.drawPlp(products.products);

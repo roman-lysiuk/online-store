@@ -22,10 +22,10 @@ class App {
   start(): void {
     const URLSave: string | null = localStorage.getItem('URLSave');
     if (window.location.hash === '#/plp' || window.location.hash === '') {
-      if (URLSave) { 
+      if (URLSave) {
         window.location.hash = URLSave;
       } else {
-      window.location.hash = `#/plp`;
+        window.location.hash = `#/plp`;
       }
     }
     window.addEventListener('load', () => {

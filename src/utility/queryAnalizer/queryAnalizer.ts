@@ -76,10 +76,10 @@ class QueryAnalizer {
             break;
           case 'cps':
             choosedFilters.cartPageSize = queryParam[1];
-            break; 
+            break;
           case 'cpn':
             choosedFilters.cartPageNumber = queryParam[1];
-            break; 
+            break;
           default:
             break;
         }
