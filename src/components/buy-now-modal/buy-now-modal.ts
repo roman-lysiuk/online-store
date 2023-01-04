@@ -80,30 +80,30 @@ class BuyNowModal {
         const allInput: NodeListOf<HTMLInputElement> = document.querySelectorAll('form input');
         allInput.forEach((item) => this.isValid(item));
 
-        // if (!fullName?.validity.valid) {
-        //   e.preventDefault();
-        //   return;
-        // }
-        // if (!phoneNumber?.validity.valid) {
-        //   e.preventDefault();
-        //   return;
-        // }
-        // if (!deliveryAddress?.validity.valid) {
-        //   e.preventDefault();
-        //   return;
-        // }
-        // if (!email?.validity.valid) {
-        //   e.preventDefault();
-        //   return;
-        // }
-        // if (!cardNumber?.validity.valid) {
-        //   e.preventDefault();
-        //   return;
-        // }
-        // if (!validity?.validity.valid) {
-        //   e.preventDefault();
-        //   return;
-        // }
+        if (!fullName?.validity.valid) {
+          e.preventDefault();
+          return;
+        }
+        if (!phoneNumber?.validity.valid) {
+          e.preventDefault();
+          return;
+        }
+        if (!deliveryAddress?.validity.valid) {
+          e.preventDefault();
+          return;
+        }
+        if (!email?.validity.valid) {
+          e.preventDefault();
+          return;
+        }
+        if (!cardNumber?.validity.valid) {
+          e.preventDefault();
+          return;
+        }
+        if (!validity?.validity.valid) {
+          e.preventDefault();
+          return;
+        }
         if (!cvvCode?.validity.valid) {
           e.preventDefault();
           return;
