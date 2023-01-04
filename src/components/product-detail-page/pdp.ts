@@ -119,4 +119,5 @@ class Pdp {
     }
   }
 }
+
 export default Pdp;

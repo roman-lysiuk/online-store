@@ -22,6 +22,8 @@ export interface IFilter {
   sorting: string;
   search: string;
   view: string;
+  cartPageSize: string;
+  cartPageNumber: string;
 }
 export interface IObjectProductCart {
   item: IProduct;
