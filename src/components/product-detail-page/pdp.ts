@@ -1,14 +1,18 @@
 import Cart from '../cart/cart';
 import Plp from '../product-list-page/plp';
 
+import locStorage from '../../utility/localStorage/local-storage';
+
 import type { IProduct } from '../../interfaces';
 
 class Pdp {
   copyCart: Cart;
   plp: Plp;
+  locStorage: locStorage;
   constructor() {
     this.copyCart = Cart.getInstance();
     this.plp = new Plp();
+    this.locStorage = new locStorage();
   }
   drawPdp(data: IProduct): void {
     const tempProductDetailPage: HTMLTemplateElement | null = document.querySelector('#template-product-detail-page');
@@ -81,6 +85,7 @@ class Pdp {
         if (!this.copyCart.inCart(data)) {
           this.copyCart.addToCart(data);
           this.plp.showTotalItemCartAndCartMoney();
+          this.locStorage.setLocalStorage('allProductCart', this.copyCart.allProductCart);
         }
         if (main) main.classList.toggle('popup-active');
         buyNowModal.classList.toggle('active');
@@ -98,6 +103,7 @@ class Pdp {
         this.copyCart.changeButtonAddToCart(e);
         this.copyCart.addToCart(data);
         this.plp.showTotalItemCartAndCartMoney();
+        this.locStorage.setLocalStorage('allProductCart', this.copyCart.allProductCart);
       });
     }
 

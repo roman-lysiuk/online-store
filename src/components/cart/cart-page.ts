@@ -1,4 +1,5 @@
 import Plp from '../product-list-page/plp';
+import locStorage from '../../utility/localStorage/local-storage';
 
 import Cart from './cart';
 
@@ -9,15 +10,17 @@ class CartPage {
   plp: Plp;
   itemsPerPage: number;
   currentPageNumber: number;
+  locStorage: locStorage;
   constructor() {
     this.copyCart = Cart.getInstance();
     this.plp = new Plp();
     this.itemsPerPage = 10;
     this.currentPageNumber = 1;
+    this.locStorage = new locStorage();
   }
   drawCartPage(data: allProductCart, choosedFilters?: IFilter): void {
     if (data.size === 0) return this.showCartIsEmpty();
-console.log(choosedFilters);
+    console.log(choosedFilters);
 
     if (choosedFilters?.cartPageSize) {
       this.itemsPerPage = Number(choosedFilters?.cartPageSize);
@@ -44,7 +47,7 @@ console.log(choosedFilters);
       itemsPerPage.max = `${this.copyCart.allProductCart.size}`;
       itemsPerPage.addEventListener('input', () => {
         this.itemsPerPage = Number(itemsPerPage.value);
-        window.location.hash = `#/cart?cps=${this.itemsPerPage}`
+        window.location.hash = `#/cart?cps=${this.itemsPerPage}`;
       });
     }
 
@@ -52,7 +55,7 @@ console.log(choosedFilters);
       paginationPrevPage.addEventListener('click', () => {
         if (this.currentPageNumber > 1) {
           this.currentPageNumber--;
-          window.location.hash = `#/cart?cps=${this.itemsPerPage}&cpn=${this.currentPageNumber}`
+          window.location.hash = `#/cart?cps=${this.itemsPerPage}&cpn=${this.currentPageNumber}`;
         }
       });
     }
@@ -61,7 +64,7 @@ console.log(choosedFilters);
       paginationNextPage.addEventListener('click', () => {
         if (this.currentPageNumber < data.size / this.itemsPerPage) {
           this.currentPageNumber++;
-          window.location.hash = `#/cart?cps=${this.itemsPerPage}&cpn=${this.currentPageNumber}`
+          window.location.hash = `#/cart?cps=${this.itemsPerPage}&cpn=${this.currentPageNumber}`;
         }
       });
     }
@@ -271,6 +274,7 @@ console.log(choosedFilters);
           if (productTotalMoney) productTotalMoney.textContent = `Total Price: ${item.quantity * item.item.price} $`;
           this.drawSummaryBlock();
           this.showSummaryTotalMoneyPromo();
+          this.locStorage.setLocalStorage('allProductCart', this.copyCart.allProductCart);
         });
       }
 
@@ -291,6 +295,7 @@ console.log(choosedFilters);
             this.showSummaryTotalMoneyPromo();
           }
           this.plp.showTotalItemCartAndCartMoney();
+          this.locStorage.setLocalStorage('allProductCart', this.copyCart.allProductCart);
         });
       }
       fragment.append(productClone);
