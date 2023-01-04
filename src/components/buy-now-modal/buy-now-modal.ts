@@ -115,6 +115,7 @@ class BuyNowModal {
           main?.classList.remove('popup-active');
           this.copyCart.clearCart();
           this.plp.showTotalItemCart();
+          this.plp.showTotalCartMoney();
           window.location.hash = '#/plp';
         }, 3000);
       });
