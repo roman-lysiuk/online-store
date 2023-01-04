@@ -20,11 +20,6 @@ class App {
   }
 
   start(): void {
-    window.addEventListener('load', () => this.locStorage.getLocalStorage('allProductCart'));
-    console.log(window.location.hash);
-    this.cartPage.showCartPage();
-    this.buyNowModal.drawBuyNowModal();
-
     const URLSave: string | null = localStorage.getItem('URLSave');
     if (window.location.hash === '#/plp' || window.location.hash === '') {
       if (URLSave) { 
@@ -34,17 +29,21 @@ class App {
       }
     }
     window.addEventListener('load', () => {
+      this.locStorage.getLocalStorage('allProductCart');
       const location = window.location.hash;
       if (location) {
         this.router.handleRoute(location);
       }
     });
     window.addEventListener('hashchange', () => {
+      this.locStorage.getLocalStorage('allProductCart');
       const location = window.location.hash;
       if (location) {
         this.router.handleRoute(location);
       }
     });
+    this.cartPage.showCartPage();
+    this.buyNowModal.drawBuyNowModal();
     document.querySelector('.header__logo')?.addEventListener('click', () => (window.location.hash = '#/plp'));
     window.addEventListener('beforeunload', () =>
       this.locStorage.setLocalStorage('allProductCart', this.copyCart.allProductCart)
