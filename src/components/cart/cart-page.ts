@@ -17,7 +17,7 @@ class CartPage {
   }
   drawCartPage(data: allProductCart, choosedFilters?: IFilter): void {
     if (data.size === 0) return this.showCartIsEmpty();
-console.log(choosedFilters);
+    console.log(choosedFilters);
 
     if (choosedFilters?.cartPageSize) {
       this.itemsPerPage = Number(choosedFilters?.cartPageSize);
@@ -44,7 +44,7 @@ console.log(choosedFilters);
       itemsPerPage.max = `${this.copyCart.allProductCart.size}`;
       itemsPerPage.addEventListener('input', () => {
         this.itemsPerPage = Number(itemsPerPage.value);
-        window.location.hash = `#/cart?cps=${this.itemsPerPage}`
+        window.location.hash = `#/cart?cps=${this.itemsPerPage}`;
       });
     }
 
@@ -52,7 +52,7 @@ console.log(choosedFilters);
       paginationPrevPage.addEventListener('click', () => {
         if (this.currentPageNumber > 1) {
           this.currentPageNumber--;
-          window.location.hash = `#/cart?cps=${this.itemsPerPage}&cpn=${this.currentPageNumber}`
+          window.location.hash = `#/cart?cps=${this.itemsPerPage}&cpn=${this.currentPageNumber}`;
         }
       });
     }
@@ -61,7 +61,7 @@ console.log(choosedFilters);
       paginationNextPage.addEventListener('click', () => {
         if (this.currentPageNumber < data.size / this.itemsPerPage) {
           this.currentPageNumber++;
-          window.location.hash = `#/cart?cps=${this.itemsPerPage}&cpn=${this.currentPageNumber}`
+          window.location.hash = `#/cart?cps=${this.itemsPerPage}&cpn=${this.currentPageNumber}`;
         }
       });
     }
@@ -232,6 +232,7 @@ console.log(choosedFilters);
       const productNumber: HTMLElement | null = productClone.querySelector('.product-cart__number');
       const productImg: HTMLElement | null = productClone.querySelector('.product-cart__img');
       const productTitle: HTMLElement | null = productClone.querySelector('.info__title');
+      const productPrice: HTMLElement | null = productClone.querySelector('.info__price');
       const productDescription: HTMLElement | null = productClone.querySelector('.info__description');
       const productRating: HTMLElement | null = productClone.querySelector('.info__rating');
       const productStock: HTMLElement | null = productClone.querySelector('.product-cart__stock');
@@ -242,6 +243,8 @@ console.log(choosedFilters);
       const removeNumberProduct: HTMLButtonElement | null = productClone.querySelector('.remove-number-product');
 
       if (productNumber) productNumber.textContent = counterNumber.toString();
+
+      if (productPrice) productPrice.textContent = `Price: ${item.item.price} $`;
 
       if (productImg) {
         const thumbnail: HTMLImageElement = document.createElement('img');
