@@ -101,7 +101,7 @@ class Cart {
     this.allProductCart.forEach((item) => (totalMoney += item.item.price * item.quantity));
 
     const totalDiscountMoney = totalMoney * (totalDiscountPercent / 100);
-    return totalDiscountPercent > 0 ? totalMoney - totalDiscountMoney : totalMoney;
+    return totalDiscountPercent > 0 ? +(totalMoney - totalDiscountMoney).toFixed(2) : +totalMoney.toFixed(2);
   }
   isValidationPromo(promo: string): boolean {
     switch (promo.toLowerCase()) {
