@@ -28,7 +28,7 @@ class Plp {
       });
     }
 
-    this.drawAside(products.products, choosedFilters);
+    this.drawAside(data, choosedFilters);
     this.drawSort(choosedFilters);
     this.showTotalItemCart();
     this.showAsideMobile();
@@ -66,7 +66,7 @@ class Plp {
     const asideRangeStockLower: HTMLInputElement | null = document.querySelector('.aside__range-stock_lower');
     const asideRangeStockUpper: HTMLInputElement | null = document.querySelector('.aside__range-stock_upper');
 
-    const allStock: number[] = <Array<number>>[...data.reduce((acc, cur) => acc.add(cur.stock), new Set())];
+    const allStock: number[] = <Array<number>>[...products.products.reduce((acc, cur) => acc.add(cur.stock), new Set())];
     const allStockSort: number[] = allStock.sort((a, b) => a - b);
 
     if (asideMinStock) asideMinStock.textContent = `${allStockSort[0].toString()} pcs`;
@@ -125,7 +125,7 @@ class Plp {
     const asideRangePriceLower: HTMLInputElement | null = document.querySelector('.aside__range-price_lower');
     const asideRangePriceUpper: HTMLInputElement | null = document.querySelector('.aside__range-price_upper');
 
-    const allPrice: number[] = <Array<number>>[...data.reduce((acc, cur) => acc.add(cur.price), new Set())];
+    const allPrice: number[] = <Array<number>>[...products.products.reduce((acc, cur) => acc.add(cur.price), new Set())];
     const allPriceSort: number[] = allPrice.sort((a, b) => a - b);
 
     if (asideMinPrice) asideMinPrice.textContent = `${allPriceSort[0].toString()} $`;
@@ -176,7 +176,7 @@ class Plp {
   drawFilterCategory(data: IProduct[], choosedFilters?: IFilter): void {
     const fragmentCategory: DocumentFragment = document.createDocumentFragment();
     const asideFilterListCategory: HTMLElement | null = document.querySelector('.aside__filter-list-category');
-    const allCategory: string[] = <Array<string>>[...data.reduce((acc, cur) => acc.add(cur.category), new Set())];
+    const allCategory: string[] = <Array<string>>[...products.products.reduce((acc, cur) => acc.add(cur.category), new Set())];
 
     allCategory.forEach((item) => {
       const newCategory: HTMLDivElement = document.createElement('div');
@@ -209,7 +209,7 @@ class Plp {
   drawFilterBrand(data: IProduct[], choosedFilters?: IFilter): void {
     const asideFilterListBrand: HTMLElement | null = document.querySelector('.aside__filter-list-brand');
     const fragmentBrand: DocumentFragment = document.createDocumentFragment();
-    const allBrand: string[] = <Array<string>>[...data.reduce((acc, cur) => acc.add(cur.brand), new Set())];
+    const allBrand: string[] = <Array<string>>[...products.products.reduce((acc, cur) => acc.add(cur.brand), new Set())];
 
     allBrand.forEach((item) => {
       const newBrand: HTMLDivElement = document.createElement('div');
