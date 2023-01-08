@@ -18,13 +18,10 @@
 
 html {
    font-family: Verdana, Geneva, Tahoma, sans-serif;
-   height: 100%;
 }
-body {
-   height: 100%;
-}
+
 .wrapper {
-   height: 100%;
+   min-height: 100vh;
    display: flex;
    flex-direction: column;
 }
@@ -85,6 +82,7 @@ body {
 .main {
    display: flex;
    flex: 1 0 auto;
+   justify-content: end;
    gap: 30px;
    position: relative;
    &.popup-active {
@@ -96,26 +94,27 @@ body {
    background-color: rgb(52, 190, 130);
    border: 1px solid rgb(52, 190, 130);
    border-radius: 10px;
-   font-size: 1.3rem;
+   font-size: 1.15rem;
    color: black;
-   min-width: 50px;
-   min-height: 40px;
+   max-height: 40px;
    padding: 10px;
    cursor: pointer;
+   white-space: nowrap;
    transition: 200ms;
    &:hover {
       box-shadow: 0px 0px 11px 4px rgba(0, 0, 0, 0.2);
    }
-   @media (max-width: 1120px) {
-      font-size: 1.1rem;
-      max-height: 40px;
-      white-space: nowrap;
+   @media (max-width: 1300px) {
+      white-space: normal;
+      min-height: 60px;
+      padding: 5px;
    }
    @media (max-width: 800px) {
       font-size: 1rem;
    }
    @media (max-width: 650px) {
       font-size: 1.3rem;
+      white-space: break-spaces;
       max-height: max-content;
    }
    &.sort-bar__view-options_btn-active {

@@ -20,7 +20,6 @@ class CartPage {
   }
   drawCartPage(data: allProductCart, choosedFilters?: IFilter): void {
     if (data.size === 0) return this.showCartIsEmpty();
-    console.log(choosedFilters);
 
     if (choosedFilters?.cartPageSize) {
       this.itemsPerPage = Number(choosedFilters?.cartPageSize);

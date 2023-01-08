@@ -2,10 +2,10 @@ import Cart from '../cart/cart';
 import Plp from '../product-list-page/plp';
 import locStorage from '../../utility/localStorage/local-storage';
 
-import imgAmerican from '~/assets/icons/349228.png';
-import imgDefaultCard from '~/assets/icons/4341764.png';
-import imgVisa from '~/assets/icons/5968151.png';
-import imgMaster from '~/assets/icons/mastercard-credit-debit-card-bank-transaction-32303.webp';
+// import imgAmerican from '~/assets/icons/349228.png';
+// import imgDefaultCard from '~/assets/icons/4341764.png';
+// import imgVisa from '~/assets/icons/5968151.png';
+// import imgMaster from '~/assets/icons/mastercard-credit-debit-card-bank-transaction-32303.webp';
 class BuyNowModal {
   copyCart: Cart;
   plp: Plp;
@@ -45,21 +45,21 @@ class BuyNowModal {
     if (cardNumber)
       cardNumber.addEventListener('input', () => {
         const imgCard: HTMLImageElement | null = document.querySelector('.credit-card-details__cart-number img');
-        switch (cardNumber.value[0]) {
-          case '3':
-            if (imgCard) imgCard.src = imgAmerican;
-            break;
-          case '4':
-            if (imgCard) imgCard.src = imgVisa;
-            break;
-          case '5':
-            if (imgCard) imgCard.src = imgMaster;
-            break;
+        // switch (cardNumber.value[0]) {
+        //   case '3':
+        //     if (imgCard) imgCard.src = imgAmerican;
+        //     break;
+        //   case '4':
+        //     if (imgCard) imgCard.src = imgVisa;
+        //     break;
+        //   case '5':
+        //     if (imgCard) imgCard.src = imgMaster;
+        //     break;
 
-          default:
-            if (imgCard) imgCard.src = imgDefaultCard;
-            break;
-        }
+        //   default:
+        //     if (imgCard) imgCard.src = imgDefaultCard;
+        //     break;
+        // }
 
         this.isValid(cardNumber);
       });

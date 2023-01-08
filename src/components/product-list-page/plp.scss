@@ -1,5 +1,5 @@
 .section {
-    flex: 1 1 auto;
+    flex: 1 1 calc(85% - 30px);
 }
 .products {
     display: flex;
@@ -86,11 +86,17 @@
 }
 .aside-sticky-box {
     flex: 0 0 15%;
+
     @media (max-width: 1000px) {
         display: none;
         position: fixed;
-        z-index: 2;
+        z-index: 3;
         top: 0px;
+        left: 0px;
+    }
+    @media (max-width: 600px) {
+        width: 100vw;
+        height: 100%;
     }
     &.active {
         display: block;
@@ -99,17 +105,21 @@
 .aside {
     display: flex;
     flex-direction: column;
-    position: sticky;
-    top: 80px;
     padding-bottom: 50px;
     margin-bottom: 10px;
     border-radius: 10px;
     background-color: white;
     box-shadow: 0px 0px 11px 3px rgba(0, 0, 0, 0.2);
     gap: 20px;
+    position: sticky;
+    top: 80px;
+
     @media (max-width: 1000px) {
         position: fixed;
         top: 0px;
+    }
+    @media (max-width: 600px) {
+        padding: 20px;
     }
     &__close {
         display: none;
@@ -128,7 +138,7 @@
         padding: 10px;
         border-radius: 10px;
         box-shadow: 0px 0px 11px 3px rgba(0, 0, 0, 0.2);
-        max-height: 230px;
+        max-height: 17vh;
         overflow: auto;
         .checkbox-line {
             display: flex;
@@ -210,7 +220,7 @@
     font-size: 1.5rem;
     border-radius: 10px;
     box-shadow: 0px 0px 11px 3px rgba(0, 0, 0, 0.2);
-
+    gap: 10px;
     margin: 10px;
     &__view-options {
         display: flex;
@@ -220,6 +230,13 @@
         .btn__four-columns {
             font-size: 0.8rem;
         }
+        @media (max-width: 650px) {
+            display: none;
+        }
+    }
+    @media (max-width: 750px) {
+        justify-content: center;
+        font-size: 1.1rem;
     }
 
     @media (max-width: 650px) {
