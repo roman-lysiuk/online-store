@@ -1,0 +1,130 @@
+@import "./components/product-list-page/plp.scss";
+
+@import "./components/error/error.scss";
+
+@import "./components/product-detail-page/pdp.scss";
+
+@import "./components/cart/cart.scss";
+
+@import "./components/buy-now-modal/buy-now-modal.scss";
+.container {
+   max-width: 1600px;
+   padding: 0 10px;
+   margin: 0 auto;
+   @media (max-width: 1200px) {
+      max-width: 1000px;
+   }
+}
+
+html {
+   font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.wrapper {
+   min-height: 100vh;
+   display: flex;
+   flex-direction: column;
+}
+.header {
+   min-height: 70px;
+   display: flex;
+   position: sticky;
+   top: 0px;
+   background-color: white;
+   z-index: 2;
+   flex: 0 0 auto;
+   align-items: center;
+   justify-content: space-around;
+   border-radius: 10px;
+   margin-bottom: 10px;
+   box-shadow: 0px 12px 7px 0px rgba(15, 154, 68, 0.2);
+   &__logo {
+      img {
+         width: 200px;
+         cursor: pointer;
+         @media (max-width: 650px) {
+            width: 130px;
+         }
+      }
+   }
+   &__total-cart {
+      font-size: 1.5rem;
+      @media (max-width: 650px) {
+         font-size: 1rem;
+      }
+   }
+   &__cart {
+      cursor: pointer;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      img {
+         width: 50px;
+      }
+   }
+}
+
+.footer {
+   display: flex;
+   justify-content: center;
+   flex: 0 0 auto;
+   gap: 50px;
+   min-height: 100px;
+   border-radius: 10px;
+   align-items: center;
+   font-size: 1.3rem;
+   box-shadow: 0px 0px 11px 3px rgba(0, 0, 0, 0.2);
+   .rs-school-link {
+      width: 70px;
+   }
+}
+
+.main {
+   display: flex;
+   flex: 1 0 auto;
+   justify-content: end;
+   gap: 30px;
+   position: relative;
+   &.popup-active {
+      opacity: 0.1;
+   }
+}
+
+.btn {
+   background-color: rgb(52, 190, 130);
+   border: 1px solid rgb(52, 190, 130);
+   border-radius: 10px;
+   font-size: 1.15rem;
+   color: black;
+   max-height: 40px;
+   padding: 10px;
+   cursor: pointer;
+   white-space: nowrap;
+   transition: 200ms;
+   &:hover {
+      box-shadow: 0px 0px 11px 4px rgba(0, 0, 0, 0.2);
+   }
+   @media (max-width: 1300px) {
+      white-space: normal;
+      min-height: 60px;
+      padding: 5px;
+   }
+   @media (max-width: 800px) {
+      font-size: 1rem;
+   }
+   @media (max-width: 650px) {
+      font-size: 1.3rem;
+      white-space: break-spaces;
+      max-height: max-content;
+   }
+   &.sort-bar__view-options_btn-active {
+      border: 2px solid black;
+      background-color: rgb(56, 164, 117);
+   }
+}
+
+a {
+   &:visited {
+      color: rgb(52, 190, 130);
+   }
+}

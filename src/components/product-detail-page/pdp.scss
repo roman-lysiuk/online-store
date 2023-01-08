@@ -1,0 +1,113 @@
+.container {
+    max-width: 1600px;
+    padding: 0 10px;
+    margin: 0 auto;
+    @media (max-width: 1200px) {
+        max-width: 1000px;
+    }
+}
+.breadcrumbs {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    &__main-page,
+    &__filter-category,
+    &__filter-brand {
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.3s;
+        &:hover {
+            color: rgb(52, 190, 130);
+        }
+    }
+}
+.two-column-wraper {
+    display: flex;
+    justify-content: space-between;
+    gap: 100px;
+    @media (max-width: 1200px) {
+        gap: 50px;
+    }
+    @media (max-width: 600px) {
+        flex-direction: column;
+        gap: 0px;
+    }
+}
+.gallery {
+    &__main-photo {
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 10px;
+        img {
+            display: block;
+            border-radius: 10px;
+            width: 100%;
+            height: 400px;
+            object-fit: contain;
+            transition: 1000ms;
+            &:hover {
+                transform: scale(1.3);
+            }
+        }
+    }
+    &__photo {
+        width: 150px;
+        max-height: 100px;
+        border-radius: 15px;
+
+        img {
+            cursor: pointer;
+            display: block;
+            border-radius: 15px;
+            object-fit: contain;
+            width: 100%;
+            height: 100px;
+        }
+        @media (max-width: 800px) {
+            width: 90px;
+            max-height: 80px;
+        }
+    }
+
+    &__all-photo {
+        display: flex;
+        gap: 10px;
+
+        @media (max-width: 1200px) {
+            flex-wrap: wrap;
+        }
+    }
+    @media (max-width: 1200px) {
+        flex: 1 1 60%;
+    }
+}
+.product-card {
+    &__info {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        font-weight: 600;
+    }
+    &__title {
+        font-size: 2rem;
+        text-align: center;
+        @media (max-width: 600px) {
+            margin: 15px 0 10px 0;
+        }
+    }
+    &__price {
+        font-size: 1.2rem;
+        text-align: center;
+        margin-bottom: 30px;
+        @media (max-width: 600px) {
+            margin-bottom: 10px;
+        }
+    }
+    &__row-button {
+        margin-bottom: 20px;
+        @media (max-width: 600px) {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 10px;
+        }
+    }
+}
